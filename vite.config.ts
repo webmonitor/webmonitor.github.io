@@ -20,6 +20,8 @@ export default defineConfig(({ isSsrBuild }) => ({
           input: {
             main: path.resolve(__dirname, 'index.html'),
             docs: path.resolve(__dirname, 'docs/index.html'),
+            enHome: path.resolve(__dirname, 'en/index.html'),
+            enDocs: path.resolve(__dirname, 'en/docs/index.html'),
           },
         },
   },

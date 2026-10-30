@@ -5,8 +5,10 @@ const root = path.resolve(import.meta.dirname, '..');
 const { render } = await import(path.join(root, 'dist-ssr/entry-server.js'));
 
 const routes = [
-  { file: 'index.html', pathname: '/', rootClass: '' },
-  { file: 'docs/index.html', pathname: '/docs/', rootClass: '' },
+  { file: 'index.html', pathname: '/' },
+  { file: 'docs/index.html', pathname: '/docs/' },
+  { file: 'en/index.html', pathname: '/en/' },
+  { file: 'en/docs/index.html', pathname: '/en/docs/' },
 ];
 
 for (const route of routes) {

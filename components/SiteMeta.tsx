@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { site } from '../config/site';
+import { shared } from '../config/site';
+import type { SiteContent } from '../content/types';
 
 const upsertMeta = (selector: string, attributes: Record<string, string>) => {
   let element = document.head.querySelector(selector) as HTMLMetaElement | null;
@@ -27,25 +28,24 @@ const upsertLink = (selector: string, attributes: Record<string, string>) => {
   });
 };
 
-const SiteMeta = () => {
+const SiteMeta = ({ content, pathname }: { content: SiteContent; pathname: string }) => {
   useEffect(() => {
-    document.title = site.title;
+    document.documentElement.lang = content.htmlLang;
+    document.title = content.title;
 
-    upsertMeta('meta[name="description"]', { name: 'description', content: site.description });
-    upsertMeta('meta[name="keywords"]', { name: 'keywords', content: site.keywords.join(',') });
-    upsertMeta('meta[name="author"]', { name: 'author', content: site.author });
-    upsertMeta('meta[property="og:title"]', { property: 'og:title', content: site.title });
-    upsertMeta('meta[property="og:description"]', { property: 'og:description', content: site.description });
-    upsertMeta('meta[property="og:url"]', { property: 'og:url', content: site.siteUrl });
-    upsertMeta('meta[property="og:image"]', { property: 'og:image', content: site.logoUrl });
-    upsertMeta('meta[property="og:site_name"]', { property: 'og:site_name', content: site.siteName });
-    upsertMeta('meta[name="twitter:card"]', { name: 'twitter:card', content: 'summary_large_image' });
-    upsertMeta('meta[name="twitter:title"]', { name: 'twitter:title', content: site.title });
-    upsertMeta('meta[name="twitter:description"]', { name: 'twitter:description', content: site.description });
-    upsertMeta('meta[name="twitter:image"]', { name: 'twitter:image', content: site.logoUrl });
-    upsertMeta('meta[name="theme-color"]', { name: 'theme-color', content: '#f5f3ef' });
-    upsertLink('link[rel="canonical"]', { rel: 'canonical', href: site.siteUrl });
-  }, []);
+    upsertMeta('meta[name="description"]', { name: 'description', content: content.description });
+    upsertMeta('meta[name="keywords"]', { name: 'keywords', content: content.keywords.join(',') });
+    upsertMeta('meta[property="og:title"]', { property: 'og:title', content: content.title });
+    upsertMeta('meta[property="og:description"]', { property: 'og:description', content: content.description });
+    upsertMeta('meta[property="og:url"]', { property: 'og:url', content: `https://webmonitor.github.io${pathname}` });
+    upsertMeta('meta[property="og:image"]', { property: 'og:image', content: shared.logoUrl });
+    upsertMeta('meta[property="og:site_name"]', { property: 'og:site_name', content: content.hero.title });
+    upsertMeta('meta[property="og:locale"]', { property: 'og:locale', content: content.lang === 'zh' ? 'zh_CN' : 'en_US' });
+    upsertMeta('meta[name="twitter:title"]', { name: 'twitter:title', content: content.title });
+    upsertMeta('meta[name="twitter:description"]', { name: 'twitter:description', content: content.description });
+    upsertMeta('meta[name="twitter:image"]', { name: 'twitter:image', content: shared.logoUrl });
+    upsertLink('link[rel="canonical"]', { rel: 'canonical', href: `https://webmonitor.github.io${pathname}` });
+  }, [content, pathname]);
 
   return null;
 };

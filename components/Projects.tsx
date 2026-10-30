@@ -1,11 +1,10 @@
 import { Separator } from '@base-ui/react';
 import { ArrowUpRight } from 'lucide-react';
-import { site } from '../config/site';
-import { projects, resources } from '../data/site';
+import type { SiteContent } from '../content/types';
 
-const { sections } = site;
+const Projects = ({ content }: { content: SiteContent }) => {
+  const { sections, projects, resources } = content;
 
-const Projects = () => {
   return (
     <section className="grid gap-10 py-2 lg:grid-cols-2 lg:gap-12">
       <div className="space-y-5">
