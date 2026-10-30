@@ -43,7 +43,6 @@ const Navbar = ({ lang, pathname }: NavbarProps) => {
 
           <a
             href={alternatePath(pathname, targetLang)}
-            hrefLang={targetLang}
             aria-label={content.nav.switchLabel}
             className="inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-1.5 text-xs font-medium tracking-[0.08em] text-muted transition hover:text-text sm:ml-1 sm:px-3 sm:text-sm"
           >
