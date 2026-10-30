@@ -29,7 +29,7 @@ docker pull ghcr.io/webmonitor/webmonitor-agent:1.0.0
 docker pull ghcr.io/webmonitor/webmonitor:1.0.0
 ```
 
-官网安装入口统一为独立部署目录：直接下载所需 `compose.yaml` 与配套文件，按文档内模板自行创建 `.env`，不要求克隆仓库或下载源码。两个产品均以 `docker compose up -d --wait` 启动，默认拉取 `latest`；可在 `.env` 中设置完整 `WEBMONITOR_IMAGE` 固定版本。拉取镜像只是下载，不能代替配置和服务启动。`latest` 跟随稳定发布，`main` 为开发构建，旧开发标签可能清理。
+官网安装入口统一为独立部署目录：直接下载所需 `compose.yaml` 与配套文件，按文档内模板自行创建 `.env`，不要求克隆仓库或下载源码。两个产品均以 `docker compose up -d --wait` 启动，默认拉取 `latest`；可在 `.env` 中设置完整 `WEBMONITOR_IMAGE` 固定版本。`latest` 跟随稳定发布，`main` 为开发构建，旧开发标签可能清理。
 
 修改官网文档时，同时维护以下事实：
 
@@ -38,7 +38,7 @@ docker pull ghcr.io/webmonitor/webmonitor:1.0.0
 - 普通启动、日志与更新命令无需额外 `-f`。源码开发才克隆仓库，并加载 `compose.build.yaml`。`.env` 模板分别给出所需变量，密钥和密码由用户自行填写，已有文件不能覆盖。
 - 两个产品分别维护版本与发布记录。改版本示例时，同步中英文内容；不要用 Agent 的发布页代表原版发布页。
 - WebMonitor-Agent 与 WebMonitor 均采用 CC BY-NC 4.0，仅限非商业用途。
-- mocksite 仍从源码构建，不能为它编造 GHCR 镜像。Agent 不提供 mocksite 专用覆盖文件；联调网络与出口许可由采集方维护。
+- mocksite 从源码构建，没有 GHCR 镜像。Agent 不提供 mocksite 专用覆盖文件；联调网络与出口许可由采集方维护。
 
 部署契约以各产品的 Compose、配置与实现为依据；网站重述这些契约，不能添加尚未实现的能力。完整说明见 [Agent 中文 README](https://github.com/webmonitor/WebMonitor-Agent/blob/main/README.zh-CN.md)与 [WebMonitor 中文 README](https://github.com/webmonitor/WebMonitor/blob/main/README.zh-CN.md)。
 
@@ -72,7 +72,7 @@ npm run dev
 
 开发服务监听 `0.0.0.0:3000`，浏览器访问 `http://localhost:3000`；同一网络的其他设备可能访问该开发端口。
 
-维护者需要时可执行以下命令；这里列出用法，不代表本次文档整理已运行它们：
+维护者需要时可执行以下命令：
 
 ```sh
 npm run typecheck

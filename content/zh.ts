@@ -17,7 +17,7 @@ export const zh: SiteContent = {
     eyebrow: '开源 · 可自行部署',
     title: 'WebMonitor',
     intro:
-      '盯住价格、库存、公告和截止日期。你可以在可视化工作台里逐项填写，也可以用一句话把需求说清楚；真正变化时，邮件提醒你。',
+      '盯住价格、库存、公告和截止日期。在可视化工作台里逐项填写，或用一句话说明需求；页面变化时，邮件提醒你。',
     primary: '在线体验',
     secondary: 'GitHub',
     icons: { github: 'GitHub', demo: '在线体验', docs: '使用文档' },
@@ -98,7 +98,7 @@ export const zh: SiteContent = {
     agentHint:
       '打开 http://localhost:8080，用 .env 里的管理员邮箱和密码登录；还没有管理员时按文档创建。首次启动会在本地构建两个辅助镜像，需要几分钟。',
     legacyHint: '打开 http://localhost:8000，用 .env 里的用户名和密码登录；邮件在应用内配置。',
-    note: '普通使用不需要克隆仓库，也不需要 docker login。两个项目都拉取公开的 latest 镜像，在自己的部署目录里用同一条命令启动。Agent 的数据库与页面存档使用临时存储，停止或重建数据容器会丢失数据；长期使用前请先看文档中的数据保留说明。',
+    note: '两个项目都在各自的部署目录里用同一条命令启动，拉取公开的 latest 镜像。Agent 的数据库与页面存档使用临时存储，停止或重建数据容器会丢失数据；长期使用前先配置持久存储和备份。',
     docsLink: '查看完整安装、首次监控与数据保留说明',
   },
   footerTagline: 'WebMonitor · 网页变化监控与邮件提醒',
@@ -131,7 +131,7 @@ export const zh: SiteContent = {
           },
           {
             type: 'note',
-            text: '在线演示由维护者单独运行，可能暂时不可用；它不是你的部署，也不保存你的监控数据。',
+            text: '在线演示由维护者单独运行，可能暂时不可用，也不保存你的监控数据。',
           },
         ],
       },
@@ -141,7 +141,7 @@ export const zh: SiteContent = {
         blocks: [
           {
             type: 'paragraph',
-            text: '你只需要一台能运行 Docker 的电脑或服务器，以及用于下载部署文件的 curl。普通安装不用克隆仓库，也不用注册或登录镜像仓库。公开镜像同时支持 Intel/AMD 与 Apple Silicon，Docker 会自动选择。',
+            text: '需要一台能运行 Docker 的电脑或服务器，以及用于下载部署文件的 curl。普通安装不用克隆仓库，也不用登录镜像仓库。公开镜像同时支持 Intel/AMD 与 Apple Silicon，Docker 会自动选择。',
           },
           {
             type: 'table',
@@ -173,7 +173,7 @@ export const zh: SiteContent = {
             type: 'code',
             title: '第 1 步：新建部署目录并下载 Compose 文件',
             code: 'mkdir -p webmonitor\ncd webmonitor\ncurl -fsSLo compose.yaml https://raw.githubusercontent.com/webmonitor/WebMonitor/main/compose.yaml',
-            hint: '不用克隆仓库。下载失败时先检查网络和命令输出，不要继续启动。',
+            hint: '下载失败时先检查网络和命令输出，再启动。',
           },
           {
             type: 'code',
@@ -187,7 +187,7 @@ export const zh: SiteContent = {
             rows: [
               ['`WEBMONITOR_IMAGE`', '默认 latest；想固定版本时改成 `ghcr.io/webmonitor/webmonitor:1.0.0`。'],
               ['`SECRET_KEY`', '至少 32 字符的随机串，用于登录令牌签名。'],
-              ['`ADMIN_USERNAME`、`ADMIN_PASSWORD`', '初始管理员账号和密码；登录时用这个用户名，不是邮箱。'],
+              ['`ADMIN_USERNAME`、`ADMIN_PASSWORD`', '初始管理员用户名和密码，用于登录。'],
               ['`ADMIN_EMAIL`', '管理员邮箱，用于账户信息。'],
             ],
           },
@@ -224,7 +224,7 @@ export const zh: SiteContent = {
             type: 'code',
             title: '第 1 步：下载完整部署文件',
             code: 'mkdir -p webmonitor-agent\ncd webmonitor-agent\n(\n  set -e\n  for file in compose.yaml .dockerignore deploy/browser-seccomp.json deploy/minio.Dockerfile deploy/minio-artifacts.json deploy/egress.Dockerfile deploy/egress/squid.conf deploy/egress/unbound.conf deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do\n    curl -fsSL --create-dirs "https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main/$file" -o "$file"\n  done\n)',
-            hint: '不用克隆仓库。任一下载失败都会停下并报错，先解决再启动。目录结构要保持原样，之后的命令都在这个目录里执行。已有部署要更新时，先备份文件，保留自己的 .env。',
+            hint: '任一下载失败都会报错并停止，先解决再启动。目录结构保持原样，后续命令都在这个目录里执行。更新已有部署时先备份文件，保留自己的 .env。',
           },
           {
             type: 'code',
@@ -255,7 +255,7 @@ export const zh: SiteContent = {
           },
           {
             type: 'note',
-            text: 'Agent 的数据库和页面存档使用临时内存存储。停止、重启或重建数据容器会丢失账户、监控、事件和已保存的页面证据；只重启应用服务不受影响。长期使用前先安排持久存储与备份。',
+            text: 'Agent 的数据库和页面存档使用临时内存存储，停止、重启或重建数据容器会丢失账户、监控、事件和已保存的页面存档。长期使用前配置持久存储和备份。',
           },
           {
             type: 'link',
@@ -305,7 +305,7 @@ export const zh: SiteContent = {
           },
           {
             type: 'note',
-            text: '第一次成功采集只用来建立基线，不会因为“页面有内容”就发变化邮件；从第二次采集开始比较。采集失败时保留上一次成功的内容作为比较依据。预览不会发送邮件。',
+            text: '第一次成功采集用于建立基线，不发变化邮件；从第二次采集开始比较。采集失败时保留上一次成功的内容作为比较依据。预览不会发送邮件。',
           },
         ],
       },
@@ -335,7 +335,7 @@ export const zh: SiteContent = {
           },
           {
             type: 'note',
-            text: '投递记录里的「已发送」表示邮件服务器已接收，不代表已经进入收件箱。没收到邮件时，先查垃圾邮件，再看「通知」页的投递记录和失败原因。',
+            text: '投递记录里的「已发送」表示邮件服务器已接收。没收到邮件时，先查垃圾邮件，再看「通知」页的投递记录和失败原因。',
           },
         ],
       },
@@ -366,7 +366,7 @@ export const zh: SiteContent = {
               '「监控」列表打开任一监控，查看当前内容、最近检查和事件；用「暂停」「恢复」「立即检查」「修改设置」控制它。',
               '「事件」记录变化、采集失败和恢复，可以只看「未读」，看完点「标为已读」。',
               '「通知」里维护通知组，并查看每封邮件的收件人、状态和失败原因。',
-              '成员由管理员邀请；新成员用邀请链接注册，不能用公开注册。',
+              '成员由管理员邀请，通过邀请链接注册。',
             ],
           },
         ],
@@ -380,7 +380,7 @@ export const zh: SiteContent = {
             items: [
               '**启动命令报错或一直不返回：** 在部署目录执行 `docker compose ps` 和 `docker compose logs --tail=100`。常见原因是 `.env` 还有空值、端口被占用、模型配置不可用。修好后重新执行启动命令。',
               '**网页打不开：** 确认访问的是 http://localhost:8000（WebMonitor）或 http://localhost:8080（Agent），并确认容器正在运行。',
-              '**WebMonitor 登录失败：** 登录用 `.env` 里的 `ADMIN_USERNAME`，不是邮箱。初始管理员只在数据库还没有管理员时创建；之后修改 `.env` 不会重置已有账户。',
+              '**WebMonitor 登录失败：** 使用 `.env` 里的 `ADMIN_USERNAME` 登录。初始管理员在首次启动时创建；后续账户信息在应用内管理。',
               '**Agent 登录失败：** 用 `.env` 里的 `ADMIN_EMAIL` 和 `ADMIN_PASSWORD` 登录，密码要求 12–128 字符。',
               '**Agent 没有管理员，或新成员注册不了：** 在部署目录执行 `docker compose exec api webmonitor admin-create --email you@example.com` 创建管理员，或执行 `docker compose exec api webmonitor invite-create --email member@example.com --ttl-hours 24` 生成一次性邀请链接。链接过期或邮箱不匹配都不能用。',
               '**WebMonitor 提取不到内容：** 先用「测试监控」检查 XPath 是否选中了真正包含文字的元素；需要登录才能看到的内容无法直接监控。',
@@ -409,7 +409,7 @@ export const zh: SiteContent = {
             type: 'code',
             title: 'Agent：只更新应用服务',
             code: 'docker compose pull api web\ndocker compose up -d --wait api web',
-            hint: '不要拉取或重建 postgres、s3：它们保存的是临时数据。更新后打开页面确认能登录、任务和监控还在；若你同时重建了数据容器，未备份的数据无法恢复。',
+            hint: '此次更新只操作 api、web。postgres、s3 使用临时存储，停止、重启或重建这些数据容器会清空数据。更新完成后打开页面，检查登录和监控列表。',
           },
           {
             type: 'paragraph',
@@ -433,7 +433,7 @@ export const zh: SiteContent = {
         blocks: [
           {
             type: 'paragraph',
-            text: '两个项目都不提供自动备份或数据迁移工具。数据能不能留下来，取决于你有没有在容器之外保存它。',
+            text: '两个项目都没有自动备份或数据迁移工具，数据保存在容器内，需要在容器之外自行留存备份。',
           },
           {
             type: 'table',
@@ -451,11 +451,11 @@ export const zh: SiteContent = {
           },
           {
             type: 'note',
-            text: '这不是“以后再说”的小问题：没有持久存储时，更新或清理容器都可能让账户、任务和通知记录消失；Agent 的临时存储还会在重启后清空。对外提供服务前，应把数据放到持久卷，建立自己的备份，并配置 HTTPS 与访问控制。',
+            text: '对外提供服务前，把数据放到持久卷，并配置备份、HTTPS 与访问控制。',
           },
           {
             type: 'paragraph',
-            text: '还有几项会直接影响能不能监控成功：',
+            text: '监控时的限制：',
           },
           {
             type: 'table',
@@ -463,14 +463,10 @@ export const zh: SiteContent = {
             rows: [
               ['Agent 只能访问公网页面', '内网、localhost、元数据地址和 80/443 以外的端口会被拒绝。'],
               ['Agent 检查频率', '间隔可设 1 分钟到 24 小时。'],
-              ['iframe 与 Shadow DOM', '里面的内容不会被提取；预览会显示实际覆盖范围，以预览为准。'],
-              ['浏览器采集', '浏览器沙箱不可用时这次采集直接失败，不会退回不安全的采集方式。'],
+              ['iframe 与 Shadow DOM', '里面的内容不会被提取；预览会显示实际覆盖范围。'],
+              ['浏览器采集', '浏览器沙箱不可用时，这次采集失败，不自动改用其他采集方式。'],
               ['通知渠道', '两个项目都只发送邮件，没有短信或 webhook。'],
             ],
-          },
-          {
-            type: 'note',
-            text: '不要把真实的 .env、API 密钥、SMTP 密码、Cookie 或页面上的个人信息提交到仓库和问题反馈里。',
           },
         ],
       },

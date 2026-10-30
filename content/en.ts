@@ -26,7 +26,7 @@ export const en: SiteContent = {
     eyebrow: 'Open source · self-hosted',
     title: 'WebMonitor',
     intro:
-      'Watch prices, stock, announcements and deadlines. Fill in each check in a visual dashboard, or describe what you want in one sentence; when something really changes, you get an email.',
+      'Watch prices, stock, announcements and deadlines. Fill in each check in a visual dashboard, or describe what you want in one sentence; when the page changes, you get an email.',
     primary: 'Live demo',
     secondary: 'GitHub',
     icons: { github: 'GitHub', demo: 'Live demo', docs: 'Documentation' },
@@ -108,7 +108,7 @@ export const en: SiteContent = {
     agentHint:
       'Open http://localhost:8080 and sign in with the admin email and password from .env; if no admin exists yet, create one as described in the docs. The first start also builds two helper images locally, which takes a few minutes.',
     legacyHint: 'Open http://localhost:8000 and sign in with the username and password from .env; configure email in the app.',
-    note: 'A normal install needs no repository clone and no docker login. Both projects pull the public latest image and start with the same command in their own deployment directory. Agent uses temporary storage for its database and page archives, so stopping or recreating the data containers loses data; read the data-retention section before long-term use.',
+    note: 'Both projects start with the same command in their own deployment directory and pull the public latest image. Agent keeps its database and page archives in temporary storage, so stopping or recreating the data containers loses data; set up persistent storage and backups before long-term use.',
     docsLink: 'Full setup, first-monitor and data-retention guide',
   },
   footerTagline: 'WebMonitor · web change monitoring with email alerts',
@@ -141,7 +141,7 @@ export const en: SiteContent = {
           },
           {
             type: 'note',
-            text: 'The live demo is run separately by the maintainer and may be unavailable. It is not your deployment and does not store your monitors.',
+            text: 'The live demo is run separately by the maintainer, may be unavailable, and does not store your monitors.',
           },
         ],
       },
@@ -151,7 +151,7 @@ export const en: SiteContent = {
         blocks: [
           {
             type: 'paragraph',
-            text: 'You need a computer or server that can run Docker, plus curl to download the deployment files. A normal install needs no repository clone and no registry account or login. The public images support both Intel/AMD and Apple Silicon; Docker picks the right one automatically.',
+            text: 'You need a computer or server that can run Docker, plus curl to download the deployment files. A normal install needs no repository clone and no registry login. The public images support both Intel/AMD and Apple Silicon; Docker picks the right one automatically.',
           },
           {
             type: 'table',
@@ -183,7 +183,7 @@ export const en: SiteContent = {
             type: 'code',
             title: 'Step 1: create a deployment directory and download Compose',
             code: 'mkdir -p webmonitor\ncd webmonitor\ncurl -fsSLo compose.yaml https://raw.githubusercontent.com/webmonitor/WebMonitor/main/compose.yaml',
-            hint: 'No clone is needed. If the download fails, check the network and the command output before starting anything.',
+            hint: 'If the download fails, check the network and the command output before starting.',
           },
           {
             type: 'code',
@@ -234,7 +234,7 @@ export const en: SiteContent = {
             type: 'code',
             title: 'Step 1: download the complete set of deployment files',
             code: 'mkdir -p webmonitor-agent\ncd webmonitor-agent\n(\n  set -e\n  for file in compose.yaml .dockerignore deploy/browser-seccomp.json deploy/minio.Dockerfile deploy/minio-artifacts.json deploy/egress.Dockerfile deploy/egress/squid.conf deploy/egress/unbound.conf deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do\n    curl -fsSL --create-dirs "https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main/$file" -o "$file"\n  done\n)',
-            hint: 'No clone is needed. Any failed download stops the loop with an error; fix it before starting. Keep the directory layout as is and run later commands here. When updating an existing deployment, back up the files first and keep your .env.',
+            hint: 'Any failed download stops the loop with an error; fix it before starting. Keep the directory layout as is and run later commands here. When updating an existing deployment, back up the files first and keep your .env.',
           },
           {
             type: 'code',
@@ -265,7 +265,7 @@ export const en: SiteContent = {
           },
           {
             type: 'note',
-            text: 'Agent stores its database and page archives in temporary memory. Stopping, restarting or recreating the data containers loses accounts, monitors, events and saved page evidence; restarting only the application services does not. Arrange persistent storage and backups before long-term use.',
+            text: 'Agent keeps its database and page archives in temporary memory: stopping, restarting or recreating the data containers loses accounts, monitors, events and saved page archives. Set up persistent storage and backups before long-term use.',
           },
           {
             type: 'link',
@@ -315,7 +315,7 @@ export const en: SiteContent = {
           },
           {
             type: 'note',
-            text: 'The first successful collection only establishes a baseline, so it does not send a change email just because the page has content; comparison starts with the second check. A failed check keeps the last successful content as the baseline. Previews never send email.',
+            text: 'The first successful collection establishes a baseline and sends no change email; comparison starts with the second check. A failed check keeps the last successful content as the baseline. Previews never send email.',
           },
         ],
       },
@@ -345,7 +345,7 @@ export const en: SiteContent = {
           },
           {
             type: 'note',
-            text: 'In the delivery log, “Sent” means the mail server accepted the message; it does not prove the message reached the inbox. If nothing arrives, check spam, then the delivery log and failure reason under Notifications.',
+            text: 'In the delivery log, “Sent” means the mail server accepted the message. If nothing arrives, check spam, then the delivery log and failure reason under Notifications.',
           },
         ],
       },
@@ -376,7 +376,7 @@ export const en: SiteContent = {
               'Open any monitor from the Monitors list to see current content, recent checks and events; use Pause, Resume, Check now and Edit settings to control it.',
               'Events records changes, failed checks and recoveries. Filter by Unread and choose Mark as read when done.',
               'Notifications manages notification groups and shows each email’s recipients, status and failure reason.',
-              'An admin invites members; new members register through an invitation link, not public sign-up.',
+              'An admin invites members, and new members register through an invitation link.',
             ],
           },
         ],
@@ -419,7 +419,7 @@ export const en: SiteContent = {
             type: 'code',
             title: 'Agent: update only the application services',
             code: 'docker compose pull api web\ndocker compose up -d --wait api web',
-            hint: 'Do not pull or recreate postgres or s3; they hold temporary data. After the update, open the page and confirm you can sign in and your monitors are still there. If you also recreated the data containers, anything you did not back up is gone.',
+            hint: 'This update targets api and web. postgres and s3 use temporary storage; stopping, restarting or recreating those data containers clears their data. After updating, open the page and check sign-in and your monitor list.',
           },
           {
             type: 'paragraph',
@@ -443,7 +443,7 @@ export const en: SiteContent = {
         blocks: [
           {
             type: 'paragraph',
-            text: 'Neither project provides automatic backups or data migration. Whether your data survives depends on whether you saved it outside the containers.',
+            text: 'Neither project provides automatic backups or data migration; the data lives inside the containers, so keep your own backups outside them.',
           },
           {
             type: 'table',
@@ -461,11 +461,11 @@ export const en: SiteContent = {
           },
           {
             type: 'note',
-            text: 'This is not a “deal with it later” detail: without persistent storage, an update or container cleanup can wipe accounts, tasks and notification history, and the Agent’s temporary storage is also cleared on restart. Before serving anyone else, move the data to a persistent volume, set up your own backups, and add HTTPS and access control.',
+            text: 'Before serving anyone else, move the data to a persistent volume and set up backups, HTTPS and access control.',
           },
           {
             type: 'paragraph',
-            text: 'A few more things decide whether monitoring succeeds:',
+            text: 'Monitoring limits:',
           },
           {
             type: 'table',
@@ -473,14 +473,10 @@ export const en: SiteContent = {
             rows: [
               ['Agent targets must be public', 'Private, localhost, metadata addresses and ports other than 80/443 are rejected.'],
               ['Agent check frequency', 'Intervals can be set from 1 minute to 24 hours.'],
-              ['iframes and Shadow DOM', 'Content inside them is not extracted; the preview shows the actual coverage, so trust the preview.'],
-              ['Browser collection', 'If the browser sandbox is unavailable, that check fails rather than falling back to an unsafe method.'],
+              ['iframes and Shadow DOM', 'Content inside them is not extracted; the preview shows the actual coverage.'],
+              ['Browser collection', 'If the browser sandbox is unavailable, that check fails; it does not switch to another collection method.'],
               ['Notification channel', 'Both projects send email only; there is no SMS or webhook.'],
             ],
-          },
-          {
-            type: 'note',
-            text: 'Never submit real .env files, API keys, SMTP passwords, cookies or personal data from a page to repositories or issue trackers.',
           },
         ],
       },
