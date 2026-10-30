@@ -1,67 +1,91 @@
-# webmonitor.github.io
+# WebMonitor 官网
 
-Organization website for [WebMonitor](https://github.com/webmonitor), live at <https://webmonitor.github.io>.
+[中文首页](https://webmonitor.github.io/) · [English](https://webmonitor.github.io/en/) · [使用文档](https://webmonitor.github.io/docs/) · [组织主页](https://github.com/webmonitor)
 
-React 19 + Vite + Base UI, same flat warm-paper design as [qfpqhyl.top](https://github.com/ox0pine/qfpqhyl.top): `#f5f3ef` background, `#111111` text, `#ded8cf` hairlines, Noto Serif SC. Tailwind 在构建期编译成 `dist/assets/styles-*.css`，页面不依赖 CDN 脚本。
+本仓库维护 WebMonitor 的中英文首页与部署文档。网站由 React、TypeScript、Vite 和 Base UI 构建，构建时预渲染为静态 HTML，通过 GitHub Pages 发布；不运行监控任务，也不保存应用账户或凭据。
 
-## 可索引性
+## 页面与语言
 
-每个路由都在构建时预渲染成真实 HTML（`entry-server.tsx` + `scripts/prerender.mjs`），JS 被禁用时正文、标题与链接依然完整可读：
-
-- `vite build` 产出四个入口：`dist/index.html`、`dist/docs/index.html`、`dist/en/index.html`、`dist/en/docs/index.html`
-- `vite build --ssr entry-server.tsx` 产出 `dist-ssr/entry-server.js`
-- `scripts/prerender.mjs` 把 `renderToString` 的结果写进 `<div id="root">…</div>`
-
-配套的索引线索：
-
-- `public/robots.txt` — 允许全站抓取并指向 sitemap
-- `public/sitemap.xml` — 四个语言版本 URL，附 `xhtml:link` hreflang 互指
-- 每个入口各自的 `canonical`、`hreflang`（zh-CN / en / x-default）、`description`、Open Graph、Twitter Card
-- JSON-LD：首页 `Organization` / `WebSite` / 两个 `SoftwareApplication`，文档页 `TechArticle` / `BreadcrumbList`，均带 `inLanguage`
-
-改动页面内容后，如需更新 sitemap 的 `lastmod`，直接编辑 `public/sitemap.xml`。
-
-## 中英文版本
-
-路径即语言，不依赖 cookie 或前端开关：
-
-| 页面 | 中文 | English |
+| 内容 | 中文 | English |
 | --- | --- | --- |
 | 首页 | `/` | `/en/` |
 | 文档 | `/docs/` | `/en/docs/` |
 
-导航右侧的胶囊按钮跳到当前页面的另一语言版本（`components/Navbar.tsx` 用 `config/routes.ts:alternatePath` 计算），并带 `hreflang` 标注。路由判定集中在 `config/routes.ts`，服务端预渲染与客户端首屏使用同一个 `langFromPath`。
+语言由 URL 决定。导航中的语言按钮跳到当前页面的另一语言版本，不依赖 Cookie。路径与语言映射集中在 `config/routes.ts`，服务端预渲染和客户端使用相同规则。
 
-## 先改哪里
+文档面向两个独立产品：
 
-文案与内容全部集中在 `content/`，组件不再硬编码字符串：
+- [WebMonitor-Agent](https://github.com/webmonitor/WebMonitor-Agent)：通过对话创建监控，预览后确认；一个应用镜像供 API/后台和前端两个服务使用。
+- [WebMonitor](https://github.com/webmonitor/WebMonitor)：输入 URL、XPath 与检查间隔；单容器同时提供界面与 API。
 
-- `content/zh.ts`、`content/en.ts` — 同一份 `SiteContent` 结构的两套文案
-- `content/types.ts` — 类型定义，含文档区块（段落 / 列表 / 表格 / 代码 / 提示 / 链接）
-- `content/index.ts` — `contentByLang[lang]` 查表
+[在线演示](https://webmonitor.qfpqhyl.top/)是维护者单独运行的 WebMonitor 实例，可能暂时不可用。
 
-文档正文由 `components/DocsPage.tsx` 根据 `DocBlock` 数据渲染，两种语言共用同一套排版；`components/Rich.tsx` 支持 `` `code` `` 与 `**强调**` 两种行内标记。
+## 文档发布约定
 
-`config/site.ts` 只保留跨语言共享的 URL（官网组织、演示、Logo）。
+两个应用镜像已在 GHCR 公开，用户可匿名拉取，无需 GitHub 账户或 `docker login`：
 
-四个 HTML 入口（`index.html`、`docs/index.html`、`en/index.html`、`en/docs/index.html`）各自持有 title / description / canonical / hreflang / JSON-LD；改文案时这里要与 `content/*.ts` 同步。
+```sh
+docker pull ghcr.io/webmonitor/webmonitor-agent:1.0.0
+docker pull ghcr.io/webmonitor/webmonitor:1.0.0
+```
 
-文档页是独立的 Vite 入口：`docs/index.html` + `docs/main.tsx`，正文在 `components/DocsPage.tsx`，内容取自两个项目的 README（部署步骤、配置项、使用流程、限制与许可证）。构建后输出 `dist/docs/index.html`，站内链接为 `/docs/` 与 `/docs/#<section>`，不再跳转 GitHub。
+官网安装入口统一为独立部署目录：直接下载所需 `compose.yaml` 与配套文件，按文档内模板自行创建 `.env`，不要求克隆仓库或下载源码。两个产品均以 `docker compose up -d --wait` 启动，默认拉取 `latest`；可在 `.env` 中设置完整 `WEBMONITOR_IMAGE` 固定版本。拉取镜像只是下载，不能代替配置和服务启动。`latest` 跟随稳定发布，`main` 为开发构建，旧开发标签可能清理。
 
-组件在 `components/`：`Navbar`、`Hero`、`Projects`、`GettingStarted`、`Footer`、`SiteMeta`（运行时写入 title 与 meta）。
+修改官网文档时，同时维护以下事实：
 
-## 本地使用
+- Agent 应用只有一个镜像；S3 和出口代理辅助镜像仍用下载的部署文件在本地构建。下载清单须包含完整代理、DNS、入口脚本、seccomp、Dockerfile 和 `.dockerignore`，并保留相对目录。
+- Agent 随附 PostgreSQL 与 MinIO 为临时存储；原版 SQLite 默认位于容器内，未挂载数据卷。升级说明必须提示数据保留与备份限制。
+- 普通启动、日志与更新命令无需额外 `-f`。源码开发才克隆仓库，并加载 `compose.build.yaml`。`.env` 模板分别给出所需变量，密钥和密码由用户自行填写，已有文件不能覆盖。
+- 两个产品分别维护版本与发布记录。改版本示例时，同步中英文内容；不要用 Agent 的发布页代表原版发布页。
+- WebMonitor-Agent 为 MIT；WebMonitor 为 CC BY-NC 4.0。镜像公开不改变许可证。
+- mocksite 仍从源码构建，不能为它编造 GHCR 镜像。Agent 不提供 mocksite 专用覆盖文件；联调网络与出口许可由采集方维护。
 
-```bash
-npm install
-npm run dev        # http://localhost:3000
+部署契约以各产品的 Compose、配置与实现为依据；网站重述这些契约，不能添加尚未实现的能力。完整说明见 [Agent 中文 README](https://github.com/webmonitor/WebMonitor-Agent/blob/main/README.zh-CN.md)与 [WebMonitor 中文 README](https://github.com/webmonitor/WebMonitor/blob/main/README.zh-CN.md)。
+
+## 修改位置
+
+| 文件 | 职责 |
+| --- | --- |
+| `content/zh.ts`、`content/en.ts` | 首页、快速开始与完整文档的两套内容，结构与章节标识应保持对应 |
+| `content/types.ts` | `SiteContent`、文档区块与资源条目契约 |
+| `content/index.ts` | 按语言选择内容 |
+| `config/routes.ts` | 路由、语言与切换链接 |
+| `config/site.ts` | 组织、演示和 Logo 等共享 URL |
+| `components/DocsPage.tsx` | 按内容数据渲染文档、表格、代码和目录 |
+| `components/Rich.tsx` | 行内代码与强调文本 |
+| 四个路由的 `index.html` | 静态标题、描述、canonical、hreflang、Open Graph 与 JSON-LD |
+| `entry-server.tsx`、`scripts/prerender.mjs` | 构建时生成页面正文 |
+| `public/robots.txt`、`public/sitemap.xml` | 抓取入口和多语言站点地图 |
+
+修改文档标题与简介时，同步 `docs/index.html`、`en/docs/index.html` 的静态元信息。修改首页主题时，同步根 `index.html` 与 `en/index.html`。新增章节需检查站内锚点；不要让删除的章节留下失效入口。
+
+样式在构建期生成，不依赖运行时 Tailwind CDN 脚本。HTML 仍引用 Google Fonts，字体访问受用户网络影响；不要把网站描述为完全离线。
+
+## 本地开发
+
+使用与发布流程一致的 Node.js 22 和 npm，在本仓库目录执行：
+
+```sh
+npm ci
+npm run dev
+```
+
+开发服务监听 `0.0.0.0:3000`，浏览器访问 `http://localhost:3000`；同一网络的其他设备可能访问该开发端口。
+
+维护者需要时可执行以下命令；这里列出用法，不代表本次文档整理已运行它们：
+
+```sh
 npm run typecheck
-npm run build      # 产物在 dist/
+npm run build
 npm run preview
 ```
 
-## 部署
+`build` 依次构建客户端、构建 SSR 入口，再执行预渲染。`dist/` 为发布产物，`dist-ssr/` 为预渲染使用的中间产物；两者都不应手工编辑。四个页面的正文在生成的 HTML 中，无需等待客户端 JavaScript 才能出现。站点地图的 `lastmod` 应反映实际页面维护日期。
 
-`.github/workflows/deploy.yml` 在推送到 `main` 时构建并部署：`npm ci` → `npm run typecheck` → `npm run build` → `actions/upload-pages-artifact` → `actions/deploy-pages`。
+## GitHub Pages 发布
 
-仓库 Pages 的发布源必须设为 **GitHub Actions**（Settings → Pages → Build and deployment → Source: GitHub Actions）。站点位于根路径，`vite.config.ts` 不需要 `base`。
+`.github/workflows/deploy.yml` 在推送 `main` 或手工触发时运行：安装 Node.js 22、`npm ci`、类型检查、构建，上传 `dist/` 并部署 Pages。
+
+仓库 Settings → Pages → Build and deployment → Source 需选择 **GitHub Actions**。网站位于 `https://webmonitor.github.io/` 根路径，当前 Vite 配置不设置子路径 `base`。
+
+本地文档修改不会自动上线；只有提交、推送并由 Pages 工作流部署后，线上内容才会更新。

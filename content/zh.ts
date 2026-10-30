@@ -31,7 +31,7 @@ export const zh: SiteContent = {
     resourcesDescription: '演示站点、文档与用于验证采集器的模拟站点。',
     startEyebrow: 'Get Started',
     startTitle: '本地运行',
-    startDescription: '两个项目都以 Docker 为第一运行方式，宿主机只需要 Docker Engine 与 Compose。',
+    startDescription: '公开 GHCR 镜像支持 amd64 与 arm64，直接拉取，无需登录；用仓库中的 Compose 文件完成部署。',
   },
   projects: [
     {
@@ -90,239 +90,143 @@ export const zh: SiteContent = {
   ],
   quickStart: {
     agent: [
-      'git clone https://github.com/webmonitor/WebMonitor-Agent.git',
-      'cd WebMonitor-Agent',
-      'cp .env.example .env',
-      'docker compose up --build --wait',
+      'mkdir -p webmonitor-agent && cd webmonitor-agent',
+      '# 按 /docs/#agent 下载部署文件，并按模板自行创建 .env',
+      'docker compose up -d --wait',
     ],
     legacy: [
-      'git clone https://github.com/webmonitor/WebMonitor.git',
-      'cd WebMonitor',
-      'cp .env.example .env',
-      'docker-compose up -d',
+      'mkdir -p webmonitor && cd webmonitor',
+      'curl -fsSLo compose.yaml https://raw.githubusercontent.com/webmonitor/WebMonitor/main/compose.yaml',
+      '# 按 /docs/#webmonitor 的模板自行创建 .env，填入密钥与管理员密码',
+      'docker compose up -d --wait',
     ],
-    agentHint: '启动后访问 http://localhost:8080',
-    legacyHint: '启动后访问 http://localhost:8000',
-    note: 'Agent 需要 PostgreSQL 与 S3 兼容存储，启动前请按 .env.example 设置数据库密码、SECRET_KEY 与管理账号；目前面向本地开发与评估，部署前请阅读项目文档中的数据保留说明。',
-    docsLink: '完整部署与配置文档',
+    agentHint: '访问 http://localhost:8080；Agent 的 S3 与出口代理辅助镜像仍需本地构建。',
+    legacyHint: '访问 http://localhost:8000；邮件账户在应用内配置，不需要模型服务。',
+    note: '无需克隆仓库，也无需 docker login。两个项目都在自己的部署目录中运行相同启动命令；先下载所需文件并按模板创建 .env。Agent 数据服务为临时存储，原版 SQLite 默认位于容器内，长期运行前需配置持久存储与备份。',
+    docsLink: '查看完整安装、升级与数据保留说明',
   },
   footerTagline: 'WebMonitor · 网页监控与邮件提醒',
   footerLink: 'github.com/webmonitor',
   docs: {
-    title: 'WebMonitor 文档 | 部署、配置与使用',
-    description: 'WebMonitor 与 WebMonitor-Agent 的部署步骤、配置项、使用流程与限制说明。',
+    title: 'WebMonitor 文档 | 公开镜像安装、配置与升级',
+    description: '使用公开 GHCR 镜像部署 WebMonitor 与 WebMonitor-Agent，了解配置、通知、版本更新和数据保留限制。',
     eyebrow: 'Documentation',
-    heading: '文档',
-    intro:
-      '两个项目的部署步骤、配置项与使用流程。部署方式以 Docker Compose 为准，配置项以各自仓库的 `.env.example` 为最终依据。',
-    contents: 'Contents',
+    heading: '部署与使用',
+    intro: '从选择项目到首次监控。使用公开 GHCR 应用镜像，无需克隆仓库；下载所需文件并按模板自行创建 .env 后，两个项目都用同一条命令启动，默认跟随稳定版。',
+    contents: '目录',
     sections: [
       {
-        id: 'overview',
-        title: '概述',
-        blocks: [
-          {
-            type: 'paragraph',
-            text: 'WebMonitor 是一个可自行部署的网页监控组织。两个项目共享同一个目标：盯住网页上的一段内容，在它变化时通过邮件通知你。它们不抓取整页做全文比较，而是比较你指定的区域或条目。',
-          },
-          {
-            type: 'table',
-            head: ['项目', '创建方式', '采集方式', '状态'],
-            rows: [
-              ['WebMonitor', '填写网址、XPath 与检查间隔', 'Selenium 驱动的无头浏览器', '初代版本，维护与问题修复'],
-              ['WebMonitor-Agent', '对话描述需求，预览后确认', 'HTTP 抓取 + Playwright 浏览器采集', '当前持续开发的版本'],
-            ],
-          },
-          {
-            type: 'note',
-            text: '先想清楚要盯什么：只需要「某块区域文字变了就通知」，用 WebMonitor 更直接；需要「价格低于阈值」「列表新增一条」这类条件，或不想手写选择器，用 WebMonitor-Agent。',
-          },
+        id: 'overview', title: '选择项目', blocks: [
+          { type: 'table', head: ['项目', '创建方式', '运行方式', '维护状态'], rows: [
+            ['WebMonitor', '输入网址、XPath 与检查间隔', '单容器提供界面与 API，无需模型服务', '原版，维护与问题修复'],
+            ['WebMonitor-Agent', '对话描述需求，核对预览后确认', '同一应用镜像运行 API/后台与前端，另有配套服务', '当前持续开发的产品'],
+          ] },
+          { type: 'paragraph', text: '两个项目独立部署。只跟踪某块区域的文字变化可选择 WebMonitor；需要数值阈值、列表条目规则或对话配置可选择 Agent。已有实例的用户直接登录，无需安装 Docker。' },
+          { type: 'note', text: '在线演示由维护者单独运行，可能暂时不可用。它不是你本地部署的数据服务。' },
         ],
       },
       {
-        id: 'what-to-watch',
-        title: '可以关注什么',
-        blocks: [
-          {
-            type: 'table',
-            head: ['关注的内容', 'WebMonitor：选取的区域', 'Agent：可以这样描述'],
-            rows: [
-              ['价格与库存', '当前价格或库存状态', '「每 10 分钟检查这个商品，价格降到 200 元以下时通知我。」'],
-              ['网站公告', '通知栏或新闻列表', '「每小时检查这个公告列表，有新公告就通知我。」'],
-              ['版本发布', '发布标题或更新日志', '「发布新版本时发邮件告诉我。」'],
-              ['报名截止日期', '可能调整的日期或说明', '「跟踪这个页面的报名截止日期，有变化就告诉我。」'],
-            ],
-          },
+        id: 'images', title: '公开镜像与版本', blocks: [
+          { type: 'paragraph', text: '宿主机需要 Docker Engine、Docker Compose 和用于下载部署文件的 curl，无需 Git。两个应用镜像均已公开，可匿名拉取，无需 GitHub 账户或 docker login。提供 linux/amd64 与 linux/arm64，由 Docker 自动选择。' },
+          { type: 'code', title: '只下载镜像', code: 'docker pull ghcr.io/webmonitor/webmonitor-agent:1.0.0\ndocker pull ghcr.io/webmonitor/webmonitor:1.0.0', hint: 'pull 只下载镜像。启动还需要下面的 Compose 文件、配置和配套服务。' },
+          { type: 'table', head: ['标签', '用途'], rows: [
+            ['`1.0.0`', '选择具体发布版本，推荐部署时显式指定。'],
+            ['`1.0`', '该次版本系列的发布标签，可能随补丁发布更新。'],
+            ['`latest`', '跟随最新稳定发布，预发布不会移动它。'],
+            ['`main`、`sha-*`', '开发或提交构建，不保证旧标签长期保留。'],
+          ] },
+          { type: 'note', text: '两个项目统一使用 compose.yaml，默认拉取 latest 稳定版，启动命令均为 docker compose up -d --wait。可在 .env 中设置 WEBMONITOR_IMAGE 固定版本。公开下载不改变许可证。' },
         ],
       },
       {
-        id: 'webmonitor',
-        title: 'WebMonitor 部署',
-        blocks: [
-          {
-            type: 'paragraph',
-            text: '单容器部署：FastAPI 同时提供 API 和前端静态页面，浏览器只访问一个地址。数据库默认使用容器内的 SQLite 文件，不依赖外部服务。',
-          },
-          {
-            type: 'code',
-            title: '准备',
-            code: 'git clone https://github.com/webmonitor/WebMonitor.git\ncd WebMonitor\ncp .env.example .env',
-            hint: '已有 .env 时保留原文件。',
-          },
-          {
-            type: 'table',
-            head: ['配置项', '说明'],
-            rows: [
-              ['`SECRET_KEY`', '必填。至少 32 字符的随机签名密钥，没有默认值。'],
-              ['`ADMIN_EMAIL`', '首次启动创建的管理员邮箱地址。'],
-              ['`ADMIN_PASSWORD`', '初始密码，至少 6 字符、最多 72 个 UTF-8 字节。为空且库中没有管理员时启动会失败。'],
-              ['`ADMIN_USERNAME`', '管理员用户名，默认 `admin`。'],
-              ['`DATABASE_URL`', '默认 `sqlite:///./data/webmonitor.db`，一般无需修改。'],
-            ],
-          },
-          {
-            type: 'code',
-            title: '启动',
-            code: 'docker compose up --build -d --wait\n# http://localhost:8000',
-          },
-          {
-            type: 'paragraph',
-            text: '打开 `localhost:8000`，用管理员账号登录后创建第一个任务。运行实例自带 API 文档：`localhost:8000/docs`。',
-          },
-          {
-            type: 'note',
-            text: '**保留数据：**默认部署把数据放在容器内。正式使用前请为 `/app/data` 添加持久数据卷，否则更换容器会丢失账户、监控任务和历史记录。',
-          },
+        id: 'webmonitor', title: '安装 WebMonitor', blocks: [
+          { type: 'paragraph', text: '单个应用容器包含 React 界面、FastAPI API 与 Chromium。默认使用容器内 SQLite；不需要模型密钥，邮件账户在登录后配置。' },
+          { type: 'code', title: '创建独立部署目录并下载 Compose', code: 'mkdir -p webmonitor\ncd webmonitor\ncurl -fsSLo compose.yaml https://raw.githubusercontent.com/webmonitor/WebMonitor/main/compose.yaml', hint: '无需克隆仓库。确认下载成功后，按下方模板自行创建 .env；已有文件不要覆盖。' },
+          { type: 'code', title: '自行创建 .env', code: 'WEBMONITOR_IMAGE=ghcr.io/webmonitor/webmonitor:latest\nSECRET_KEY=\nADMIN_USERNAME=admin\nADMIN_EMAIL=admin@example.com\nADMIN_PASSWORD=\nDEBUG=false\nLOG_LEVEL=INFO', hint: '填写自己的邮箱与密码；SECRET_KEY 需为至少 32 字符的随机值。密码至少 6 字符、最多 72 个 UTF-8 字节。空值必须补全。保留现有 .env，不提交凭据。' },
+          { type: 'table', head: ['在 .env 中设置', '说明'], rows: [
+            ['`WEBMONITOR_IMAGE`', '默认 ghcr.io/webmonitor/webmonitor:latest；固定版本时可改为 :1.0.0。'],
+            ['`SECRET_KEY`', '至少 32 字符的随机签名密钥。'],
+            ['`ADMIN_EMAIL`、`ADMIN_USERNAME`', '初始管理员邮箱；用户名默认 admin。'],
+            ['`ADMIN_PASSWORD`', '初始密码至少 6 字符，最多 72 个 UTF-8 字节。'],
+            ['数据库', 'compose.yaml 固定使用 sqlite:///./data/webmonitor.db；改 .env 的 DATABASE_URL 不生效。其他数据库还需要驱动、引擎与部署配置调整。'],
+          ] },
+          { type: 'code', title: '配置完成后启动', code: 'docker compose up -d --wait\n# 打开 http://localhost:8000', hint: 'API 文档位于 http://localhost:8000/docs。' },
+          { type: 'note', text: '默认没有数据卷。替换或删除容器会丢失账户、任务、邮件配置与历史。长期使用前为 /app/data 配置持久存储与备份；仅拉取镜像不会迁移数据。' },
+          { type: 'link', label: 'WebMonitor 完整部署与开发说明', href: 'https://github.com/webmonitor/WebMonitor/blob/main/README.zh-CN.md' },
         ],
       },
       {
-        id: 'webmonitor-usage',
-        title: 'WebMonitor 使用',
-        blocks: [
-          {
-            type: 'list',
-            ordered: true,
-            items: [
-              '**选好内容。**填写网址、XPath 和检查间隔创建任务；使用测试功能确认提取到的正是你关心的文字。测试只预览内容，不发送邮件。',
-              '**设置通知。**在应用内添加并测试 SMTP 邮件配置，再关联到任务。也可以不配置邮件，只在应用里查看变化。',
-              '**启用监控。**按计划检查并记录结果；文字变化后，通知中会展示变化前后的内容。',
-            ],
-          },
-          {
-            type: 'paragraph',
-            text: '工作台还可以：只看指定区域、查看检查历史与采集错误、使用自己的 SMTP 邮箱、把任务设为实例内公开供他人订阅、随时启用或停用任务，并切换中英文界面。',
-          },
-          {
-            type: 'note',
-            text: '首次成功的定时检查**可能**发送初始通知；之后的检查只在内容变化时通知。',
-          },
+        id: 'webmonitor-usage', title: '使用 WebMonitor', blocks: [
+          { type: 'list', ordered: true, items: [
+            '登录后填写网页地址、XPath 与检查间隔，使用任务测试核对提取文字；测试不发送变化邮件。',
+            '在应用内创建并测试自己的 SMTP 配置，再关联任务；不配置邮件也能采集和查看日志。',
+            '启用任务，查看变化前后内容、运行记录与采集错误；需要共享时把任务设为实例内公开，让其他用户订阅。',
+          ] },
+          { type: 'paragraph', text: '首次成功的定时检查可能产生初始通知，后续检查按内容变化通知。界面支持中英文，公开任务和订阅仍受实例内账户权限约束。' },
         ],
       },
       {
-        id: 'agent',
-        title: 'WebMonitor-Agent 部署',
-        blocks: [
-          {
-            type: 'paragraph',
-            text: '需要 Docker Engine、Docker Compose，以及一个兼容 OpenAI Chat Completions 的模型服务。邮件提醒还需要可用的 SMTP 服务；采集与页面存档依赖 PostgreSQL 与 S3 兼容存储，随附 Compose 已包含两者。',
-          },
-          {
-            type: 'code',
-            title: '准备',
-            code: 'git clone https://github.com/webmonitor/WebMonitor-Agent.git\ncd WebMonitor-Agent\ncp .env.example .env',
-            hint: '已有 .env 时保留原文件。',
-          },
-          {
-            type: 'table',
-            head: ['配置项', '说明'],
-            rows: [
-              ['`ADMIN_EMAIL`、`ADMIN_PASSWORD`', '初始管理员邮箱与密码，密码为 12–128 字符。'],
-              ['`SECRET_KEY`', '至少 32 字符的随机密钥。'],
-              ['`POSTGRES_PASSWORD`', '数据库密码。'],
-              ['`OPENAI_API_KEY`', '模型服务的密钥。'],
-              ['`OPENAI_BASE_URL`', '兼容 Chat Completions 的服务地址。'],
-              ['`OPENAI_MODEL`', '实际可用的模型名称。'],
-              ['`SMTP_HOST`、`SMTP_PORT`', '邮件服务地址与端口；不配置则不发邮件。'],
-              ['`SMTP_USERNAME`、`SMTP_PASSWORD`', 'SMTP 认证信息。'],
-              ['`MAIL_FROM`', '发件人地址。'],
-              ['`SMTP_USE_SSL`、`SMTP_STARTTLS`', '必须恰有一个为 `true`，按邮件服务选择。'],
-            ],
-          },
-          {
-            type: 'code',
-            title: '启动',
-            code: 'docker compose up --build --wait\n# http://localhost:8080',
-            hint: '首次启动在没有用户时自动创建管理员；修改配置不会重置已有账户。',
-          },
-          {
-            type: 'paragraph',
-            text: '默认只监听本机。更改端口时同步调整 `WEBMONITOR_HTTP_PORT` 与 `APP_ORIGIN`；本地 HTTP 部署需保留 `DEVELOPMENT_MODE=true`。',
-          },
-          {
-            type: 'note',
-            text: '**仅用于试用与开发：**随附部署的 PostgreSQL、MinIO 存储为临时存储，停止、重启或重建数据容器会丢失账户、监控与历史记录。长期使用前需配置持久存储与备份。',
-          },
+        id: 'agent', title: '安装 WebMonitor-Agent', blocks: [
+          { type: 'paragraph', text: '需要兼容 OpenAI Chat Completions 的模型服务。Compose 提供 postgres、s3、egress、api、web、proxy 六个服务；api 与 web 共用公开应用镜像，入口命令不同。S3 与出口代理辅助镜像仍使用下载的部署文件在本地构建。' },
+          { type: 'code', title: '下载完整部署文件，无需克隆仓库', code: 'mkdir -p webmonitor-agent\ncd webmonitor-agent\n(\n  set -e\n  for file in compose.yaml .dockerignore deploy/browser-seccomp.json deploy/minio.Dockerfile deploy/minio-artifacts.json deploy/egress.Dockerfile deploy/egress/squid.conf deploy/egress/unbound.conf deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do\n    curl -fsSL --create-dirs "https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main/$file" -o "$file"\n  done\n)', hint: '下载失败时先解决错误，不要启动。配置文件需保留相对目录；后续命令都在此目录运行。已有部署先备份文件再更新，保留 .env。' },
+          { type: 'code', title: '自行创建 .env', code: 'WEBMONITOR_IMAGE=ghcr.io/webmonitor/webmonitor-agent:latest\nWEBMONITOR_HTTP_PORT=8080\nAPP_ORIGIN=http://localhost:8080\nDEVELOPMENT_MODE=true\nPOSTGRES_PASSWORD=\nSECRET_KEY=\nADMIN_EMAIL=admin@example.com\nADMIN_PASSWORD=\nOPENAI_API_KEY=\nOPENAI_BASE_URL=https://api.openai.com/v1\nOPENAI_MODEL=\nTARGET_POLICY=public\nSMTP_HOST=\nSMTP_PORT=465\nSMTP_USERNAME=\nSMTP_PASSWORD=\nSMTP_USE_SSL=true\nSMTP_STARTTLS=false\nMAIL_FROM=', hint: '补全数据库密码、至少 32 字符的随机 SECRET_KEY、自己的管理员邮箱与 12–128 字符密码，以及可用的模型配置。SMTP 可留空；启用邮件时再填写。不要把凭据提交到仓库。' },
+          { type: 'table', head: ['在 .env 中设置', '说明'], rows: [
+            ['`WEBMONITOR_IMAGE`', '默认 ghcr.io/webmonitor/webmonitor-agent:latest；固定版本时可改为 :1.0.0。'],
+            ['`ADMIN_EMAIL`、`ADMIN_PASSWORD`', '初始管理员邮箱与密码；密码为 12–128 字符。'],
+            ['`SECRET_KEY`、`POSTGRES_PASSWORD`', '至少 32 字符的随机签名密钥，以及数据库密码。'],
+            ['`OPENAI_API_KEY`、`OPENAI_BASE_URL`、`OPENAI_MODEL`', '模型服务密钥、兼容接口地址与可用模型名称。'],
+            ['`APP_ORIGIN`、`WEBMONITOR_HTTP_PORT`', '默认使用本机 8080；更改端口时同步修改访问源。'],
+          ] },
+          { type: 'code', title: '配置完成后启动', code: 'docker compose up -d --wait\n# 打开 http://localhost:8080', hint: '本地 HTTP 保留 DEVELOPMENT_MODE=true。初始管理员配置不会重置已有账户。' },
+          { type: 'paragraph', text: '启用邮件需设置 SMTP_HOST、SMTP_PORT、SMTP_USERNAME、SMTP_PASSWORD 与 MAIL_FROM。SMTP_USE_SSL 和 SMTP_STARTTLS 必须恰好一个为 true，按邮件服务要求选择。管理员在应用内维护通知组与收件人。' },
+          { type: 'note', text: '随附 PostgreSQL 与 MinIO 使用 tmpfs 临时存储，停止、重启或重建数据容器会丢数据。长期运行前更换为持久存储并建立备份；公开应用镜像不会改变这项限制。' },
+          { type: 'link', label: 'Agent 完整部署、管理与开发说明', href: 'https://github.com/webmonitor/WebMonitor-Agent/blob/main/README.zh-CN.md' },
         ],
       },
       {
-        id: 'agent-usage',
-        title: 'Agent 使用',
-        blocks: [
-          {
-            type: 'list',
-            ordered: true,
-            items: [
-              '**描述需求。**新建对话，给出网页地址，说明要看什么、多久检查一次、什么情况下通知。',
-              '**核对预览。**助手打开真实页面并执行一次实际采集，确认提取内容、检查范围、通知规则、收件人与邮件样式。',
-              '**确认启用。**点击「创建监控」后才开始定时检查；之后可在工作台查看变化、暂停或恢复，也可以通过对话调整需求。',
-            ],
-          },
-          {
-            type: 'paragraph',
-            text: '通知条件支持文本与关键词、数值变化与阈值、列表新增与更新；确认完整采集列表后，也可以监控条目删除。变更记录可对照变化前后的内容，查看当次采集保存的页面存档，浏览器采集还会留下截图。收件人来自管理员维护的通知组，一项监控可以通知多个邮箱。',
-          },
-          {
-            type: 'paragraph',
-            text: '新成员需要管理员签发的邀请链接。已有部署时，直接使用管理员提供的地址登录即可，无需自行部署。',
-          },
-          {
-            type: 'note',
-            text: '首次成功检查会记录初始内容作为比较基准，**不发送**变化通知；预览同样不发邮件。只有真正满足通知规则的后续变化才会触发提醒。投递记录中的 `sent` 表示邮件服务已接收，不代表目标收件箱已经收到。',
-          },
+        id: 'agent-usage', title: '使用 Agent', blocks: [
+          { type: 'list', ordered: true, items: [
+            '新建对话，提供网页地址、关注内容、检查间隔与通知条件，例如每十分钟检查价格，低于指定值时通知。',
+            '核对真实采集预览：提取字段、覆盖范围、变化规则、收件人与邮件样式。预览不会发送邮件。',
+            '确认创建后才开始定时检查；在工作台查看事件、页面存档与运行记录，按需暂停、恢复或通过对话修改。',
+          ] },
+          { type: 'paragraph', text: '支持文本与关键词、数值变化与阈值、列表新增和更新；删除规则要求完整列表覆盖。浏览器采集保存截图。新成员通过管理员签发的邀请链接注册。' },
+          { type: 'note', text: '首次成功采集只建立基准，不发变化通知。失败保留最后可信基准。邮件记录 sent 表示 SMTP 接受，不保证已进入收件箱。' },
         ],
       },
       {
-        id: 'limits',
-        title: '限制与约定',
-        blocks: [
-          {
-            type: 'table',
-            head: ['项目', '限制'],
-            rows: [
-              ['目标页面', '仅支持公网 HTTP/HTTPS 页面；需要登录或内网访问的页面不在范围内。'],
-              ['Agent 检查间隔', '1 分钟至 24 小时。'],
-              ['Agent 提取范围', 'iframe 与 Shadow DOM 内的内容暂不支持提取；预览会说明本次实际采集的范围与限制。'],
-              ['采集失败', '保留上一次成功的内容作为比较依据，失败不会覆盖基准。'],
-              ['邮件发送', '需要可用的 SMTP 服务；`SMTP_USE_SSL` 与 `SMTP_STARTTLS` 必须恰有一个为 `true`。'],
-              ['演示站点', '由维护者单独运行，可能暂时不可用，不适合作为长期依赖。'],
-            ],
-          },
+        id: 'operations', title: '查看状态与更新版本', blocks: [
+          { type: 'code', title: '通用状态与日志命令', code: 'docker compose ps\ndocker compose logs --tail=100', hint: '在各自部署目录执行；Agent 可追加 api web proxy，原版可追加 webmonitor 来选择服务。' },
+          { type: 'paragraph', text: '升级前先阅读对应项目发布记录，备份数据与 .env，保存当前镜像版本。需要新部署文件时，按对应下载清单更新，并保留自己的 .env；在其中选择目标 WEBMONITOR_IMAGE 后执行更新命令。' },
+          { type: 'code', title: '更新 Agent 应用服务', code: 'docker compose pull api web\ndocker compose up -d --wait api web', hint: '检查 Compose 与依赖配置变化；避免为更新应用而停止临时数据服务。' },
+          { type: 'code', title: '更新 WebMonitor', code: 'docker compose pull webmonitor\ndocker compose up -d --wait webmonitor', hint: '此操作可能替换容器；默认 SQLite 无卷，先解决数据持久化与备份。' },
+          { type: 'note', text: '回退时把 WEBMONITOR_IMAGE 改回仍可用的旧版本，再执行相同拉取与启动命令。两个项目均没有自动数据库迁移或降级机制；旧镜像不能保证兼容新数据，必要时恢复对应备份。' },
+          { type: 'link', label: 'Agent 发布记录', href: 'https://github.com/webmonitor/WebMonitor-Agent/releases' },
+          { type: 'link', label: 'WebMonitor 发布记录', href: 'https://github.com/webmonitor/WebMonitor/releases' },
         ],
       },
       {
-        id: 'licenses',
-        title: '许可证',
-        blocks: [
-          {
-            type: 'table',
-            head: ['项目', '许可证', '说明'],
-            rows: [
-              ['WebMonitor', 'CC BY-NC 4.0', '可署名分享与修改，仅限非商业用途。'],
-              ['WebMonitor-Agent', 'MIT', '允许使用、修改与分发，包括商业用途；需保留版权与许可声明。'],
-            ],
-          },
-          { type: 'paragraph', text: '源码与问题反馈：' },
-          { type: 'link', label: 'github.com/webmonitor', href: 'https://github.com/webmonitor' },
+        id: 'limits', title: '限制与开发入口', blocks: [
+          { type: 'table', head: ['项目', '约定'], rows: [
+            ['Agent 目标与间隔', '默认公网 HTTP/HTTPS 页面，检查间隔 1 分钟至 24 小时；不提供登录态页面监控。'],
+            ['Agent 提取', '不支持 iframe 与 Shadow DOM 内的内容；以实际预览覆盖范围为准。'],
+            ['浏览器采集', 'Agent 沙箱不可用时返回失败，不降级为无沙箱浏览器。'],
+            ['邮件配置', 'Agent 使用部署级 SMTP 与通知组；WebMonitor 使用各用户在应用内保存的邮件账户。'],
+            ['源码构建', '仅开发者需要克隆源码，再执行 docker compose -f compose.yaml -f compose.build.yaml up --build -d --wait；普通使用只下载部署文件。'],
+          ] },
+          { type: 'paragraph', text: 'mocksite 是独立的可控通知页，仍从源码构建，没有在这里发布的 GHCR 镜像。需要联调时，由采集方自行配置共享网络、目标许可与精确出口白名单；Agent 不提供 mocksite 专用覆盖文件。普通部署保持默认公网目标策略。' },
+          { type: 'link', label: 'mocksite 使用与接口契约', href: 'https://github.com/webmonitor/mocksite' },
+          { type: 'note', text: '不要把真实 .env、API 密钥、SMTP 密码、Cookie 或个人数据提交到仓库和问题反馈中。部署到公网前配置 HTTPS、持久存储与访问控制。' },
+        ],
+      },
+      {
+        id: 'licenses', title: '许可证与反馈', blocks: [
+          { type: 'table', head: ['项目', '许可证', '使用条件'], rows: [
+            ['WebMonitor-Agent', 'MIT', '允许商业使用、修改与分发，保留版权与许可声明。'],
+            ['WebMonitor', 'CC BY-NC 4.0', '署名分享与修改，仅限非商业用途。'],
+          ] },
+          { type: 'paragraph', text: '公开镜像允许匿名下载，不改变许可证。问题请提交到对应项目，附复现步骤和脱敏页面。' },
+          { type: 'link', label: 'WebMonitor GitHub 组织', href: 'https://github.com/webmonitor' },
         ],
       },
     ],

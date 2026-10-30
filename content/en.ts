@@ -31,7 +31,7 @@ export const en: SiteContent = {
     resourcesDescription: 'The demo, the documentation, and the mock site used to verify collectors.',
     startEyebrow: 'Get Started',
     startTitle: 'Run it locally',
-    startDescription: 'Both projects are Docker-first: the host only needs Docker Engine and Compose.',
+    startDescription: 'Public GHCR images support amd64 and arm64 with no registry login. Deploy with the Compose files supplied by each repository.',
   },
   projects: [
     {
@@ -90,239 +90,143 @@ export const en: SiteContent = {
   ],
   quickStart: {
     agent: [
-      'git clone https://github.com/webmonitor/WebMonitor-Agent.git',
-      'cd WebMonitor-Agent',
-      'cp .env.example .env',
-      'docker compose up --build --wait',
+      'mkdir -p webmonitor-agent && cd webmonitor-agent',
+      '# Download deployment files and create .env from /en/docs/#agent',
+      'docker compose up -d --wait',
     ],
     legacy: [
-      'git clone https://github.com/webmonitor/WebMonitor.git',
-      'cd WebMonitor',
-      'cp .env.example .env',
-      'docker-compose up -d',
+      'mkdir -p webmonitor && cd webmonitor',
+      'curl -fsSLo compose.yaml https://raw.githubusercontent.com/webmonitor/WebMonitor/main/compose.yaml',
+      '# Create .env using /en/docs/#webmonitor; fill in your key and admin password',
+      'docker compose up -d --wait',
     ],
-    agentHint: 'Then open http://localhost:8080',
-    legacyHint: 'Then open http://localhost:8000',
-    note: 'The Agent needs PostgreSQL and S3-compatible storage. Before starting, set the database password, SECRET_KEY and admin credentials in .env as described in .env.example. It currently targets local development and evaluation; read the data-retention notes in the project documentation before deploying.',
-    docsLink: 'Full deployment and configuration docs',
+    agentHint: 'Open http://localhost:8080. The Agent still builds its S3 and egress helper images locally.',
+    legacyHint: 'Open http://localhost:8000. Configure email in the app; no model service is needed.',
+    note: 'No repository clone or docker login is needed. Both projects use the same startup command in their own deployment directory. Download the required files and create .env from the template first. Agent data services are temporary; WebMonitor keeps SQLite inside its container by default. Configure persistence and backups before long-term use.',
+    docsLink: 'Full installation, upgrade and data-retention guide',
   },
   footerTagline: 'WebMonitor · web monitoring with email alerts',
   footerLink: 'github.com/webmonitor',
   docs: {
-    title: 'WebMonitor Docs | Deployment, configuration and usage',
-    description: 'Deployment steps, environment variables, usage flows and limits for WebMonitor and WebMonitor-Agent.',
+    title: 'WebMonitor Docs | Public images, setup and upgrades',
+    description: 'Deploy WebMonitor and WebMonitor-Agent from public GHCR images, configure notifications, and understand versions and data retention.',
     eyebrow: 'Documentation',
-    heading: 'Docs',
-    intro:
-      'Deployment steps, configuration and usage for both projects. Docker Compose is the reference for deployment; each repository’s `.env.example` is the final word on configuration.',
+    heading: 'Deployment and usage',
+    intro: 'Choose a project and create your first monitor with public GHCR images. No clone is required: download deployment files, create your own .env from the template, and start either project with the same command. The default image follows stable releases.',
     contents: 'Contents',
     sections: [
       {
-        id: 'overview',
-        title: 'Overview',
-        blocks: [
-          {
-            type: 'paragraph',
-            text: 'WebMonitor is a self-hostable web monitoring project. Both repositories share one goal: watch a piece of a page and email you when it changes. They do not diff the whole document — they compare the region or entries you selected.',
-          },
-          {
-            type: 'table',
-            head: ['Project', 'How you create a monitor', 'How it collects', 'Status'],
-            rows: [
-              ['WebMonitor', 'URL, XPath and check interval', 'Selenium-driven headless browser', 'First generation, maintenance and fixes'],
-              ['WebMonitor-Agent', 'Describe it in chat, confirm after preview', 'HTTP fetch + Playwright browser collection', 'Actively developed'],
-            ],
-          },
-          {
-            type: 'note',
-            text: 'Decide what you need first. If “notify me when this block of text changes” is enough, WebMonitor is more direct. If you need conditions such as “price below a threshold” or “a new list entry”, or you would rather not write selectors, use WebMonitor-Agent.',
-          },
+        id: 'overview', title: 'Choose a project', blocks: [
+          { type: 'table', head: ['Project', 'Monitor setup', 'Deployment', 'Maintenance'], rows: [
+            ['WebMonitor', 'URL, XPath and check interval', 'One container serves the UI and API; no model service', 'Original version, maintenance and fixes'],
+            ['WebMonitor-Agent', 'Describe it in chat and confirm a real preview', 'One application image for API/worker and frontend services, plus supporting services', 'Actively developed product'],
+          ] },
+          { type: 'paragraph', text: 'Deploy each project independently. Choose WebMonitor for text changes in a selected page region, or Agent for numeric thresholds, list-entry rules and conversational setup. Users of an existing instance can sign in without installing Docker.' },
+          { type: 'note', text: 'The live demo is a separate instance run by the maintainer and may be unavailable. It does not provide storage for your local deployment.' },
         ],
       },
       {
-        id: 'what-to-watch',
-        title: 'What you can watch',
-        blocks: [
-          {
-            type: 'table',
-            head: ['What to watch', 'WebMonitor: the region you select', 'Agent: how you can describe it'],
-            rows: [
-              ['Prices and stock', 'The current price or stock status', '“Check this product every 10 minutes and tell me when the price drops below 200.”'],
-              ['Site announcements', 'The notice bar or news list', '“Check this announcement list every hour and email me when a new one appears.”'],
-              ['Releases', 'The release title or changelog', '“Email me when a new version is released.”'],
-              ['Deadlines', 'The date or note that may move', '“Track the registration deadline on this page and tell me if it changes.”'],
-            ],
-          },
+        id: 'images', title: 'Public images and versions', blocks: [
+          { type: 'paragraph', text: 'The host needs Docker Engine, Docker Compose and curl to download deployment files; Git is not required. Both application images are public and allow anonymous pulls without a GitHub account or docker login. Docker selects linux/amd64 or linux/arm64 automatically.' },
+          { type: 'code', title: 'Download images only', code: 'docker pull ghcr.io/webmonitor/webmonitor-agent:1.0.0\ndocker pull ghcr.io/webmonitor/webmonitor:1.0.0', hint: 'A pull only downloads an image. Starting the app also requires the Compose files, configuration and supporting services below.' },
+          { type: 'table', head: ['Tag', 'Purpose'], rows: [
+            ['`1.0.0`', 'Select a specific release; set it explicitly for deployment.'],
+            ['`1.0`', 'Release tag for that minor series; may advance with patch releases.'],
+            ['`latest`', 'Follows stable releases; prereleases do not move it.'],
+            ['`main`, `sha-*`', 'Development or commit builds; older tags may be removed.'],
+          ] },
+          { type: 'note', text: 'Both projects use compose.yaml and pull the latest stable image by default. Start either with docker compose up -d --wait. Set WEBMONITOR_IMAGE in .env to pin a release. Public downloads do not change license terms.' },
         ],
       },
       {
-        id: 'webmonitor',
-        title: 'Deploying WebMonitor',
-        blocks: [
-          {
-            type: 'paragraph',
-            text: 'One container: FastAPI serves both the API and the frontend static files, so the browser talks to a single origin. The database is a SQLite file inside the container by default, with no external service required.',
-          },
-          {
-            type: 'code',
-            title: 'Prepare',
-            code: 'git clone https://github.com/webmonitor/WebMonitor.git\ncd WebMonitor\ncp .env.example .env',
-            hint: 'Keep your existing .env if you already have one.',
-          },
-          {
-            type: 'table',
-            head: ['Variable', 'Description'],
-            rows: [
-              ['`SECRET_KEY`', 'Required. A random signing key of at least 32 characters; there is no default.'],
-              ['`ADMIN_EMAIL`', 'Email address of the admin account created on first start.'],
-              ['`ADMIN_PASSWORD`', 'Initial password, at least 6 characters and at most 72 UTF-8 bytes. Startup fails if it is empty and no admin exists.'],
-              ['`ADMIN_USERNAME`', 'Admin username, `admin` by default.'],
-              ['`DATABASE_URL`', 'Defaults to `sqlite:///./data/webmonitor.db`; usually left alone.'],
-            ],
-          },
-          {
-            type: 'code',
-            title: 'Start',
-            code: 'docker compose up --build -d --wait\n# http://localhost:8000',
-          },
-          {
-            type: 'paragraph',
-            text: 'Open `localhost:8000`, sign in with the admin account and create your first task. A running instance also serves its API docs at `localhost:8000/docs`.',
-          },
-          {
-            type: 'note',
-            text: '**Keep your data:** the default deployment stores everything inside the container. Add a persistent volume for `/app/data` before real use, otherwise replacing the container loses accounts, monitors and history.',
-          },
+        id: 'webmonitor', title: 'Install WebMonitor', blocks: [
+          { type: 'paragraph', text: 'One application container includes the React UI, FastAPI API and Chromium. It uses SQLite inside the container by default. No model key is required; configure email after signing in.' },
+          { type: 'code', title: 'Create a deployment directory and download Compose', code: 'mkdir -p webmonitor\ncd webmonitor\ncurl -fsSLo compose.yaml https://raw.githubusercontent.com/webmonitor/WebMonitor/main/compose.yaml', hint: 'No clone is needed. After a successful download, create .env from the template below. Preserve existing files.' },
+          { type: 'code', title: 'Create your own .env', code: 'WEBMONITOR_IMAGE=ghcr.io/webmonitor/webmonitor:latest\nSECRET_KEY=\nADMIN_USERNAME=admin\nADMIN_EMAIL=admin@example.com\nADMIN_PASSWORD=\nDEBUG=false\nLOG_LEVEL=INFO', hint: 'Use your own email and password. SECRET_KEY must be random and at least 32 characters. Passwords need at least 6 characters and at most 72 UTF-8 bytes. Fill every required blank. Keep an existing .env and never commit credentials.' },
+          { type: 'table', head: ['Set in .env', 'Description'], rows: [
+            ['`WEBMONITOR_IMAGE`', 'Defaults to ghcr.io/webmonitor/webmonitor:latest; use :1.0.0 to pin a release.'],
+            ['`SECRET_KEY`', 'Random signing key of at least 32 characters.'],
+            ['`ADMIN_EMAIL`, `ADMIN_USERNAME`', 'Initial admin email; the username defaults to admin.'],
+            ['`ADMIN_PASSWORD`', 'Initial password: at least 6 characters, at most 72 UTF-8 bytes.'],
+            ['Database', 'compose.yaml fixes sqlite:///./data/webmonitor.db; changing DATABASE_URL in .env has no effect. Other databases also require driver, engine and deployment changes.'],
+          ] },
+          { type: 'code', title: 'Start after configuring .env', code: 'docker compose up -d --wait\n# Open http://localhost:8000', hint: 'API documentation is at http://localhost:8000/docs.' },
+          { type: 'note', text: 'There is no data volume by default. Replacing or deleting the container loses accounts, tasks, mail settings and history. Configure persistent storage for /app/data and backups before long-term use; pulling an image does not migrate data.' },
+          { type: 'link', label: 'Complete WebMonitor deployment and development guide', href: 'https://github.com/webmonitor/WebMonitor#readme' },
         ],
       },
       {
-        id: 'webmonitor-usage',
-        title: 'Using WebMonitor',
-        blocks: [
-          {
-            type: 'list',
-            ordered: true,
-            items: [
-              '**Pick the content.** Enter the URL, XPath and check interval to create a task; use the test action to confirm the extracted text is the part you care about. A test only previews content and sends no email.',
-              '**Set up notifications.** Add and test an SMTP configuration in the app, then attach it to the task. You can also skip email and watch changes inside the app.',
-              '**Enable monitoring.** Checks run on schedule and results are recorded; after a text change the notification shows the content before and after.',
-            ],
-          },
-          {
-            type: 'paragraph',
-            text: 'The dashboard also lets you watch one region only, review check history and collection errors, use your own SMTP account, make a task public within the instance so others can subscribe, enable or disable tasks at any time, and switch between Chinese and English.',
-          },
-          {
-            type: 'note',
-            text: 'The first successful scheduled check **may** send an initial notification; later checks only notify when the content changes.',
-          },
+        id: 'webmonitor-usage', title: 'Use WebMonitor', blocks: [
+          { type: 'list', ordered: true, items: [
+            'Sign in and enter a page URL, XPath and check interval. Use the task test to check the extracted text; the test sends no change email.',
+            'Create and test your own SMTP configuration in the app, then attach it to a task. Collection and logs also work without email.',
+            'Enable the task and review before/after content, run history and collection errors. Make a task public within the instance to let other users subscribe.',
+          ] },
+          { type: 'paragraph', text: 'The first successful scheduled check may produce an initial notification; later checks notify on content changes. The UI supports English and Chinese. Public tasks and subscriptions still follow instance account permissions.' },
         ],
       },
       {
-        id: 'agent',
-        title: 'Deploying WebMonitor-Agent',
-        blocks: [
-          {
-            type: 'paragraph',
-            text: 'You need Docker Engine, Docker Compose and a model service compatible with the OpenAI Chat Completions API. Email alerts additionally need a working SMTP service; collection and page archives rely on PostgreSQL and S3-compatible storage, both included in the bundled Compose file.',
-          },
-          {
-            type: 'code',
-            title: 'Prepare',
-            code: 'git clone https://github.com/webmonitor/WebMonitor-Agent.git\ncd WebMonitor-Agent\ncp .env.example .env',
-            hint: 'Keep your existing .env if you already have one.',
-          },
-          {
-            type: 'table',
-            head: ['Variable', 'Description'],
-            rows: [
-              ['`ADMIN_EMAIL`, `ADMIN_PASSWORD`', 'Initial admin email and password; the password is 12–128 characters.'],
-              ['`SECRET_KEY`', 'Random key of at least 32 characters.'],
-              ['`POSTGRES_PASSWORD`', 'Database password.'],
-              ['`OPENAI_API_KEY`', 'Key for the model service.'],
-              ['`OPENAI_BASE_URL`', 'Base URL of a Chat Completions–compatible service.'],
-              ['`OPENAI_MODEL`', 'A model name that actually works on that service.'],
-              ['`SMTP_HOST`, `SMTP_PORT`', 'Mail server address and port; without them no email is sent.'],
-              ['`SMTP_USERNAME`, `SMTP_PASSWORD`', 'SMTP credentials.'],
-              ['`MAIL_FROM`', 'Sender address.'],
-              ['`SMTP_USE_SSL`, `SMTP_STARTTLS`', 'Exactly one of them must be `true`, depending on your mail provider.'],
-            ],
-          },
-          {
-            type: 'code',
-            title: 'Start',
-            code: 'docker compose up --build --wait\n# http://localhost:8080',
-            hint: 'On first start an admin is created if no user exists; changing configuration never resets existing accounts.',
-          },
-          {
-            type: 'paragraph',
-            text: 'It listens on localhost only by default. When you change the port, update `WEBMONITOR_HTTP_PORT` and `APP_ORIGIN` together; local HTTP deployments must keep `DEVELOPMENT_MODE=true`.',
-          },
-          {
-            type: 'note',
-            text: '**Evaluation and development only:** the bundled PostgreSQL and MinIO storage are ephemeral. Stopping, restarting or recreating those containers loses accounts, monitors and history. Configure persistent storage and backups before long-term use.',
-          },
+        id: 'agent', title: 'Install WebMonitor-Agent', blocks: [
+          { type: 'paragraph', text: 'A model service compatible with OpenAI Chat Completions is required. Compose supplies six services: postgres, s3, egress, api, web and proxy. api and web share the public application image with different entrypoints. S3 and egress helper images still build locally using the downloaded deployment files.' },
+          { type: 'code', title: 'Download the complete deployment files without cloning', code: 'mkdir -p webmonitor-agent\ncd webmonitor-agent\n(\n  set -e\n  for file in compose.yaml .dockerignore deploy/browser-seccomp.json deploy/minio.Dockerfile deploy/minio-artifacts.json deploy/egress.Dockerfile deploy/egress/squid.conf deploy/egress/unbound.conf deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do\n    curl -fsSL --create-dirs "https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main/$file" -o "$file"\n  done\n)', hint: 'Resolve download failures before starting. Preserve the relative directory layout. Run later commands here. Back up existing deployment files before replacing them, and keep your .env.' },
+          { type: 'code', title: 'Create your own .env', code: 'WEBMONITOR_IMAGE=ghcr.io/webmonitor/webmonitor-agent:latest\nWEBMONITOR_HTTP_PORT=8080\nAPP_ORIGIN=http://localhost:8080\nDEVELOPMENT_MODE=true\nPOSTGRES_PASSWORD=\nSECRET_KEY=\nADMIN_EMAIL=admin@example.com\nADMIN_PASSWORD=\nOPENAI_API_KEY=\nOPENAI_BASE_URL=https://api.openai.com/v1\nOPENAI_MODEL=\nTARGET_POLICY=public\nSMTP_HOST=\nSMTP_PORT=465\nSMTP_USERNAME=\nSMTP_PASSWORD=\nSMTP_USE_SSL=true\nSMTP_STARTTLS=false\nMAIL_FROM=', hint: 'Fill in the database password, a random SECRET_KEY of at least 32 characters, your admin email and 12–128 character password, and working model settings. SMTP fields may stay blank until email is enabled. Never commit credentials.' },
+          { type: 'table', head: ['Set in .env', 'Description'], rows: [
+            ['`WEBMONITOR_IMAGE`', 'Defaults to ghcr.io/webmonitor/webmonitor-agent:latest; use :1.0.0 to pin a release.'],
+            ['`ADMIN_EMAIL`, `ADMIN_PASSWORD`', 'Initial admin email and password; the password must be 12–128 characters.'],
+            ['`SECRET_KEY`, `POSTGRES_PASSWORD`', 'Random signing key of at least 32 characters, and a database password.'],
+            ['`OPENAI_API_KEY`, `OPENAI_BASE_URL`, `OPENAI_MODEL`', 'Model service key, compatible API base URL and available model name.'],
+            ['`APP_ORIGIN`, `WEBMONITOR_HTTP_PORT`', 'Local port 8080 by default; update the origin when changing the port.'],
+          ] },
+          { type: 'code', title: 'Start after configuring .env', code: 'docker compose up -d --wait\n# Open http://localhost:8080', hint: 'Keep DEVELOPMENT_MODE=true for local HTTP. Initial admin settings do not reset existing accounts.' },
+          { type: 'paragraph', text: 'For email, configure SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD and MAIL_FROM. Exactly one of SMTP_USE_SSL and SMTP_STARTTLS must be true, according to your provider. Admins manage notification groups and recipients in the app.' },
+          { type: 'note', text: 'The supplied PostgreSQL and MinIO use tmpfs temporary storage. Stopping, restarting or recreating data containers loses data. Arrange persistent storage and backups before long-term use; a public application image does not change this limitation.' },
+          { type: 'link', label: 'Complete Agent deployment, administration and development guide', href: 'https://github.com/webmonitor/WebMonitor-Agent#readme' },
         ],
       },
       {
-        id: 'agent-usage',
-        title: 'Using the Agent',
-        blocks: [
-          {
-            type: 'list',
-            ordered: true,
-            items: [
-              '**Describe what you need.** Start a conversation, give the page URL, and say what to watch, how often to check, and when to notify.',
-              '**Review the preview.** The assistant opens the real page and performs one actual collection; confirm the extracted content, the checked scope, the notification rules, the recipients and the email layout.',
-              '**Confirm and enable.** Scheduled checks begin only after you click “Create monitor”. Afterwards you can review changes, pause or resume, or refine the request in chat.',
-            ],
-          },
-          {
-            type: 'paragraph',
-            text: 'Notification rules cover text and keywords, numeric changes and thresholds, and new or updated list entries; once the full list is collected, removed entries can be watched too. Each change keeps the content before and after, plus the page archive captured with that run — browser collection also stores a screenshot. Recipients come from notification groups maintained by admins, and one monitor can notify several mailboxes.',
-          },
-          {
-            type: 'paragraph',
-            text: 'New members need an invitation link issued by an admin. If a deployment already exists, just sign in at the address your admin provides — no local setup required.',
-          },
-          {
-            type: 'note',
-            text: 'The first successful check records the initial content as the baseline and sends **no** change notification; previews send no email either. Only later changes that satisfy the rules trigger alerts. A `sent` delivery record means the mail service accepted the message, not that the inbox received it.',
-          },
+        id: 'agent-usage', title: 'Use the Agent', blocks: [
+          { type: 'list', ordered: true, items: [
+            'Start a conversation with the page URL, content to watch, check interval and notification conditions, such as checking a price every ten minutes and notifying below a threshold.',
+            'Review the actual collection preview: extracted fields, coverage, change rules, recipients and email layout. Previews do not send email.',
+            'Confirm creation to enable scheduled checks. Review events, saved pages and runs in the workbench; pause, resume or change the request in chat.',
+          ] },
+          { type: 'paragraph', text: 'Rules cover text, keywords, numeric changes and thresholds, and new or updated list entries. Removal rules require complete list coverage. Browser collection saves screenshots. New members register through an invitation issued by an admin.' },
+          { type: 'note', text: 'The first successful collection establishes a baseline without a change notification. Failures preserve the last trusted baseline. A sent mail record means SMTP accepted the message, not that it reached the inbox.' },
         ],
       },
       {
-        id: 'limits',
-        title: 'Limits and conventions',
-        blocks: [
-          {
-            type: 'table',
-            head: ['Area', 'Limit'],
-            rows: [
-              ['Target pages', 'Public HTTP/HTTPS pages only; pages that require sign-in or live on an intranet are out of scope.'],
-              ['Agent check interval', '1 minute to 24 hours.'],
-              ['Agent extraction', 'Content inside iframes and Shadow DOM is not extracted; the preview states the actual scope and limits of the run.'],
-              ['Collection failure', 'The last successful content is kept as the comparison baseline; a failure never overwrites it.'],
-              ['Email', 'Requires a working SMTP service; exactly one of `SMTP_USE_SSL` and `SMTP_STARTTLS` must be `true`.'],
-              ['Demo site', 'Run separately by the maintainer, may be unavailable, and is not meant as a long-term dependency.'],
-            ],
-          },
+        id: 'operations', title: 'Status and version updates', blocks: [
+          { type: 'code', title: 'Shared status and log commands', code: 'docker compose ps\ndocker compose logs --tail=100', hint: 'Run in the project deployment directory. Add api web proxy for Agent, or webmonitor for the original version, to select services.' },
+          { type: 'paragraph', text: 'Read the relevant release notes before upgrading. Back up data and .env and record the current image version. Download updated deployment files from the matching list when needed, retaining your own .env. Set the target WEBMONITOR_IMAGE before updating.' },
+          { type: 'code', title: 'Update Agent application services', code: 'docker compose pull api web\ndocker compose up -d --wait api web', hint: 'Review Compose and dependency changes. Avoid stopping temporary data services just to update the application.' },
+          { type: 'code', title: 'Update WebMonitor', code: 'docker compose pull webmonitor\ndocker compose up -d --wait webmonitor', hint: 'This may replace the container. Resolve SQLite persistence and backups first; no volume is configured by default.' },
+          { type: 'note', text: 'To roll back, set WEBMONITOR_IMAGE to an older version that is still available and repeat the pull and start commands. Neither project provides automatic database migration or downgrade. An old image may not support newer data; restore the matching backup when necessary.' },
+          { type: 'link', label: 'Agent releases', href: 'https://github.com/webmonitor/WebMonitor-Agent/releases' },
+          { type: 'link', label: 'WebMonitor releases', href: 'https://github.com/webmonitor/WebMonitor/releases' },
         ],
       },
       {
-        id: 'licenses',
-        title: 'Licenses',
-        blocks: [
-          {
-            type: 'table',
-            head: ['Project', 'License', 'Terms'],
-            rows: [
-              ['WebMonitor', 'CC BY-NC 4.0', 'Share and adapt with attribution, non-commercial use only.'],
-              ['WebMonitor-Agent', 'MIT', 'Use, modify and redistribute, including commercially; keep the copyright and license notice.'],
-            ],
-          },
-          { type: 'paragraph', text: 'Source code and issue trackers:' },
-          { type: 'link', label: 'github.com/webmonitor', href: 'https://github.com/webmonitor' },
+        id: 'limits', title: 'Limits and development', blocks: [
+          { type: 'table', head: ['Area', 'Contract'], rows: [
+            ['Agent targets and intervals', 'Public HTTP/HTTPS pages by default; intervals from 1 minute to 24 hours. No signed-in page monitoring.'],
+            ['Agent extraction', 'No content inside iframes or Shadow DOM; use the preview to assess actual coverage.'],
+            ['Browser collection', 'Agent fails when the browser sandbox is unavailable rather than running without it.'],
+            ['Email settings', 'Agent uses deployment SMTP and notification groups; WebMonitor uses mail configurations saved by each user in the app.'],
+            ['Source builds', 'Developers clone the source and use docker compose -f compose.yaml -f compose.build.yaml up --build -d --wait. Ordinary deployments only download deployment files.'],
+          ] },
+          { type: 'paragraph', text: 'mocksite is a separate controllable notice page. It builds from source and has no GHCR image published here. For local integration, the collector operator supplies a shared network, target allowance and precise egress rules. Agent ships no mocksite-specific override. Ordinary deployments retain the public-target policy.' },
+          { type: 'link', label: 'mocksite usage and API contract', href: 'https://github.com/webmonitor/mocksite' },
+          { type: 'note', text: 'Never submit real .env files, API keys, SMTP passwords, cookies or personal data to repositories or issues. Configure HTTPS, persistent storage and access control before exposing a deployment publicly.' },
+        ],
+      },
+      {
+        id: 'licenses', title: 'Licenses and feedback', blocks: [
+          { type: 'table', head: ['Project', 'License', 'Terms'], rows: [
+            ['WebMonitor-Agent', 'MIT', 'Commercial use, modification and distribution allowed; retain copyright and license notices.'],
+            ['WebMonitor', 'CC BY-NC 4.0', 'Share and adapt with attribution, non-commercial use only.'],
+          ] },
+          { type: 'paragraph', text: 'Public images allow anonymous downloads without changing the license. Report issues in the relevant project with reproduction steps and a page example with sensitive data removed.' },
+          { type: 'link', label: 'WebMonitor on GitHub', href: 'https://github.com/webmonitor' },
         ],
       },
     ],
