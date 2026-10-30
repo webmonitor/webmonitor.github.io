@@ -2,7 +2,7 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig({
+export default defineConfig(({ isSsrBuild }) => ({
   server: {
     port: 3000,
     host: '0.0.0.0',
@@ -14,11 +14,13 @@ export default defineConfig({
     },
   },
   build: {
-    rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'index.html'),
-        docs: path.resolve(__dirname, 'docs/index.html'),
-      },
-    },
+    rollupOptions: isSsrBuild
+      ? {}
+      : {
+          input: {
+            main: path.resolve(__dirname, 'index.html'),
+            docs: path.resolve(__dirname, 'docs/index.html'),
+          },
+        },
   },
-});
+}));

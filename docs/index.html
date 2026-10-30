@@ -21,59 +21,37 @@
     <link rel="canonical" href="https://webmonitor.github.io/docs/" />
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png" />
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png" />
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Noto Serif SC', 'serif'],
-              serif: ['Noto Serif SC', 'serif'],
-            },
-            colors: {
-              background: '#f5f3ef',
-              surface: '#fbfaf8',
-              text: '#111111',
-              muted: '#666666',
-              line: '#ded8cf',
-              accent: '#111111',
-            },
-            boxShadow: {
-              soft: '0 0 0 rgba(17, 17, 17, 0)',
-            },
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "headline": "WebMonitor 文档",
+            "description": "WebMonitor 与 WebMonitor-Agent 的部署步骤、配置项、使用流程与限制说明。",
+            "inLanguage": "zh-CN",
+            "url": "https://webmonitor.github.io/docs/",
+            "mainEntityOfPage": "https://webmonitor.github.io/docs/",
+            "author": { "@type": "Organization", "name": "WebMonitor", "url": "https://github.com/webmonitor" },
+            "publisher": {
+              "@type": "Organization",
+              "name": "WebMonitor",
+              "logo": { "@type": "ImageObject", "url": "https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png" }
+            }
           },
-        },
-      };
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "首页", "item": "https://webmonitor.github.io/" },
+              { "@type": "ListItem", "position": 2, "name": "文档", "item": "https://webmonitor.github.io/docs/" }
+            ]
+          }
+        ]
+      }
     </script>
-    <style>
-      html, body, #root {
-        min-height: 100%;
-      }
-
-      body {
-        margin: 0;
-        font-family: 'Noto Serif SC', serif;
-        background: #f5f3ef;
-        color: #111111;
-      }
-
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      ::selection {
-        background: #111111;
-        color: #fbfaf8;
-      }
-    </style>
   </head>
   <body class="bg-background text-text antialiased">
     <div id="root"></div>

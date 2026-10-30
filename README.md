@@ -2,7 +2,24 @@
 
 Organization website for [WebMonitor](https://github.com/webmonitor), live at <https://webmonitor.github.io>.
 
-React 19 + Vite + Base UI, same flat warm-paper design as [qfpqhyl.top](https://github.com/ox0pine/qfpqhyl.top): `#f5f3ef` background, `#111111` text, `#ded8cf` hairlines, Noto Serif SC.
+React 19 + Vite + Base UI, same flat warm-paper design as [qfpqhyl.top](https://github.com/ox0pine/qfpqhyl.top): `#f5f3ef` background, `#111111` text, `#ded8cf` hairlines, Noto Serif SC. Tailwind 在构建期编译成 `dist/assets/styles-*.css`，页面不依赖 CDN 脚本。
+
+## 可索引性
+
+每个路由都在构建时预渲染成真实 HTML（`entry-server.tsx` + `scripts/prerender.mjs`），JS 被禁用时正文、标题与链接依然完整可读：
+
+- `vite build` 产出 `dist/index.html`、`dist/docs/index.html`
+- `vite build --ssr entry-server.tsx` 产出 `dist-ssr/entry-server.js`
+- `scripts/prerender.mjs` 把 `renderToString` 的结果写进 `<div id="root">…</div>`
+
+配套的索引线索：
+
+- `public/robots.txt` — 允许全站抓取并指向 sitemap
+- `public/sitemap.xml` — 首页与 `/docs/` 的最后修改时间与优先级
+- 两个入口各自的 `canonical`、`description`、Open Graph、Twitter Card
+- JSON-LD：首页 `Organization` / `WebSite` / 两个 `SoftwareApplication`，文档页 `TechArticle` / `BreadcrumbList`
+
+改动页面内容后，如需更新 sitemap 的 `lastmod`，直接编辑 `public/sitemap.xml`。
 
 ## 先改哪里
 

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://webmonitor.github.io/sitemap.xml
