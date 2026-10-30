@@ -37,7 +37,7 @@ docker pull ghcr.io/webmonitor/webmonitor:1.0.0
 - Agent 随附 PostgreSQL 与 MinIO 为临时存储；原版 SQLite 默认位于容器内，未挂载数据卷。升级说明必须提示数据保留与备份限制。
 - 普通启动、日志与更新命令无需额外 `-f`。源码开发才克隆仓库，并加载 `compose.build.yaml`。`.env` 模板分别给出所需变量，密钥和密码由用户自行填写，已有文件不能覆盖。
 - 两个产品分别维护版本与发布记录。改版本示例时，同步中英文内容；不要用 Agent 的发布页代表原版发布页。
-- WebMonitor-Agent 为 MIT；WebMonitor 为 CC BY-NC 4.0。镜像公开不改变许可证。
+- WebMonitor-Agent 与 WebMonitor 均为 CC BY-NC 4.0，仅限非商业用途。镜像公开不改变许可证；Agent 此前按 MIT 分发的副本保留原许可权利，不能宣称本次变更撤销了旧许可。
 - mocksite 仍从源码构建，不能为它编造 GHCR 镜像。Agent 不提供 mocksite 专用覆盖文件；联调网络与出口许可由采集方维护。
 
 部署契约以各产品的 Compose、配置与实现为依据；网站重述这些契约，不能添加尚未实现的能力。完整说明见 [Agent 中文 README](https://github.com/webmonitor/WebMonitor-Agent/blob/main/README.zh-CN.md)与 [WebMonitor 中文 README](https://github.com/webmonitor/WebMonitor/blob/main/README.zh-CN.md)。

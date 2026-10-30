@@ -61,7 +61,7 @@ export const en: SiteContent = {
       description:
         'Paste a link and say what to watch, how often to check, and when to notify you. The assistant opens the page for a real sample first; review the content and recipients, then create the monitor. Price thresholds, restocks and new list entries are handled by condition rules.',
       stack: ['Create by chat', 'Conditional alerts', 'Screenshots and page archives'],
-      license: 'MIT',
+      license: 'CC BY-NC 4.0',
     },
   ],
   resources: [
@@ -492,7 +492,7 @@ export const en: SiteContent = {
             type: 'table',
             head: ['Project', 'License', 'Terms'],
             rows: [
-              ['WebMonitor-Agent', 'MIT', 'Commercial use, modification and distribution allowed; retain copyright and license notices.'],
+              ['WebMonitor-Agent', 'CC BY-NC 4.0', 'Share and adapt for non-commercial use with attribution, a license link and an indication of changes. Copies previously distributed under MIT retain their original permissions.'],
               ['WebMonitor', 'CC BY-NC 4.0', 'Share and adapt with attribution, non-commercial use only.'],
             ],
           },

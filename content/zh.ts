@@ -51,7 +51,7 @@ export const zh: SiteContent = {
       description:
         '粘贴链接，用一句话说明看什么、多久看一次、什么情况下通知。助手先打开页面试采集，核对内容与收件人后再创建监控；价格阈值、补货和列表新增都能交给条件规则。',
       stack: ['对话创建', '条件通知', '截图与页面存档'],
-      license: 'MIT',
+      license: 'CC BY-NC 4.0',
     },
   ],
   resources: [
@@ -482,7 +482,7 @@ export const zh: SiteContent = {
             type: 'table',
             head: ['项目', '许可证', '使用条件'],
             rows: [
-              ['WebMonitor-Agent', 'MIT', '允许商业使用、修改与分发，保留版权与许可声明。'],
+              ['WebMonitor-Agent', 'CC BY-NC 4.0', '署名、附许可链接并注明修改后，可分享与修改，仅限非商业用途；此前按 MIT 分发的副本保留原许可权利。'],
               ['WebMonitor', 'CC BY-NC 4.0', '署名分享与修改，仅限非商业用途。'],
             ],
           },
