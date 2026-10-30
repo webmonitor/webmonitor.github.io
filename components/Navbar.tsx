@@ -18,7 +18,7 @@ const Navbar = () => {
             alt=""
             width={24}
             height={24}
-            className="h-6 w-6 rounded-full ring-1 ring-line"
+            className="h-6 w-6 rounded-lg ring-1 ring-line"
           />
           {site.siteName}
         </a>
