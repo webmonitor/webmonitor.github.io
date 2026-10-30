@@ -1,21 +1,33 @@
 # webmonitor.github.io
 
-Organization website for [WebMonitor](https://github.com/webmonitor), served by GitHub Pages at <https://webmonitor.github.io>.
+Organization website for [WebMonitor](https://github.com/webmonitor), live at <https://webmonitor.github.io>.
 
-Static single page: no build step, no dependencies. Edit `index.html` and push to `main` — GitHub Pages builds the site from the default branch root (`.nojekyll` disables Jekyll processing).
+React 19 + Vite + Base UI, same flat warm-paper design as [qfpqhyl.top](https://github.com/ox0pine/qfpqhyl.top): `#f5f3ef` background, `#111111` text, `#ded8cf` hairlines, Noto Serif SC.
 
-## What it covers
+## 先改哪里
 
-- The organization: self-hostable web-page monitoring with email alerts.
-- `WebMonitor` — visual dashboard, XPath region monitoring, Selenium-based collection.
-- `WebMonitor-Agent` — conversational monitor creation, HTTP and Playwright collection.
-- Entry points: live demo, source, issue trackers, `mocksite`, local Docker commands.
+`config/site.ts` 集中放可替换的组织信息：站点标题、简介、关键词、演示、GitHub 与文档地址、区块文案。
 
-## Local preview
+页面内容在 `data/site.ts`：
 
-```sh
-python3 -m http.server 8080
-# http://localhost:8080
+- `projects` — 两个项目（WebMonitor、WebMonitor-Agent）的定位、描述、技术栈与许可证
+- `resources` — 演示、文档、mocksite、组织主页等入口
+- `quickStart` — 本地 Docker 启动命令与说明
+
+组件在 `components/`：`Navbar`、`Hero`、`Projects`、`GettingStarted`、`Footer`、`SiteMeta`（运行时写入 title 与 meta）。
+
+## 本地使用
+
+```bash
+npm install
+npm run dev        # http://localhost:3000
+npm run typecheck
+npm run build      # 产物在 dist/
+npm run preview
 ```
 
-Design: flat warm-paper palette (`#f5f3ef` background, `#111111` text, `#ded8cf` hairlines), Noto Serif SC, two-column lists separated by hairline rules.
+## 部署
+
+`.github/workflows/deploy.yml` 在推送到 `main` 时构建并部署：`npm ci` → `npm run typecheck` → `npm run build` → `actions/upload-pages-artifact` → `actions/deploy-pages`。
+
+仓库 Pages 的发布源必须设为 **GitHub Actions**（Settings → Pages → Build and deployment → Source: GitHub Actions）。站点位于根路径，`vite.config.ts` 不需要 `base`。

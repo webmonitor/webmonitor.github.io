@@ -1,0 +1,25 @@
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Projects from './components/Projects';
+import GettingStarted from './components/GettingStarted';
+import Footer from './components/Footer';
+import SiteMeta from './components/SiteMeta';
+
+const App = () => {
+  return (
+    <div className="min-h-screen bg-background text-text">
+      <SiteMeta />
+      <Navbar />
+      <main className="px-4 pb-10 pt-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-4">
+          <Hero />
+          <Projects />
+          <GettingStarted />
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+export default App;

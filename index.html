@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WebMonitor | 网页监控与邮件提醒</title>
-    <meta name="description" content="WebMonitor 是一个可自行部署的网页监控开源组织：用可视化工作台或对话式助手盯住页面的价格、公告、库存与日期，变化时发送邮件提醒。" />
+    <meta name="description" content="WebMonitor 是一个可自行部署的网页监控开源组织：盯住页面的价格、公告、库存与日期，变化时发送邮件提醒。" />
     <meta name="keywords" content="WebMonitor,网页监控,内容变化监测,邮件提醒,自部署,开源,XPath,AI Agent" />
     <meta name="author" content="WebMonitor" />
     <meta name="robots" content="index, follow" />
@@ -13,57 +13,56 @@
     <meta property="og:title" content="WebMonitor | 网页监控与邮件提醒" />
     <meta property="og:description" content="盯住网页上的价格、公告、库存与日期，变化时发送邮件。可视化工作台与对话式 Agent，两种监控方式，均可自行部署。" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://webmonitor.github.io/" />
+    <meta property="og:url" content="https://webmonitor.github.io" />
     <meta property="og:image" content="https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png" />
     <meta property="og:site_name" content="WebMonitor" />
     <meta property="og:locale" content="zh_CN" />
 
-    <link rel="canonical" href="https://webmonitor.github.io/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="WebMonitor | 网页监控与邮件提醒" />
+    <meta name="twitter:description" content="盯住网页上的价格、公告、库存与日期，变化时发送邮件。可视化工作台与对话式 Agent，两种监控方式，均可自行部署。" />
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png" />
+
+    <link rel="canonical" href="https://webmonitor.github.io" />
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png" />
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Noto Serif SC', 'serif'],
+              serif: ['Noto Serif SC', 'serif'],
+            },
+            colors: {
+              background: '#f5f3ef',
+              surface: '#fbfaf8',
+              text: '#111111',
+              muted: '#666666',
+              line: '#ded8cf',
+              accent: '#111111',
+            },
+            boxShadow: {
+              soft: '0 0 0 rgba(17, 17, 17, 0)',
+            },
+          },
+        },
+      };
+    </script>
     <style>
-      :root {
-        --background: #f5f3ef;
-        --surface: #fbfaf8;
-        --text: #111111;
-        --muted: #666666;
-        --line: #ded8cf;
-        --line-soft: rgba(222, 216, 207, 0.7);
-        --serif: "Noto Serif SC", "Songti SC", "Source Han Serif SC", serif;
-        --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-        --page: 1152px;
-      }
-
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-      }
-
-      html {
+      html, body, #root {
         min-height: 100%;
-        scroll-behavior: smooth;
-        -webkit-text-size-adjust: 100%;
       }
 
       body {
-        min-height: 100%;
         margin: 0;
-        background: var(--background);
-        color: var(--text);
-        font-family: var(--serif);
-        font-size: 16px;
-        line-height: 1.7;
-        -webkit-font-smoothing: antialiased;
-      }
-
-      ::selection {
-        background: var(--text);
-        color: var(--surface);
+        font-family: 'Noto Serif SC', serif;
+        background: #f5f3ef;
+        color: #111111;
       }
 
       a {
@@ -71,645 +70,18 @@
         text-decoration: none;
       }
 
-      h1,
-      h2,
-      h3,
-      p,
-      ul {
-        margin: 0;
+      * {
+        box-sizing: border-box;
       }
 
-      ul {
-        padding: 0;
-        list-style: none;
-      }
-
-      svg {
-        flex-shrink: 0;
-      }
-
-      .shell {
-        padding: 0 32px;
-      }
-
-      .wrap {
-        width: 100%;
-        max-width: var(--page);
-        margin: 0 auto;
-      }
-
-      /* ---------- header ---------- */
-
-      .site-header {
-        padding-top: 16px;
-      }
-
-      .site-header .wrap {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 12px 0;
-        border-bottom: 1px solid rgba(222, 216, 207, 0.8);
-      }
-
-      .brand {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 14px;
-        font-weight: 600;
-        letter-spacing: 0.08em;
-      }
-
-      .brand img {
-        width: 22px;
-        height: 22px;
-        border-radius: 5px;
-        display: block;
-      }
-
-      .site-nav {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .nav-link,
-      .icon-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        color: var(--muted);
-        border: 1px solid transparent;
-        border-radius: 999px;
-        transition: color 0.2s ease, border-color 0.2s ease;
-      }
-
-      .nav-link {
-        padding: 8px 12px;
-        font-size: 14px;
-      }
-
-      .nav-link:hover,
-      .icon-link:hover {
-        color: var(--text);
-        border-color: var(--line);
-      }
-
-      /* ---------- hero ---------- */
-
-      .hero {
-        padding: 16px 0 20px;
-        border-bottom: 1px solid var(--line);
-      }
-
-      .hero-inner {
-        padding: 16px 0;
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-      }
-
-      .eyebrow {
-        font-size: 12px;
-        font-weight: 500;
-        letter-spacing: 0.3em;
-        text-transform: uppercase;
-        color: var(--muted);
-      }
-
-      .hero h1 {
-        margin-top: 12px;
-        font-size: 48px;
-        font-weight: 600;
-        line-height: 1.05;
-        letter-spacing: -0.02em;
-      }
-
-      .lede {
-        margin-top: 12px;
-        max-width: 640px;
-        font-size: 16px;
-        line-height: 1.75;
-        color: var(--muted);
-      }
-
-      .hero-links {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .primary-link,
-      .secondary-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding-bottom: 4px;
-        font-size: 14px;
-        border-bottom: 1px solid transparent;
-        transition: color 0.2s ease, border-color 0.2s ease;
-      }
-
-      .primary-link {
-        font-weight: 500;
-        border-bottom-color: var(--text);
-      }
-
-      .secondary-link {
-        color: var(--muted);
-      }
-
-      .secondary-link:hover {
-        color: var(--text);
-        border-bottom-color: var(--line);
-      }
-
-      .icon-row {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .icon-link {
-        width: 40px;
-        height: 40px;
-        justify-content: center;
-        background: var(--background);
-        border-color: var(--line);
-      }
-
-      /* ---------- sections ---------- */
-
-      .section {
-        padding: 24px 0 8px;
-      }
-
-      .section-head {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-
-      .section-head h2 {
-        font-size: 24px;
-        font-weight: 600;
-        letter-spacing: -0.01em;
-      }
-
-      .section-head p {
-        font-size: 14px;
-        line-height: 1.75;
-        color: var(--muted);
-      }
-
-      .section-head .eyebrow {
-        font-size: 12px;
-      }
-
-      .rule {
-        height: 1px;
-        width: 100%;
-        background: var(--line);
-      }
-
-      .rule-soft {
-        background: var(--line-soft);
-      }
-
-      .head-gap {
-        margin: 20px 0;
-      }
-
-      /* ---------- project rows ---------- */
-
-      .project {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 24px;
-        align-items: start;
-        padding: 20px 0;
-        transition: color 0.2s ease;
-      }
-
-      .project-title {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: baseline;
-        gap: 12px;
-      }
-
-      .project-title h3 {
-        font-size: 20px;
-        font-weight: 600;
-        transition: color 0.2s ease;
-      }
-
-      .project:hover .project-title h3 {
-        color: var(--muted);
-      }
-
-      .tag {
-        font-size: 12px;
-        font-weight: 500;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--muted);
-      }
-
-      .project p {
-        margin-top: 8px;
-        max-width: 780px;
-        font-size: 14px;
-        line-height: 1.85;
-        color: var(--muted);
-      }
-
-      .meta {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 8px 16px;
-        margin-top: 12px;
-        font-size: 12px;
-        letter-spacing: 0.04em;
-        color: var(--muted);
-      }
-
-      .meta li {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-      }
-
-      .meta li + li::before {
-        content: "";
-        width: 3px;
-        height: 3px;
-        border-radius: 50%;
-        background: var(--line);
-        margin-right: 10px;
-      }
-
-      .arrow {
-        color: var(--muted);
-        margin-top: 4px;
-        transition: transform 0.2s ease, color 0.2s ease;
-      }
-
-      .project:hover .arrow {
-        color: var(--text);
-        transform: translate(2px, -2px);
-      }
-
-      /* ---------- two column ---------- */
-
-      .columns {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 48px;
-        padding: 24px 0 8px;
-      }
-
-      .column {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-
-      .row {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 14px 0;
-        font-size: 14px;
-        line-height: 1.75;
-      }
-
-      .row .row-main {
-        min-width: 0;
-      }
-
-      .row .row-title {
-        font-weight: 500;
-        transition: color 0.2s ease;
-      }
-
-      .row:hover .row-title {
-        color: var(--muted);
-      }
-
-      .row .row-desc {
-        color: var(--muted);
-      }
-
-      .row .row-side {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        flex-shrink: 0;
-        font-size: 12px;
-        color: var(--muted);
-      }
-
-      pre {
-        margin: 0;
-        padding: 16px 18px;
-        background: var(--surface);
-        border: 1px solid var(--line);
-        border-radius: 2px;
-        overflow-x: auto;
-        font-family: var(--mono);
-        font-size: 12.5px;
-        line-height: 1.9;
-        color: var(--text);
-      }
-
-      pre .comment {
-        color: var(--muted);
-      }
-
-      .note {
-        font-size: 12px;
-        line-height: 1.8;
-        color: var(--muted);
-      }
-
-      /* ---------- footer ---------- */
-
-      .site-footer {
-        padding: 4px 0 32px;
-      }
-
-      .site-footer .wrap {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        padding: 16px 0;
-        border-top: 1px solid rgba(222, 216, 207, 0.8);
-        font-size: 14px;
-        color: var(--muted);
-      }
-
-      .site-footer a {
-        transition: color 0.2s ease;
-      }
-
-      .site-footer a:hover {
-        color: var(--text);
-      }
-
-      @media (min-width: 640px) {
-        .site-footer .wrap {
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-        }
-      }
-
-      /* ---------- responsive ---------- */
-
-      @media (max-width: 1024px) {
-        .columns {
-          grid-template-columns: minmax(0, 1fr);
-          gap: 32px;
-        }
-      }
-
-      @media (max-width: 640px) {
-        .shell {
-          padding: 0 16px;
-        }
-
-        .site-nav .nav-link:nth-child(n + 2) {
-          display: none;
-        }
-
-        .hero h1 {
-          font-size: 34px;
-        }
-
-        .project {
-          gap: 12px;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        * {
-          transition: none !important;
-          scroll-behavior: auto !important;
-        }
+      ::selection {
+        background: #111111;
+        color: #fbfaf8;
       }
     </style>
   </head>
-  <body>
-    <div class="page">
-      <header class="site-header shell">
-        <div class="wrap">
-          <a class="brand" href="./" aria-label="WebMonitor 首页">
-            <img src="https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png" alt="" width="22" height="22" />
-            <span>WebMonitor</span>
-          </a>
-          <nav class="site-nav" aria-label="站点导航">
-            <a class="nav-link" href="https://github.com/webmonitor" target="_blank" rel="noreferrer">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
-              <span>GitHub</span>
-            </a>
-            <a class="nav-link" href="https://webmonitor.qfpqhyl.top/" target="_blank" rel="noreferrer">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18z"/></svg>
-              <span>在线体验</span>
-            </a>
-            <a class="nav-link" href="https://github.com/webmonitor/WebMonitor-Agent#readme" target="_blank" rel="noreferrer">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22z"/><path d="M4 19.5V4.5"/></svg>
-              <span>文档</span>
-            </a>
-          </nav>
-        </div>
-      </header>
-
-      <main>
-        <section class="hero shell">
-          <div class="wrap hero-inner">
-            <div>
-              <p class="eyebrow">WebMonitor</p>
-              <h1>关注变化，不必反复刷新。</h1>
-              <p class="lede">
-                一个可自行部署的网页监控开源组织。把页面上的价格、公告、库存与截止日期交给它盯着，发生变化时通过邮件送达。
-                两种监控方式：在可视化工作台里逐项配置，或者用一句话把需求说清楚。
-              </p>
-            </div>
-
-            <div class="hero-links">
-              <a class="primary-link" href="https://webmonitor.qfpqhyl.top/" target="_blank" rel="noreferrer">
-                在线体验
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
-              </a>
-              <a class="secondary-link" href="https://github.com/webmonitor" target="_blank" rel="noreferrer">
-                GitHub
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
-              </a>
-            </div>
-
-            <div class="icon-row">
-              <a class="icon-link" href="https://github.com/webmonitor" target="_blank" rel="noreferrer" aria-label="GitHub 组织">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
-              </a>
-              <a class="icon-link" href="https://webmonitor.qfpqhyl.top/" target="_blank" rel="noreferrer" aria-label="在线体验">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18z"/></svg>
-              </a>
-              <a class="icon-link" href="https://github.com/webmonitor/WebMonitor#readme" target="_blank" rel="noreferrer" aria-label="使用文档">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22z"/><path d="M4 19.5V4.5"/></svg>
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <div class="shell">
-          <div class="wrap">
-            <section class="section" id="projects">
-              <div class="section-head">
-                <p class="eyebrow">Projects</p>
-                <h2>两个项目</h2>
-                <p>同一套目标，两种入口：手动配置的监控工作台，与对话创建的监控助手。</p>
-              </div>
-              <div class="rule head-gap"></div>
-
-              <a class="project" href="https://github.com/webmonitor/WebMonitor" target="_blank" rel="noreferrer">
-                <div>
-                  <div class="project-title">
-                    <h3>WebMonitor</h3>
-                    <span class="tag">可视化工作台</span>
-                  </div>
-                  <p>
-                    用 XPath 框定页面上真正关心的区域，设置检查频率，内容变化时收到邮件。包含公开任务与订阅、任务与运行日志管理、中英双语界面，
-                    单体容器即可部署，不依赖 AI 服务或模型密钥。
-                  </p>
-                  <ul class="meta">
-                    <li>Python · FastAPI</li>
-                    <li>Selenium</li>
-                    <li>React</li>
-                    <li>Docker</li>
-                    <li>CC BY-NC 4.0</li>
-                  </ul>
-                </div>
-                <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
-              </a>
-              <div class="rule rule-soft"></div>
-
-              <a class="project" href="https://github.com/webmonitor/WebMonitor-Agent" target="_blank" rel="noreferrer">
-                <div>
-                  <div class="project-title">
-                    <h3>WebMonitor-Agent</h3>
-                    <span class="tag">对话式监控</span>
-                  </div>
-                  <p>
-                    粘贴链接，用自然语言说明要看什么、多久看一次、什么条件下通知。助手先分析真实页面，生成配置草稿并预览一次实际采集结果，
-                    确认之后才创建版本化的监控。支持静态页面与浏览器渲染页面，记录变更事件、运行历史与采集证据。
-                  </p>
-                  <ul class="meta">
-                    <li>Python 3.12 · FastAPI</li>
-                    <li>Playwright</li>
-                    <li>PostgreSQL</li>
-                    <li>Next.js</li>
-                    <li>MIT</li>
-                  </ul>
-                </div>
-                <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
-              </a>
-            </section>
-
-            <section class="columns">
-              <div class="column">
-                <div class="section-head">
-                  <p class="eyebrow">Get Started</p>
-                  <h2>本地运行</h2>
-                  <p>两个项目都以 Docker 为第一运行方式，宿主机只需要 Docker Engine 与 Compose。</p>
-                </div>
-                <div class="rule"></div>
-                <pre><code><span class="comment"># WebMonitor-Agent</span>
-git clone https://github.com/webmonitor/WebMonitor-Agent.git
-cd WebMonitor-Agent
-cp .env.example .env
-docker compose up --build --wait
-<span class="comment"># → http://localhost:8080</span>
-
-<span class="comment"># WebMonitor</span>
-git clone https://github.com/webmonitor/WebMonitor.git
-cd WebMonitor
-cp .env.example .env
-docker-compose up -d
-<span class="comment"># → http://localhost:8000</span></code></pre>
-                <p class="note">
-                  Agent 需要 PostgreSQL 与 S3 兼容存储，启动前请按 <code>.env.example</code> 设置数据库密码、SECRET_KEY 与管理账号；
-                  目前面向本地开发与评估，部署前请阅读项目文档中的数据保留说明。
-                </p>
-              </div>
-
-              <div class="column">
-                <div class="section-head">
-                  <p class="eyebrow">Links</p>
-                  <h2>相关链接</h2>
-                  <p>源码、演示与测试用的模拟站点。</p>
-                </div>
-                <div class="rule"></div>
-
-                <div>
-                  <a class="row" href="https://webmonitor.qfpqhyl.top/" target="_blank" rel="noreferrer">
-                    <span class="row-main"><span class="row-title">在线体验</span><br /><span class="row-desc">维护者单独运行的演示实例，可能暂时不可用。</span></span>
-                    <span class="row-side"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
-                  </a>
-                  <div class="rule rule-soft"></div>
-                </div>
-
-                <div>
-                  <a class="row" href="https://github.com/webmonitor/WebMonitor/issues" target="_blank" rel="noreferrer">
-                    <span class="row-main"><span class="row-title">WebMonitor 问题反馈</span><br /><span class="row-desc">Bug 请附复现步骤与去除敏感信息的页面示例。</span></span>
-                    <span class="row-side"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
-                  </a>
-                  <div class="rule rule-soft"></div>
-                </div>
-
-                <div>
-                  <a class="row" href="https://github.com/webmonitor/WebMonitor-Agent/issues" target="_blank" rel="noreferrer">
-                    <span class="row-main"><span class="row-title">Agent 问题反馈</span><br /><span class="row-desc">对话创建、采集与分析相关的讨论与缺陷。</span></span>
-                    <span class="row-side"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
-                  </a>
-                  <div class="rule rule-soft"></div>
-                </div>
-
-                <div>
-                  <a class="row" href="https://github.com/webmonitor/mocksite" target="_blank" rel="noreferrer">
-                    <span class="row-main"><span class="row-title">mocksite</span><br /><span class="row-desc">可控、确定性的模拟目标站点，用来验证采集器。</span></span>
-                    <span class="row-side"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
-                  </a>
-                  <div class="rule rule-soft"></div>
-                </div>
-
-                <div>
-                  <a class="row" href="https://github.com/webmonitor/.github" target="_blank" rel="noreferrer">
-                    <span class="row-main"><span class="row-title">组织主页与配置</span><br /><span class="row-desc">组织介绍、标识资源与共享开发环境。</span></span>
-                    <span class="row-side"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
-                  </a>
-                  <div class="rule rule-soft"></div>
-                </div>
-
-                <p class="note">欢迎提交使用场景、缺陷与 Pull Request。</p>
-              </div>
-            </section>
-          </div>
-        </div>
-      </main>
-
-      <footer class="site-footer shell">
-        <div class="wrap">
-          <p>WebMonitor · 网页监控与邮件提醒</p>
-          <a href="https://github.com/webmonitor" target="_blank" rel="noreferrer">github.com/webmonitor</a>
-        </div>
-      </footer>
-    </div>
+  <body class="bg-background text-text antialiased">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>
