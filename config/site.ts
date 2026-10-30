@@ -1,5 +1,5 @@
 export const site = {
-  siteUrl: 'https://webmonitor.github.io',
+  siteUrl: 'https://webmonitor.github.io/',
   title: 'WebMonitor | 网页监控与邮件提醒',
   siteName: 'WebMonitor',
   author: 'WebMonitor',
