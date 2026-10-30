@@ -492,13 +492,13 @@ export const en: SiteContent = {
             type: 'table',
             head: ['Project', 'License', 'Terms'],
             rows: [
-              ['WebMonitor-Agent', 'CC BY-NC 4.0', 'Share and adapt for non-commercial use with attribution, a license link and an indication of changes. Copies previously distributed under MIT retain their original permissions.'],
+              ['WebMonitor-Agent', 'CC BY-NC 4.0', 'Share and adapt for non-commercial use with attribution, a license link and an indication of changes.'],
               ['WebMonitor', 'CC BY-NC 4.0', 'Share and adapt with attribution, non-commercial use only.'],
             ],
           },
           {
             type: 'paragraph',
-            text: 'Public images allow anonymous downloads without changing the license. Report issues in the relevant project with reproduction steps and a page example with sensitive data removed.',
+            text: 'Report issues in the relevant project with reproduction steps and a page example with sensitive data removed.',
           },
           {
             type: 'link',

@@ -482,13 +482,13 @@ export const zh: SiteContent = {
             type: 'table',
             head: ['项目', '许可证', '使用条件'],
             rows: [
-              ['WebMonitor-Agent', 'CC BY-NC 4.0', '署名、附许可链接并注明修改后，可分享与修改，仅限非商业用途；此前按 MIT 分发的副本保留原许可权利。'],
+              ['WebMonitor-Agent', 'CC BY-NC 4.0', '署名、附许可链接并注明修改后，可分享与修改，仅限非商业用途。'],
               ['WebMonitor', 'CC BY-NC 4.0', '署名分享与修改，仅限非商业用途。'],
             ],
           },
           {
             type: 'paragraph',
-            text: '公开镜像允许匿名下载，不改变许可证。遇到问题请提交到对应项目，附上复现步骤和去掉敏感信息的页面示例。',
+            text: '遇到问题请提交到对应项目，附上复现步骤和去掉敏感信息的页面示例。',
           },
           {
             type: 'link',
