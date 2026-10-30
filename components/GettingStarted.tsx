@@ -1,18 +1,9 @@
 import { Separator } from '@base-ui/react';
 import { site } from '../config/site';
 import { quickStart } from '../data/site';
+import CodeBlock from './CodeBlock';
 
 const { sections } = site;
-
-const CommandBlock = ({ title, commands, hint }: { title: string; commands: readonly string[]; hint: string }) => (
-  <div className="min-w-0 space-y-2">
-    <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted">{title}</p>
-    <pre className="w-full overflow-x-auto rounded-sm border border-line bg-surface p-4 font-mono text-xs leading-7 text-text">
-      <code>{commands.join('\n')}</code>
-    </pre>
-    <p className="text-xs leading-6 text-muted">{hint}</p>
-  </div>
-);
 
 const GettingStarted = () => {
   return (
@@ -26,11 +17,24 @@ const GettingStarted = () => {
       <Separator className="h-px w-full bg-line" />
 
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
-        <CommandBlock title="WebMonitor-Agent" commands={quickStart.agent} hint="启动后访问 http://localhost:8080" />
-        <CommandBlock title="WebMonitor" commands={quickStart.legacy} hint="启动后访问 http://localhost:8000" />
+        <CodeBlock
+          title="WebMonitor-Agent"
+          code={quickStart.agent.join('\n')}
+          hint="启动后访问 http://localhost:8080"
+        />
+        <CodeBlock
+          title="WebMonitor"
+          code={quickStart.legacy.join('\n')}
+          hint="启动后访问 http://localhost:8000"
+        />
       </div>
 
-      <p className="max-w-3xl text-xs leading-6 text-muted">{quickStart.note}</p>
+      <p className="max-w-3xl text-xs leading-6 text-muted">
+        {quickStart.note}{' '}
+        <a href="/docs/" className="underline decoration-line underline-offset-4 transition hover:text-text">
+          完整部署与配置文档
+        </a>
+      </p>
     </section>
   );
 };

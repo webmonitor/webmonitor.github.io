@@ -60,8 +60,8 @@ const Projects = () => {
             <div key={resource.href}>
               <a
                 href={resource.href}
-                target="_blank"
-                rel="noreferrer"
+                target={resource.external ? '_blank' : undefined}
+                rel={resource.external ? 'noreferrer' : undefined}
                 className="group flex items-start justify-between gap-4 py-4"
               >
                 <div className="min-w-0 space-y-1">

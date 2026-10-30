@@ -11,8 +11,10 @@ React 19 + Vite + Base UI, same flat warm-paper design as [qfpqhyl.top](https://
 页面内容在 `data/site.ts`：
 
 - `projects` — 两个项目（WebMonitor、WebMonitor-Agent）的定位、描述、技术栈与许可证
-- `resources` — 演示、文档、mocksite、组织主页等入口
+- `resources` — 演示、站内文档、mocksite、组织主页等入口
 - `quickStart` — 本地 Docker 启动命令与说明
+
+文档页是独立的 Vite 入口：`docs/index.html` + `docs/main.tsx`，正文在 `components/DocsPage.tsx`，内容取自两个项目的 README（部署步骤、配置项、使用流程、限制与许可证）。构建后输出 `dist/docs/index.html`，站内链接为 `/docs/` 与 `/docs/#<section>`，不再跳转 GitHub。
 
 组件在 `components/`：`Navbar`、`Hero`、`Projects`、`GettingStarted`、`Footer`、`SiteMeta`（运行时写入 title 与 meta）。
 

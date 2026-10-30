@@ -25,26 +25,34 @@ export const resources: ResourceItem[] = [
   {
     title: '在线体验',
     href: 'https://webmonitor.qfpqhyl.top/',
+    external: true,
     description: '维护者单独运行的演示实例，可能暂时不可用。',
   },
   {
-    title: 'WebMonitor 文档',
-    href: 'https://github.com/webmonitor/WebMonitor#readme',
-    description: '部署方式、监控配置与邮件通知说明。',
+    title: '部署与配置文档',
+    href: '/docs/',
+    description: '两个项目的环境变量、启动步骤与使用流程，站内直接阅读。',
   },
   {
-    title: 'WebMonitor-Agent 文档',
-    href: 'https://github.com/webmonitor/WebMonitor-Agent#readme',
-    description: '对话创建监控的流程、配置项与数据保留说明。',
+    title: 'WebMonitor 指南',
+    href: '/docs/#webmonitor',
+    description: '单容器部署、XPath 区域监控与邮件通知配置。',
+  },
+  {
+    title: 'Agent 指南',
+    href: '/docs/#agent',
+    description: '模型服务配置、对话创建流程与采集范围限制。',
   },
   {
     title: 'mocksite',
     href: 'https://github.com/webmonitor/mocksite',
+    external: true,
     description: '可控、确定性的模拟目标站点，用来验证采集器。',
   },
   {
     title: '组织主页与配置',
     href: 'https://github.com/webmonitor/.github',
+    external: true,
     description: '组织介绍、标识资源与共享开发环境。',
   },
 ];

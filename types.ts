@@ -4,6 +4,7 @@ export interface SocialLink {
   label: string;
   href: string;
   icon: LucideIcon;
+  external?: boolean;
 }
 
 export interface ProjectItem {
@@ -19,4 +20,5 @@ export interface ResourceItem {
   title: string;
   href: string;
   description: string;
+  external?: boolean;
 }

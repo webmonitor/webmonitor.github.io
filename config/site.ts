@@ -10,7 +10,9 @@ export const site = {
   keywords: ['WebMonitor', '网页监控', '内容变化监测', '邮件提醒', '自部署', '开源', 'XPath', 'AI Agent'],
   demoUrl: 'https://webmonitor.qfpqhyl.top/',
   githubUrl: 'https://github.com/webmonitor',
-  docsUrl: 'https://github.com/webmonitor/WebMonitor#readme',
+  docsUrl: '/docs/',
+  docsWebMonitorUrl: '/docs/#webmonitor',
+  docsAgentUrl: '/docs/#agent',
   logoUrl: 'https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png',
   sections: {
     projectsEyebrow: 'Projects',

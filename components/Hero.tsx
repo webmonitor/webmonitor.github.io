@@ -5,8 +5,8 @@ import { site } from '../config/site';
 import type { SocialLink } from '../types';
 
 const socialLinks: SocialLink[] = [
-  { label: 'GitHub', href: site.githubUrl, icon: Github },
-  { label: '在线体验', href: site.demoUrl, icon: Globe },
+  { label: 'GitHub', href: site.githubUrl, icon: Github, external: true },
+  { label: '在线体验', href: site.demoUrl, icon: Globe, external: true },
   { label: '使用文档', href: site.docsUrl, icon: BookOpen },
 ];
 
@@ -43,15 +43,15 @@ const Hero = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            {socialLinks.map(({ label, href, icon: Icon }) => (
+            {socialLinks.map(({ label, href, icon: Icon, external }) => (
               <Fragment key={label}>
                 <Tooltip.Root>
                   <Tooltip.Trigger
                     render={
                       <a
                         href={href}
-                        target="_blank"
-                        rel="noreferrer"
+                        target={external ? '_blank' : undefined}
+                        rel={external ? 'noreferrer' : undefined}
                         aria-label={label}
                         className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-background text-muted transition hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text/15"
                       />
