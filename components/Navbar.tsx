@@ -13,7 +13,13 @@ const Navbar = () => {
     <header className="px-4 pt-4 sm:px-6 lg:px-8">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between border-b border-line/80 px-1 py-3 sm:px-0">
         <a href={site.siteUrl} className="inline-flex items-center gap-2.5 text-sm font-semibold tracking-[0.08em] text-text">
-          <img src={site.logoUrl} alt="" width={22} height={22} className="h-[22px] w-[22px] rounded-[5px]" />
+          <img
+            src={site.logoUrl}
+            alt=""
+            width={24}
+            height={24}
+            className="h-6 w-6 rounded-full ring-1 ring-line"
+          />
           {site.siteName}
         </a>
 
