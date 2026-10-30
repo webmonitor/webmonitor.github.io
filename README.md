@@ -29,7 +29,7 @@ docker pull ghcr.io/webmonitor/webmonitor-agent:1.0.0
 docker pull ghcr.io/webmonitor/webmonitor:1.0.0
 ```
 
-官网安装入口统一为独立部署目录：直接下载所需 `compose.yaml` 与配套文件，按文档内模板自行创建 `.env`，不要求克隆仓库或下载源码。两个产品均以 `docker compose up -d --wait` 启动，默认拉取 `latest`；可在 `.env` 中设置完整 `WEBMONITOR_IMAGE` 固定版本。`latest` 跟随稳定发布，`main` 为开发构建，旧开发标签可能清理。
+官网安装入口统一为独立部署目录：直接下载所需 `compose.yaml` 与配套文件，按文档内模板自行创建 `.env`，不要求克隆仓库或下载源码。两个产品均以 `docker compose up -d --wait` 启动，默认拉取 `latest`；可在 `.env` 中设置完整 `WEBMONITOR_IMAGE` 固定版本。应用镜像只随版本标签发布，`latest` 跟随稳定版。
 
 修改官网文档时，同时维护以下事实：
 
