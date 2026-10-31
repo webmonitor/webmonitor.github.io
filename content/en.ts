@@ -195,7 +195,7 @@ export const en: SiteContent = {
             type: 'table',
             head: ['Set in .env', 'What it means'],
             rows: [
-              ['`WEBMONITOR_IMAGE`', 'Defaults to latest; to pin a release, use `ghcr.io/webmonitor/webmonitor:1.0.0`.'],
+              ['`WEBMONITOR_IMAGE`', 'Defaults to latest; to pin a release, use `ghcr.io/webmonitor/webmonitor:1.0.2`.'],
               ['`SECRET_KEY`', 'A random string of at least 32 characters used to sign sign-in tokens.'],
               ['`ADMIN_USERNAME`, `ADMIN_PASSWORD`', 'The initial admin account; sign in with this username, not the email.'],
               ['`ADMIN_EMAIL`', 'The administrator email stored on the account.'],
@@ -246,7 +246,7 @@ export const en: SiteContent = {
             type: 'table',
             head: ['Set in .env', 'What it means'],
             rows: [
-              ['`WEBMONITOR_IMAGE`', 'Defaults to latest; to pin a release, use `ghcr.io/webmonitor/webmonitor-agent:1.0.0`.'],
+              ['`WEBMONITOR_IMAGE`', 'Defaults to latest; to pin a release, use `ghcr.io/webmonitor/webmonitor-agent:1.0.2`.'],
               ['`POSTGRES_PASSWORD`, `SECRET_KEY`', 'The database password, and a random signing key of at least 32 characters.'],
               ['`ADMIN_EMAIL`, `ADMIN_PASSWORD`', 'The initial admin account; the password is 12–128 characters and you sign in with the email.'],
               ['`OPENAI_API_KEY`, `OPENAI_BASE_URL`, `OPENAI_MODEL`', 'The model service key, compatible API URL and an available model name.'],
@@ -396,7 +396,7 @@ export const en: SiteContent = {
               '**WebMonitor extracts nothing:** use Test monitor to check that the XPath selects the element that actually contains the text. Content that requires signing in cannot be monitored directly.',
               '**The Agent preview fails or the address is rejected:** the target must be a public http/https address on port 80 or 443. An unreachable site, bot blocking, a sign-in requirement, or content inside an iframe / Shadow DOM can all fail; an unavailable model service also interrupts the conversation.',
               '**No email arrives:** for WebMonitor choose Test connection under Email settings; for the Agent check SMTP in `.env` and the recipients in the notification group. Also check spam and the delivery log.',
-              '**After an update the app will not open or the data looks wrong:** neither project migrates databases automatically. Restore the matching backup, or set `WEBMONITOR_IMAGE` back to the previous version and start again.',
+              '**After an update the app will not open or the data looks wrong:** this version requires an empty database and evidence store. Do not attach older storage; create accounts and monitoring settings again. Neither project provides data migration or cross-version compatibility.',
             ],
           },
         ],
@@ -407,23 +407,23 @@ export const en: SiteContent = {
         blocks: [
           {
             type: 'paragraph',
-            text: 'Back up your data and note the current image version before updating. Change `WEBMONITOR_IMAGE` in `.env` to the new version, then run the commands below in each project’s deployment directory.',
+            text: 'This update starts with fresh data. Note the current image version, change `WEBMONITOR_IMAGE` in `.env` to the new version, then run the commands below in each project’s deployment directory. Accounts and monitoring settings must be created again; custom persistent storage must be empty.',
           },
           {
             type: 'code',
             title: 'WebMonitor: pull and recreate',
-            code: 'docker compose pull\ndocker compose up -d --wait',
-            hint: 'There is only one application service, so update it directly.',
+            code: 'docker compose pull\ndocker compose up -d --force-recreate --wait',
+            hint: 'Recreating the default container clears its SQLite database. Do not reuse an older database mounted at /app/data.',
           },
           {
             type: 'code',
-            title: 'Agent: update only the application services',
-            code: 'docker compose pull api web\ndocker compose up -d --wait api web',
-            hint: 'This update targets api and web. postgres and s3 use temporary storage; stopping, restarting or recreating those data containers clears their data. After updating, open the page and check sign-in and your monitor list.',
+            title: 'Agent: clear temporary data and restart',
+            code: 'docker compose down\ndocker compose pull api web\ndocker compose up -d --wait',
+            hint: 'Stopping the data containers clears the default temporary database and evidence store. Use empty storage if persistence was configured. After startup, create the notification groups and monitors again.',
           },
           {
             type: 'paragraph',
-            text: 'To roll back, set `WEBMONITOR_IMAGE` to a previous version that is still available and run the same commands for that project. There is no database downgrade: an older version may not read data written by a newer one, so restore the pre-update backup if needed.',
+            text: 'To roll back, set `WEBMONITOR_IMAGE` to a previous version that is still available and run the same commands for that project with empty storage. Data is not migrated between versions.',
           },
           {
             type: 'link',

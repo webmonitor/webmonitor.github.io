@@ -25,8 +25,8 @@
 两个应用镜像已在 GHCR 公开，用户可匿名拉取，无需 GitHub 账户或 `docker login`：
 
 ```sh
-docker pull ghcr.io/webmonitor/webmonitor-agent:1.0.0
-docker pull ghcr.io/webmonitor/webmonitor:1.0.0
+docker pull ghcr.io/webmonitor/webmonitor-agent:1.0.2
+docker pull ghcr.io/webmonitor/webmonitor:1.0.2
 ```
 
 官网安装入口统一为独立部署目录：直接下载所需 `compose.yaml` 与配套文件，按文档内模板自行创建 `.env`，不要求克隆仓库或下载源码。两个产品均以 `docker compose up -d --wait` 启动，默认拉取 `latest`；可在 `.env` 中设置完整 `WEBMONITOR_IMAGE` 固定版本。应用镜像只随版本标签发布，`latest` 跟随稳定版。
@@ -34,7 +34,7 @@ docker pull ghcr.io/webmonitor/webmonitor:1.0.0
 修改官网文档时，同时维护以下事实：
 
 - Agent 应用只有一个镜像；S3 和出口代理辅助镜像仍用下载的部署文件在本地构建。下载清单须包含完整代理、DNS、入口脚本、seccomp、Dockerfile 和 `.dockerignore`，并保留相对目录。
-- Agent 随附 PostgreSQL 与 MinIO 为临时存储；原版 SQLite 默认位于容器内，未挂载数据卷。升级说明必须提示数据保留与备份限制。
+- Agent 随附 PostgreSQL 与 MinIO 为临时存储；原版 SQLite 默认位于容器内，未挂载数据卷。本次版本切换使用全新数据，不复用或迁移旧存储；中英文更新与回退命令必须明确清空默认临时数据，自定义持久存储需改用空存储。
 - 普通启动、日志与更新命令无需额外 `-f`。源码开发才克隆仓库，并加载 `compose.build.yaml`。`.env` 模板分别给出所需变量，密钥和密码由用户自行填写，已有文件不能覆盖。
 - 两个产品分别维护版本与发布记录。改版本示例时，同步中英文内容；不要用 Agent 的发布页代表原版发布页。
 - WebMonitor-Agent 与 WebMonitor 均采用 CC BY-NC 4.0，仅限非商业用途。

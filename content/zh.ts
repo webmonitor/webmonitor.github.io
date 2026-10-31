@@ -185,7 +185,7 @@ export const zh: SiteContent = {
             type: 'table',
             head: ['在 .env 中填写', '说明'],
             rows: [
-              ['`WEBMONITOR_IMAGE`', '默认 latest；想固定版本时改成 `ghcr.io/webmonitor/webmonitor:1.0.0`。'],
+              ['`WEBMONITOR_IMAGE`', '默认 latest；想固定版本时改成 `ghcr.io/webmonitor/webmonitor:1.0.2`。'],
               ['`SECRET_KEY`', '至少 32 字符的随机串，用于登录令牌签名。'],
               ['`ADMIN_USERNAME`、`ADMIN_PASSWORD`', '初始管理员用户名和密码，用于登录。'],
               ['`ADMIN_EMAIL`', '管理员邮箱，用于账户信息。'],
@@ -236,7 +236,7 @@ export const zh: SiteContent = {
             type: 'table',
             head: ['在 .env 中填写', '说明'],
             rows: [
-              ['`WEBMONITOR_IMAGE`', '默认 latest；想固定版本时改成 `ghcr.io/webmonitor/webmonitor-agent:1.0.0`。'],
+              ['`WEBMONITOR_IMAGE`', '默认 latest；想固定版本时改成 `ghcr.io/webmonitor/webmonitor-agent:1.0.2`。'],
               ['`POSTGRES_PASSWORD`、`SECRET_KEY`', '数据库密码，以及至少 32 字符的随机签名密钥。'],
               ['`ADMIN_EMAIL`、`ADMIN_PASSWORD`', '初始管理员账号；密码为 12–128 字符，登录时用邮箱。'],
               ['`OPENAI_API_KEY`、`OPENAI_BASE_URL`、`OPENAI_MODEL`', '模型服务的密钥、兼容接口地址和可用的模型名称。'],
@@ -386,7 +386,7 @@ export const zh: SiteContent = {
               '**WebMonitor 提取不到内容：** 先用「测试监控」检查 XPath 是否选中了真正包含文字的元素；需要登录才能看到的内容无法直接监控。',
               '**Agent 预览失败或提示地址不允许：** 目标必须是公网 http/https 地址（80 或 443 端口）。站点打不开、拦爬虫、需要登录，或内容在 iframe / Shadow DOM 里时都可能失败；模型服务不可用也会让对话中断。',
               '**没有收到邮件：** WebMonitor 先在「邮件配置」点「测试连接」；Agent 检查 `.env` 的 SMTP 设置和通知组收件人。也看看垃圾邮件和投递记录。',
-              '**更新后打不开或数据不对：** 两个项目都没有自动数据库迁移。先恢复对应备份，或把 `WEBMONITOR_IMAGE` 改回原来的版本再启动。',
+              '**更新后打不开或数据不对：** 本版本要求使用空数据库和证据存储。不要挂载旧版本存储，账户和监控设置需要重新创建；两个项目均不提供数据迁移或跨版本兼容路径。',
             ],
           },
         ],
@@ -397,23 +397,23 @@ export const zh: SiteContent = {
         blocks: [
           {
             type: 'paragraph',
-            text: '更新前先备份数据，并记下当前使用的镜像版本。把 `.env` 里的 `WEBMONITOR_IMAGE` 改成新版本，然后在各自的部署目录执行下面的命令。',
+            text: '本次更新从全新数据开始。记下当前镜像版本，把 `.env` 里的 `WEBMONITOR_IMAGE` 改成新版本，然后在各自的部署目录执行下面的命令。账户和监控设置需要重新创建；自定义持久存储也必须使用空存储。',
           },
           {
             type: 'code',
             title: 'WebMonitor：拉取并重建',
-            code: 'docker compose pull\ndocker compose up -d --wait',
-            hint: '只有一个应用服务，直接更新即可。',
+            code: 'docker compose pull\ndocker compose up -d --force-recreate --wait',
+            hint: '重建默认容器会清空 SQLite 数据库，不要复用挂载在 /app/data 的旧库。',
           },
           {
             type: 'code',
-            title: 'Agent：只更新应用服务',
-            code: 'docker compose pull api web\ndocker compose up -d --wait api web',
-            hint: '此次更新只操作 api、web。postgres、s3 使用临时存储，停止、重启或重建这些数据容器会清空数据。更新完成后打开页面，检查登录和监控列表。',
+            title: 'Agent：清空临时数据并重新启动',
+            code: 'docker compose down\ndocker compose pull api web\ndocker compose up -d --wait',
+            hint: '停止数据容器会清空默认临时数据库和页面证据。自行配置持久存储的部署需改用空存储。启动后重新创建通知组和监控。',
           },
           {
             type: 'paragraph',
-            text: '需要回退时，把 `WEBMONITOR_IMAGE` 改回之前仍可用的版本，再执行对应项目的同样命令。没有数据库降级机制，旧版本不一定能读新版本写过的数据；必要时恢复更新前的备份。',
+            text: '需要回退时，把 `WEBMONITOR_IMAGE` 改回之前仍可用的版本，使用空存储执行对应项目的同样命令，不迁移跨版本数据。',
           },
           {
             type: 'link',
