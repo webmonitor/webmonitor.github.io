@@ -5,7 +5,6 @@ import GettingStarted from './components/GettingStarted';
 import Footer from './components/Footer';
 import SiteMeta from './components/SiteMeta';
 import { contentByLang } from './content';
-import { docsPath } from './config/routes';
 import type { Lang } from './content/types';
 
 interface AppProps {
@@ -15,7 +14,6 @@ interface AppProps {
 
 const App = ({ lang, pathname }: AppProps) => {
   const content = contentByLang[lang];
-  const docsHref = docsPath(lang);
 
   return (
     <div className="min-h-screen bg-background text-text">
@@ -23,9 +21,9 @@ const App = ({ lang, pathname }: AppProps) => {
       <Navbar lang={lang} pathname={pathname} />
       <main className="px-4 pb-10 pt-4 sm:px-6 lg:px-8">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-4">
-          <Hero content={content} docsHref={docsHref} />
+          <Hero content={content} />
           <Projects content={content} />
-          <GettingStarted content={content} docsHref={docsHref} />
+          <GettingStarted content={content} />
         </div>
       </main>
       <Footer content={content} />

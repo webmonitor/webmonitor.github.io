@@ -9,7 +9,6 @@ const Projects = ({ content }: { content: SiteContent }) => {
     <section className="grid gap-10 py-2 lg:grid-cols-2 lg:gap-12">
       <div className="space-y-5">
         <div className="space-y-2">
-          <p className="text-xs font-medium uppercase tracking-[0.28em] text-muted">{sections.projectsEyebrow}</p>
           <h2 className="text-2xl font-semibold tracking-tight text-text">{sections.projectsTitle}</h2>
           <p className="text-sm leading-7 text-muted">{sections.projectsDescription}</p>
         </div>
@@ -47,7 +46,6 @@ const Projects = ({ content }: { content: SiteContent }) => {
 
       <div className="space-y-5">
         <div className="space-y-2">
-          <p className="text-xs font-medium uppercase tracking-[0.28em] text-muted">{sections.resourcesEyebrow}</p>
           <h2 className="text-2xl font-semibold tracking-tight text-text">{sections.resourcesTitle}</h2>
           <p className="text-sm leading-7 text-muted">{sections.resourcesDescription}</p>
         </div>

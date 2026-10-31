@@ -29,17 +29,13 @@ export const en: SiteContent = {
       'Watch prices, stock, announcements and deadlines. Fill in each check in a visual dashboard, or describe what you want in one sentence; when the page changes, you get an email.',
     primary: 'Live demo',
     secondary: 'GitHub',
-    icons: { github: 'GitHub', demo: 'Live demo', docs: 'Documentation' },
   },
   sections: {
-    projectsEyebrow: 'Projects',
     projectsTitle: 'Two ways to start',
     projectsDescription:
       'The same job — watching a page for you — with two entry points: a dashboard you fill in, and an assistant you describe it to.',
-    resourcesEyebrow: 'Resources',
     resourcesTitle: 'Where to go next',
     resourcesDescription: 'The demo, the setup guide and the source.',
-    startEyebrow: 'Get Started',
     startTitle: 'Three steps',
     startDescription:
       'Prepare Docker, download the deployment files, create .env from the template, then run the same startup command. A normal install needs no repository clone and no registry login.',
@@ -105,11 +101,6 @@ export const en: SiteContent = {
       '# Create .env from the template at /en/docs/#webmonitor',
       'docker compose up -d --wait',
     ],
-    agentHint:
-      'Open http://localhost:8080 and sign in with the admin email and password from .env; if no admin exists yet, create one as described in the docs. The first start also builds two helper images locally, which takes a few minutes.',
-    legacyHint: 'Open http://localhost:8000 and sign in with the username and password from .env; configure email in the app.',
-    note: 'Both projects start with the same command in their own deployment directory and pull the public latest image. Agent keeps its database and page archives in temporary storage, so stopping or recreating the data containers loses data; set up persistent storage and backups before long-term use.',
-    docsLink: 'Full setup, first-monitor and data-retention guide',
   },
   footerTagline: 'WebMonitor · web change monitoring with email alerts',
   footerLink: 'github.com/webmonitor',
@@ -117,7 +108,6 @@ export const en: SiteContent = {
     title: 'WebMonitor Docs | Install, create your first monitor, get email alerts',
     description:
       'From picking a project to your first change email: prepare Docker, download the deployment files, create .env, start the service, then create a monitor, configure email, manage tasks, troubleshoot and understand data retention.',
-    eyebrow: 'Documentation',
     heading: 'Setup and usage',
     intro:
       'Pick a project, prepare Docker and whatever external service it needs, then install it in three steps: download the files, create .env, and run docker compose up -d --wait. Once it is running, follow the walkthrough for your first monitor; email, day-to-day management and troubleshooting come next.',
@@ -195,7 +185,7 @@ export const en: SiteContent = {
             type: 'table',
             head: ['Set in .env', 'What it means'],
             rows: [
-              ['`WEBMONITOR_IMAGE`', 'Defaults to latest; to pin a release, use `ghcr.io/webmonitor/webmonitor:1.0.2`.'],
+              ['`WEBMONITOR_IMAGE`', 'Defaults to latest; to pin a release, use `ghcr.io/webmonitor/webmonitor:1.0.3`.'],
               ['`SECRET_KEY`', 'A random string of at least 32 characters used to sign sign-in tokens.'],
               ['`ADMIN_USERNAME`, `ADMIN_PASSWORD`', 'The initial admin account; sign in with this username, not the email.'],
               ['`ADMIN_EMAIL`', 'The administrator email stored on the account.'],
@@ -246,7 +236,7 @@ export const en: SiteContent = {
             type: 'table',
             head: ['Set in .env', 'What it means'],
             rows: [
-              ['`WEBMONITOR_IMAGE`', 'Defaults to latest; to pin a release, use `ghcr.io/webmonitor/webmonitor-agent:1.0.2`.'],
+              ['`WEBMONITOR_IMAGE`', 'Defaults to latest; to pin a release, use `ghcr.io/webmonitor/webmonitor-agent:1.0.3`.'],
               ['`POSTGRES_PASSWORD`, `SECRET_KEY`', 'The database password, and a random signing key of at least 32 characters.'],
               ['`ADMIN_EMAIL`, `ADMIN_PASSWORD`', 'The initial admin account; the password is 12–128 characters and you sign in with the email.'],
               ['`OPENAI_API_KEY`, `OPENAI_BASE_URL`, `OPENAI_MODEL`', 'The model service key, compatible API URL and an available model name.'],

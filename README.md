@@ -25,8 +25,8 @@
 两个应用镜像已在 GHCR 公开，用户可匿名拉取，无需 GitHub 账户或 `docker login`：
 
 ```sh
-docker pull ghcr.io/webmonitor/webmonitor-agent:1.0.2
-docker pull ghcr.io/webmonitor/webmonitor:1.0.2
+docker pull ghcr.io/webmonitor/webmonitor-agent:1.0.3
+docker pull ghcr.io/webmonitor/webmonitor:1.0.3
 ```
 
 官网安装入口统一为独立部署目录：直接下载所需 `compose.yaml` 与配套文件，按文档内模板自行创建 `.env`，不要求克隆仓库或下载源码。两个产品均以 `docker compose up -d --wait` 启动，默认拉取 `latest`；可在 `.env` 中设置完整 `WEBMONITOR_IMAGE` 固定版本。应用镜像只随版本标签发布，`latest` 跟随稳定版。
@@ -51,7 +51,9 @@ docker pull ghcr.io/webmonitor/webmonitor:1.0.2
 | `content/index.ts` | 按语言选择内容 |
 | `config/routes.ts` | 路由、语言与切换链接 |
 | `config/site.ts` | 组织、演示和 Logo 等共享 URL |
+| `components/Navbar.tsx`、`components/Hero.tsx` | 顶部导航与首页文字入口；首页保留在线体验、源码操作，文档通过导航进入 |
 | `components/DocsPage.tsx` | 按内容数据渲染文档、表格、代码和目录 |
+| `components/Projects.tsx`、`components/GettingStarted.tsx` | 产品、资源与安装区块；快速开始保留两组命令，操作与存储说明在完整文档中 |
 | `components/Rich.tsx` | 行内代码与强调文本 |
 | 四个路由的 `index.html` | 静态标题、描述、canonical、hreflang、Open Graph 与 JSON-LD |
 | `entry-server.tsx`、`scripts/prerender.mjs` | 构建时生成页面正文 |

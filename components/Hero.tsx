@@ -1,21 +1,12 @@
-import { Fragment } from 'react';
-import { Tooltip } from '@base-ui/react';
-import { ArrowUpRight, BookOpen, Github, Globe } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { shared } from '../config/site';
 import type { SiteContent } from '../content/types';
 
 interface HeroProps {
   content: SiteContent;
-  docsHref: string;
 }
 
-const Hero = ({ content, docsHref }: HeroProps) => {
-  const iconLinks = [
-    { label: content.hero.icons.github, href: shared.githubUrl, icon: Github, external: true },
-    { label: content.hero.icons.demo, href: shared.demoUrl, icon: Globe, external: true },
-    { label: content.hero.icons.docs, href: docsHref, icon: BookOpen, external: false },
-  ];
-
+const Hero = ({ content }: HeroProps) => {
   return (
     <section className="border-b border-line pb-5">
       <div className="py-4">
@@ -47,34 +38,6 @@ const Hero = ({ content, docsHref }: HeroProps) => {
             </a>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            {iconLinks.map(({ label, href, icon: Icon, external }) => (
-              <Fragment key={label}>
-                <Tooltip.Root>
-                  <Tooltip.Trigger
-                    render={
-                      <a
-                        href={href}
-                        target={external ? '_blank' : undefined}
-                        rel={external ? 'noreferrer' : undefined}
-                        aria-label={label}
-                        className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-background text-muted transition hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text/15"
-                      />
-                    }
-                  >
-                    <Icon className="h-4 w-4" />
-                  </Tooltip.Trigger>
-                  <Tooltip.Portal>
-                    <Tooltip.Positioner sideOffset={8}>
-                      <Tooltip.Popup className="rounded-full bg-text px-3 py-1 text-xs font-medium text-surface shadow-lg">
-                        {label}
-                      </Tooltip.Popup>
-                    </Tooltip.Positioner>
-                  </Tooltip.Portal>
-                </Tooltip.Root>
-              </Fragment>
-            ))}
-          </div>
         </div>
       </div>
     </section>

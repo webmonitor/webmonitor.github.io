@@ -54,16 +54,12 @@ export interface SiteContent {
     intro: string;
     primary: string;
     secondary: string;
-    icons: { github: string; demo: string; docs: string };
   };
   sections: {
-    projectsEyebrow: string;
     projectsTitle: string;
     projectsDescription: string;
-    resourcesEyebrow: string;
     resourcesTitle: string;
     resourcesDescription: string;
-    startEyebrow: string;
     startTitle: string;
     startDescription: string;
   };
@@ -72,17 +68,12 @@ export interface SiteContent {
   quickStart: {
     agent: string[];
     legacy: string[];
-    agentHint: string;
-    legacyHint: string;
-    note: string;
-    docsLink: string;
   };
   footerTagline: string;
   footerLink: string;
   docs: {
     title: string;
     description: string;
-    eyebrow: string;
     heading: string;
     intro: string;
     contents: string;

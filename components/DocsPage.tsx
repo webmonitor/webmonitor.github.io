@@ -103,7 +103,6 @@ const DocsPage = ({ content }: { content: SiteContent }) => {
     <main className="px-4 pb-12 pt-4 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-6xl">
         <div className="space-y-3 border-b border-line pb-6 pt-4">
-          <p className="text-xs font-medium uppercase tracking-[0.3em] text-muted">{docs.eyebrow}</p>
           <h1 className="text-4xl font-semibold tracking-tight text-text sm:text-5xl">{docs.heading}</h1>
           <p className="max-w-2xl text-sm leading-7 text-muted sm:text-base">
             <Rich text={docs.intro} />

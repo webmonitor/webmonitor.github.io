@@ -20,16 +20,12 @@ export const zh: SiteContent = {
       '盯住价格、库存、公告和截止日期。在可视化工作台里逐项填写，或用一句话说明需求；页面变化时，邮件提醒你。',
     primary: '在线体验',
     secondary: 'GitHub',
-    icons: { github: 'GitHub', demo: '在线体验', docs: '使用文档' },
   },
   sections: {
-    projectsEyebrow: 'Projects',
     projectsTitle: '两种用法，选一个开始',
     projectsDescription: '同一件事——替你看页面——两种上手方式：逐项填写的监控工作台，和一句话交代清楚的对话助手。',
-    resourcesEyebrow: 'Resources',
     resourcesTitle: '相关入口',
     resourcesDescription: '演示站点、安装文档与源码入口。',
-    startEyebrow: 'Get Started',
     startTitle: '三步开始',
     startDescription:
       '准备 Docker，下载部署文件，按模板创建 .env，然后执行同一条启动命令。普通安装不需要克隆仓库，也不需要登录镜像仓库。',
@@ -95,11 +91,6 @@ export const zh: SiteContent = {
       '# 按 /docs/#webmonitor 的模板自行创建 .env',
       'docker compose up -d --wait',
     ],
-    agentHint:
-      '打开 http://localhost:8080，用 .env 里的管理员邮箱和密码登录；还没有管理员时按文档创建。首次启动会在本地构建两个辅助镜像，需要几分钟。',
-    legacyHint: '打开 http://localhost:8000，用 .env 里的用户名和密码登录；邮件在应用内配置。',
-    note: '两个项目都在各自的部署目录里用同一条命令启动，拉取公开的 latest 镜像。Agent 的数据库与页面存档使用临时存储，停止或重建数据容器会丢失数据；长期使用前先配置持久存储和备份。',
-    docsLink: '查看完整安装、首次监控与数据保留说明',
   },
   footerTagline: 'WebMonitor · 网页变化监控与邮件提醒',
   footerLink: 'github.com/webmonitor',
@@ -107,7 +98,6 @@ export const zh: SiteContent = {
     title: 'WebMonitor 文档 | 安装、首次监控与邮件通知',
     description:
       '从选择项目到第一封变化邮件：准备 Docker、下载部署文件、创建 .env、启动服务，再完成首次监控、邮件配置、任务管理、故障排查与数据保留。',
-    eyebrow: 'Documentation',
     heading: '安装与使用',
     intro:
       '先选一个项目，准备 Docker 和它需要的外部服务，然后按三步完成安装：下载文件、创建 .env、执行 docker compose up -d --wait。安装完成后照着步骤创建第一个监控，邮件、日常管理和排错都写在后面。',
@@ -185,7 +175,7 @@ export const zh: SiteContent = {
             type: 'table',
             head: ['在 .env 中填写', '说明'],
             rows: [
-              ['`WEBMONITOR_IMAGE`', '默认 latest；想固定版本时改成 `ghcr.io/webmonitor/webmonitor:1.0.2`。'],
+              ['`WEBMONITOR_IMAGE`', '默认 latest；想固定版本时改成 `ghcr.io/webmonitor/webmonitor:1.0.3`。'],
               ['`SECRET_KEY`', '至少 32 字符的随机串，用于登录令牌签名。'],
               ['`ADMIN_USERNAME`、`ADMIN_PASSWORD`', '初始管理员用户名和密码，用于登录。'],
               ['`ADMIN_EMAIL`', '管理员邮箱，用于账户信息。'],
@@ -236,7 +226,7 @@ export const zh: SiteContent = {
             type: 'table',
             head: ['在 .env 中填写', '说明'],
             rows: [
-              ['`WEBMONITOR_IMAGE`', '默认 latest；想固定版本时改成 `ghcr.io/webmonitor/webmonitor-agent:1.0.2`。'],
+              ['`WEBMONITOR_IMAGE`', '默认 latest；想固定版本时改成 `ghcr.io/webmonitor/webmonitor-agent:1.0.3`。'],
               ['`POSTGRES_PASSWORD`、`SECRET_KEY`', '数据库密码，以及至少 32 字符的随机签名密钥。'],
               ['`ADMIN_EMAIL`、`ADMIN_PASSWORD`', '初始管理员账号；密码为 12–128 字符，登录时用邮箱。'],
               ['`OPENAI_API_KEY`、`OPENAI_BASE_URL`、`OPENAI_MODEL`', '模型服务的密钥、兼容接口地址和可用的模型名称。'],
