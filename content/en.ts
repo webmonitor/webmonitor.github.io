@@ -92,7 +92,13 @@ export const en: SiteContent = {
   quickStart: {
     agent: [
       'mkdir -p webmonitor-agent && cd webmonitor-agent',
-      '# Download the deployment files and create .env from /en/docs/#agent',
+      '(',
+      '  set -e',
+      '  for file in compose.yaml .dockerignore deploy/browser-seccomp.json deploy/minio.Dockerfile deploy/minio-artifacts.json deploy/egress.Dockerfile deploy/egress/squid.conf deploy/egress/unbound.conf deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do',
+      '    curl -fsSL --create-dirs "https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main/$file" -o "$file"',
+      '  done',
+      ')',
+      '# Create .env from the template at /en/docs/#agent',
       'docker compose up -d --wait',
     ],
     legacy: [
