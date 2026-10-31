@@ -82,12 +82,7 @@ export const zh: SiteContent = {
   quickStart: {
     agent: [
       'mkdir -p webmonitor-agent && cd webmonitor-agent',
-      '(',
-      '  set -e',
-      '  for file in compose.yaml .dockerignore deploy/browser-seccomp.json deploy/minio.Dockerfile deploy/minio-artifacts.json deploy/egress.Dockerfile deploy/egress/squid.conf deploy/egress/unbound.conf deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do',
-      '    curl -fsSL --create-dirs "https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main/$file" -o "$file"',
-      '  done',
-      ')',
+      '(for file in compose.yaml .dockerignore deploy/browser-seccomp.json deploy/minio.Dockerfile deploy/minio-artifacts.json deploy/egress.Dockerfile deploy/egress/squid.conf deploy/egress/unbound.conf deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do curl -fsSL --create-dirs "https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main/$file" -o "$file" || exit 1; done)',
       '# 按 /docs/#agent 的模板自行创建 .env',
       'docker compose up -d --wait',
     ],
