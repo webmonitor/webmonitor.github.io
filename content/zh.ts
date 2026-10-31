@@ -386,7 +386,7 @@ export const zh: SiteContent = {
               '**WebMonitor 提取不到内容：** 先用「测试监控」检查 XPath 是否选中了真正包含文字的元素；需要登录才能看到的内容无法直接监控。',
               '**Agent 预览失败或提示地址不允许：** 目标必须是公网 http/https 地址（80 或 443 端口）。站点打不开、拦爬虫、需要登录，或内容在 iframe / Shadow DOM 里时都可能失败；模型服务不可用也会让对话中断。',
               '**没有收到邮件：** WebMonitor 先在「邮件配置」点「测试连接」；Agent 检查 `.env` 的 SMTP 设置和通知组收件人。也看看垃圾邮件和投递记录。',
-              '**更新后打不开或数据不对：** 本版本要求使用空数据库和证据存储。不要挂载旧版本存储，账户和监控设置需要重新创建；两个项目均不提供数据迁移或跨版本兼容路径。',
+              '**更新后打不开或数据不对：** 检查服务日志，并核对数据库格式是否与应用版本匹配。两个项目不会自动迁移或降级数据库；恢复时使用与目标版本匹配的备份。',
             ],
           },
         ],
@@ -397,23 +397,23 @@ export const zh: SiteContent = {
         blocks: [
           {
             type: 'paragraph',
-            text: '本次更新从全新数据开始。记下当前镜像版本，把 `.env` 里的 `WEBMONITOR_IMAGE` 改成新版本，然后在各自的部署目录执行下面的命令。账户和监控设置需要重新创建；自定义持久存储也必须使用空存储。',
+            text: '更新前先备份需要保留的数据，并记下当前镜像版本。把 `.env` 里的 `WEBMONITOR_IMAGE` 改成新版本，然后在各自的部署目录执行下面的命令。跨版本切换前核对数据库格式变化。',
           },
           {
             type: 'code',
             title: 'WebMonitor：拉取并重建',
-            code: 'docker compose pull\ndocker compose up -d --force-recreate --wait',
-            hint: '重建默认容器会清空 SQLite 数据库，不要复用挂载在 /app/data 的旧库。',
+            code: 'docker compose pull\ndocker compose up -d --wait',
+            hint: '默认 SQLite 文件位于容器内，重建容器时会丢失。更新前请按数据保留说明处理备份和存储。',
           },
           {
             type: 'code',
-            title: 'Agent：清空临时数据并重新启动',
-            code: 'docker compose down\ndocker compose pull api web\ndocker compose up -d --wait',
-            hint: '停止数据容器会清空默认临时数据库和页面证据。自行配置持久存储的部署需改用空存储。启动后重新创建通知组和监控。',
+            title: 'Agent：更新应用服务',
+            code: 'docker compose pull api web\ndocker compose up -d --wait --no-deps api web',
+            hint: '这些命令更新 api、web，保留仍在运行的 postgres、s3 服务。默认数据存储是临时的，停止或重建数据容器会丢失数据。',
           },
           {
             type: 'paragraph',
-            text: '需要回退时，把 `WEBMONITOR_IMAGE` 改回之前仍可用的版本，使用空存储执行对应项目的同样命令，不迁移跨版本数据。',
+            text: '需要回退时，把 `WEBMONITOR_IMAGE` 改回之前仍可用的版本，执行对应项目的同样命令，并使用与该版本匹配的数据；回退不会自动转换数据库结构。',
           },
           {
             type: 'link',

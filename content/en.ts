@@ -396,7 +396,7 @@ export const en: SiteContent = {
               '**WebMonitor extracts nothing:** use Test monitor to check that the XPath selects the element that actually contains the text. Content that requires signing in cannot be monitored directly.',
               '**The Agent preview fails or the address is rejected:** the target must be a public http/https address on port 80 or 443. An unreachable site, bot blocking, a sign-in requirement, or content inside an iframe / Shadow DOM can all fail; an unavailable model service also interrupts the conversation.',
               '**No email arrives:** for WebMonitor choose Test connection under Email settings; for the Agent check SMTP in `.env` and the recipients in the notification group. Also check spam and the delivery log.',
-              '**After an update the app will not open or the data looks wrong:** this version requires an empty database and evidence store. Do not attach older storage; create accounts and monitoring settings again. Neither project provides data migration or cross-version compatibility.',
+              '**After an update the app will not open or the data looks wrong:** inspect the service logs and check that the database format matches the application version. Neither project migrates or downgrades the database automatically; use the matching backup when recovering.',
             ],
           },
         ],
@@ -407,23 +407,23 @@ export const en: SiteContent = {
         blocks: [
           {
             type: 'paragraph',
-            text: 'This update starts with fresh data. Note the current image version, change `WEBMONITOR_IMAGE` in `.env` to the new version, then run the commands below in each project’s deployment directory. Accounts and monitoring settings must be created again; custom persistent storage must be empty.',
+            text: 'Back up data you need to retain and note the current image version before updating. Change `WEBMONITOR_IMAGE` in `.env` to the new version, then run the commands below in each project’s deployment directory. Check database-format changes before switching versions.',
           },
           {
             type: 'code',
             title: 'WebMonitor: pull and recreate',
-            code: 'docker compose pull\ndocker compose up -d --force-recreate --wait',
-            hint: 'Recreating the default container clears its SQLite database. Do not reuse an older database mounted at /app/data.',
+            code: 'docker compose pull\ndocker compose up -d --wait',
+            hint: 'The default SQLite file lives inside the container and is lost when it is recreated. Follow the backup and storage guidance before updating.',
           },
           {
             type: 'code',
-            title: 'Agent: clear temporary data and restart',
-            code: 'docker compose down\ndocker compose pull api web\ndocker compose up -d --wait',
-            hint: 'Stopping the data containers clears the default temporary database and evidence store. Use empty storage if persistence was configured. After startup, create the notification groups and monitors again.',
+            title: 'Agent: update application services',
+            code: 'docker compose pull api web\ndocker compose up -d --wait --no-deps api web',
+            hint: 'These commands update api and web while leaving the running postgres and s3 services in place. Their default storage is temporary; stopping or recreating those data containers loses their data.',
           },
           {
             type: 'paragraph',
-            text: 'To roll back, set `WEBMONITOR_IMAGE` to a previous version that is still available and run the same commands for that project with empty storage. Data is not migrated between versions.',
+            text: 'To roll back, set `WEBMONITOR_IMAGE` to a previous version that is still available and run the same commands for that project. Use data matching that version; rollback does not convert the database schema.',
           },
           {
             type: 'link',
