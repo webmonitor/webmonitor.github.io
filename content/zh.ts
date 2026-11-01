@@ -16,14 +16,32 @@ export const zh: SiteContent = {
   hero: {
     eyebrow: '开源 · 可自行部署',
     title: 'WebMonitor',
+    headline: '页面变了，邮件就到',
     intro:
       '盯住价格、库存、公告和截止日期。在可视化工作台里逐项填写，或用一句话说明需求；页面变化时，邮件提醒你。',
     primary: '在线体验',
     secondary: 'GitHub',
+    preview: {
+      label: '监控',
+      counter: '#12',
+      url: 'shop.maruya-store.jp/p/8842',
+      interval: '每 30 分钟',
+      selector: '//span[@class="price"]',
+      lastCheck: '上次检查',
+      lastCheckTime: '09:12',
+      change: '检测到变化',
+      changeTime: '09:12',
+      before: '¥1,299',
+      after: '¥1,149',
+      changeNote: '比上次检查低 ¥150',
+      emailLabel: '邮件已发送',
+      emailTo: 'ops@maruya-store.jp',
+      emailSubject: '价格变化：¥1,299 → ¥1,149',
+    },
   },
   sections: {
     projectsTitle: '两种用法，选一个开始',
-    projectsDescription: '同一件事——替你看页面——两种上手方式：逐项填写的监控工作台，和一句话交代清楚的对话助手。',
+    projectsDescription: '都能盯价格、库存、公告和截止日期；区别只在怎么告诉它看什么：逐项填写，或者一句话。',
     resourcesTitle: '相关入口',
     resourcesDescription: '演示站点、安装文档与源码入口。',
     startTitle: '三步开始',
@@ -82,7 +100,14 @@ export const zh: SiteContent = {
   quickStart: {
     agent: [
       'mkdir -p webmonitor-agent && cd webmonitor-agent',
-      '(for file in compose.yaml .dockerignore deploy/browser-seccomp.json deploy/minio.Dockerfile deploy/minio-artifacts.json deploy/egress.Dockerfile deploy/egress/squid.conf deploy/egress/unbound.conf deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do curl -fsSL --create-dirs "https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main/$file" -o "$file" || exit 1; done)',
+      'BASE=https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main',
+      'for file in compose.yaml .dockerignore \\',
+      '  deploy/browser-seccomp.json deploy/minio.Dockerfile \\',
+      '  deploy/minio-artifacts.json deploy/egress.Dockerfile \\',
+      '  deploy/egress/squid.conf deploy/egress/unbound.conf \\',
+      '  deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do',
+      '  curl -fsSL --create-dirs "$BASE/$file" -o "$file" || exit 1',
+      'done',
       '# 按 /docs/#agent 的模板自行创建 .env',
       'docker compose up -d --wait',
     ],
@@ -163,7 +188,7 @@ export const zh: SiteContent = {
           {
             type: 'code',
             title: '第 1 步：新建部署目录并下载 Compose 文件',
-            code: 'mkdir -p webmonitor\ncd webmonitor\ncurl -fsSLo compose.yaml https://raw.githubusercontent.com/webmonitor/WebMonitor/main/compose.yaml',
+            code: 'mkdir -p webmonitor && cd webmonitor\ncurl -fsSLo compose.yaml \\\n  https://raw.githubusercontent.com/webmonitor/WebMonitor/main/compose.yaml',
             hint: '下载失败时先检查网络和命令输出，再启动。',
           },
           {
@@ -214,7 +239,7 @@ export const zh: SiteContent = {
           {
             type: 'code',
             title: '第 1 步：下载完整部署文件',
-            code: 'mkdir -p webmonitor-agent\ncd webmonitor-agent\n(\n  set -e\n  for file in compose.yaml .dockerignore deploy/browser-seccomp.json deploy/minio.Dockerfile deploy/minio-artifacts.json deploy/egress.Dockerfile deploy/egress/squid.conf deploy/egress/unbound.conf deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do\n    curl -fsSL --create-dirs "https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main/$file" -o "$file"\n  done\n)',
+            code: 'mkdir -p webmonitor-agent\ncd webmonitor-agent\n(\n  set -e\n  BASE=https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main\n  for file in compose.yaml .dockerignore \\\n    deploy/browser-seccomp.json deploy/minio.Dockerfile \\\n    deploy/minio-artifacts.json deploy/egress.Dockerfile \\\n    deploy/egress/squid.conf deploy/egress/unbound.conf \\\n    deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do\n    curl -fsSL --create-dirs "$BASE/$file" -o "$file"\n  done\n)',
             hint: '任一下载失败都会报错并停止，先解决再启动。目录结构保持原样，后续命令都在这个目录里执行。更新已有部署时先备份文件，保留自己的 .env。',
           },
           {

@@ -51,9 +51,27 @@ export interface SiteContent {
   hero: {
     eyebrow: string;
     title: string;
+    headline: string;
     intro: string;
     primary: string;
     secondary: string;
+    preview: {
+      label: string;
+      counter: string;
+      url: string;
+      interval: string;
+      selector: string;
+      lastCheck: string;
+      lastCheckTime: string;
+      change: string;
+      changeTime: string;
+      before: string;
+      after: string;
+      changeNote: string;
+      emailLabel: string;
+      emailTo: string;
+      emailSubject: string;
+    };
   };
   sections: {
     projectsTitle: string;

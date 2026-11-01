@@ -19,8 +19,8 @@ const App = ({ lang, pathname }: AppProps) => {
     <div className="min-h-screen bg-background text-text">
       <SiteMeta content={content} pathname={pathname} />
       <Navbar lang={lang} pathname={pathname} />
-      <main className="px-4 pb-10 pt-4 sm:px-6 lg:px-8">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-4">
+      <main className="px-5 pb-16 sm:px-8">
+        <div className="mx-auto w-full max-w-6xl">
           <Hero content={content} />
           <Projects content={content} />
           <GettingStarted content={content} />

@@ -1,4 +1,3 @@
-import { Separator } from '@base-ui/react';
 import { ArrowUpRight } from 'lucide-react';
 import type { SiteContent } from '../content/types';
 
@@ -6,73 +5,73 @@ const Projects = ({ content }: { content: SiteContent }) => {
   const { sections, projects, resources } = content;
 
   return (
-    <section className="grid gap-10 py-2 lg:grid-cols-2 lg:gap-12">
-      <div className="space-y-5">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-semibold tracking-tight text-text">{sections.projectsTitle}</h2>
-          <p className="text-sm leading-7 text-muted">{sections.projectsDescription}</p>
-        </div>
+    <section className="grid gap-12 py-16 lg:grid-cols-2 lg:gap-16 lg:py-20">
+      <div>
+        <h2 className="text-2xl font-medium text-text">{sections.projectsTitle}</h2>
+        <p className="mt-3 text-sm leading-7 text-secondary">{sections.projectsDescription}</p>
 
-        <Separator className="h-px w-full bg-line" />
-
-        <div>
-          {projects.map((project, index) => (
-            <div key={project.href}>
+        <ul className="mt-8 divide-y divide-line/70 border-t border-line">
+          {projects.map((project) => (
+            <li key={project.href}>
               <a
                 href={project.href}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex items-start justify-between gap-4 py-4"
+                className="group flex items-start gap-6 py-5"
               >
-                <div className="min-w-0 space-y-1">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <h3 className="text-sm font-medium leading-7 text-text transition group-hover:text-muted">
+                <div className="min-w-0 space-y-2">
+                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <h3 className="text-[15px] font-medium text-text transition-colors group-hover:text-accent">
                       {project.title}
                     </h3>
-                    <span className="text-xs uppercase tracking-[0.14em] text-muted">{project.tag}</span>
+                    <span className="text-xs text-muted">{project.tag}</span>
                   </div>
-                  <p className="text-sm leading-7 text-muted">{project.description}</p>
-                  <p className="text-xs leading-6 text-muted">
+                  <p className="text-sm leading-7 text-secondary">{project.description}</p>
+                  <p className="font-mono text-xs leading-6 text-muted">
                     {project.stack.join(' · ')} · {project.license}
                   </p>
                 </div>
-                <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-muted" />
+                <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center">
+                  <ArrowUpRight aria-hidden strokeWidth={1.5} className="h-4 w-4 text-muted transition-colors group-hover:text-text" />
+                </span>
               </a>
-              {index < projects.length - 1 && <Separator className="h-px w-full bg-line/70" />}
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
 
-      <div className="space-y-5">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-semibold tracking-tight text-text">{sections.resourcesTitle}</h2>
-          <p className="text-sm leading-7 text-muted">{sections.resourcesDescription}</p>
-        </div>
+      <div>
+        <h2 className="text-2xl font-medium text-text">{sections.resourcesTitle}</h2>
+        <p className="mt-3 text-sm leading-7 text-secondary">{sections.resourcesDescription}</p>
 
-        <Separator className="h-px w-full bg-line" />
-
-        <div>
-          {resources.map((resource, index) => (
-            <div key={resource.href}>
+        <ul className="mt-8 divide-y divide-line/70 border-t border-line">
+          {resources.map((resource) => (
+            <li key={resource.href}>
               <a
                 href={resource.href}
                 target={resource.external ? '_blank' : undefined}
                 rel={resource.external ? 'noreferrer' : undefined}
-                className="group flex items-start justify-between gap-4 py-4"
+                className="group flex items-start gap-6 py-5"
               >
                 <div className="min-w-0 space-y-1">
-                  <h3 className="text-sm font-medium leading-7 text-text transition group-hover:text-muted">
+                  <h3 className="text-[15px] font-medium text-text transition-colors group-hover:text-accent">
                     {resource.title}
                   </h3>
-                  <p className="text-sm leading-7 text-muted">{resource.description}</p>
+                  <p className="text-sm leading-7 text-secondary">{resource.description}</p>
                 </div>
-                <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-muted" />
+                <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center">
+                  {resource.external && (
+                    <ArrowUpRight
+                      strokeWidth={1.5}
+                      aria-hidden
+                      className="h-4 w-4 text-muted transition-colors group-hover:text-text"
+                    />
+                  )}
+                </span>
               </a>
-              {index < resources.length - 1 && <Separator className="h-px w-full bg-line/70" />}
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

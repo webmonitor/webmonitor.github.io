@@ -25,15 +25,33 @@ export const en: SiteContent = {
   hero: {
     eyebrow: 'Open source · self-hosted',
     title: 'WebMonitor',
+    headline: 'Page changed, email sent',
     intro:
       'Watch prices, stock, announcements and deadlines. Fill in each check in a visual dashboard, or describe what you want in one sentence; when the page changes, you get an email.',
     primary: 'Live demo',
     secondary: 'GitHub',
+    preview: {
+      label: 'Monitor',
+      counter: '#12',
+      url: 'shop.maruya-store.jp/p/8842',
+      interval: 'Every 30 min',
+      selector: '//span[@class="price"]',
+      lastCheck: 'Last check',
+      lastCheckTime: '09:12',
+      change: 'Change detected',
+      changeTime: '09:12',
+      before: '¥1,299',
+      after: '¥1,149',
+      changeNote: '¥150 below the last check',
+      emailLabel: 'Email sent',
+      emailTo: 'ops@maruya-store.jp',
+      emailSubject: 'Price change: ¥1,299 → ¥1,149',
+    },
   },
   sections: {
     projectsTitle: 'Two ways to start',
     projectsDescription:
-      'The same job — watching a page for you — with two entry points: a dashboard you fill in, and an assistant you describe it to.',
+      'Both watch prices, stock, announcements and deadlines. The difference is how you tell them what to watch.',
     resourcesTitle: 'Where to go next',
     resourcesDescription: 'The demo, the setup guide and the source.',
     startTitle: 'Three steps',
@@ -92,7 +110,14 @@ export const en: SiteContent = {
   quickStart: {
     agent: [
       'mkdir -p webmonitor-agent && cd webmonitor-agent',
-      '(for file in compose.yaml .dockerignore deploy/browser-seccomp.json deploy/minio.Dockerfile deploy/minio-artifacts.json deploy/egress.Dockerfile deploy/egress/squid.conf deploy/egress/unbound.conf deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do curl -fsSL --create-dirs "https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main/$file" -o "$file" || exit 1; done)',
+      'BASE=https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main',
+      'for file in compose.yaml .dockerignore \\',
+      '  deploy/browser-seccomp.json deploy/minio.Dockerfile \\',
+      '  deploy/minio-artifacts.json deploy/egress.Dockerfile \\',
+      '  deploy/egress/squid.conf deploy/egress/unbound.conf \\',
+      '  deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do',
+      '  curl -fsSL --create-dirs "$BASE/$file" -o "$file" || exit 1',
+      'done',
       '# Create .env from the template at /en/docs/#agent',
       'docker compose up -d --wait',
     ],
@@ -173,7 +198,7 @@ export const en: SiteContent = {
           {
             type: 'code',
             title: 'Step 1: create a deployment directory and download Compose',
-            code: 'mkdir -p webmonitor\ncd webmonitor\ncurl -fsSLo compose.yaml https://raw.githubusercontent.com/webmonitor/WebMonitor/main/compose.yaml',
+            code: 'mkdir -p webmonitor && cd webmonitor\ncurl -fsSLo compose.yaml \\\n  https://raw.githubusercontent.com/webmonitor/WebMonitor/main/compose.yaml',
             hint: 'If the download fails, check the network and the command output before starting.',
           },
           {
@@ -224,7 +249,7 @@ export const en: SiteContent = {
           {
             type: 'code',
             title: 'Step 1: download the complete set of deployment files',
-            code: 'mkdir -p webmonitor-agent\ncd webmonitor-agent\n(\n  set -e\n  for file in compose.yaml .dockerignore deploy/browser-seccomp.json deploy/minio.Dockerfile deploy/minio-artifacts.json deploy/egress.Dockerfile deploy/egress/squid.conf deploy/egress/unbound.conf deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do\n    curl -fsSL --create-dirs "https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main/$file" -o "$file"\n  done\n)',
+            code: 'mkdir -p webmonitor-agent\ncd webmonitor-agent\n(\n  set -e\n  BASE=https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main\n  for file in compose.yaml .dockerignore \\\n    deploy/browser-seccomp.json deploy/minio.Dockerfile \\\n    deploy/minio-artifacts.json deploy/egress.Dockerfile \\\n    deploy/egress/squid.conf deploy/egress/unbound.conf \\\n    deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do\n    curl -fsSL --create-dirs "$BASE/$file" -o "$file"\n  done\n)',
             hint: 'Any failed download stops the loop with an error; fix it before starting. Keep the directory layout as is and run later commands here. When updating an existing deployment, back up the files first and keep your .env.',
           },
           {

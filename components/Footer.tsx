@@ -3,10 +3,15 @@ import type { SiteContent } from '../content/types';
 
 const Footer = ({ content }: { content: SiteContent }) => {
   return (
-    <footer className="px-4 pb-8 pt-1 text-sm text-muted sm:px-6 lg:px-8">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 border-t border-line/80 px-1 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-0">
+    <footer className="px-5 pb-10 sm:px-8">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 border-t border-line pt-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
         <p>{content.footerTagline}</p>
-        <a href={shared.githubUrl} target="_blank" rel="noreferrer" className="transition hover:text-text">
+        <a
+          href={shared.githubUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="font-mono transition-colors hover:text-text"
+        >
           {content.footerLink}
         </a>
       </div>

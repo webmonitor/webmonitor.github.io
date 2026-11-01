@@ -2,7 +2,7 @@
 
 [中文首页](https://webmonitor.github.io/) · [English](https://webmonitor.github.io/en/) · [使用文档](https://webmonitor.github.io/docs/) · [组织主页](https://github.com/webmonitor)
 
-本仓库维护 WebMonitor 的中英文首页与部署文档。网站由 React、TypeScript、Vite 和 Base UI 构建，构建时预渲染为静态 HTML，通过 GitHub Pages 发布；不运行监控任务，也不保存应用账户或凭据。
+本仓库维护 WebMonitor 的中英文首页与部署文档。网站由 React、TypeScript 和 Vite 构建，构建时预渲染为静态 HTML，通过 GitHub Pages 发布；不运行监控任务，也不保存应用账户或凭据。
 
 ## 页面与语言
 
@@ -52,6 +52,7 @@ docker pull ghcr.io/webmonitor/webmonitor:1.0.3
 | `config/routes.ts` | 路由、语言与切换链接 |
 | `config/site.ts` | 组织、演示和 Logo 等共享 URL |
 | `components/Navbar.tsx`、`components/Hero.tsx` | 顶部导航与首页文字入口；首页保留在线体验、源码操作，文档通过导航进入 |
+| `components/MonitorCard.tsx` | 首屏用代码绘制的监控预览：一次变化与它发出的邮件，内容取自 `content/*.ts` 的 `hero.preview` |
 | `components/DocsPage.tsx` | 按内容数据渲染文档、表格、代码和目录 |
 | `components/Projects.tsx`、`components/GettingStarted.tsx` | 产品、资源与安装区块；快速开始保留两组命令，操作与存储说明在完整文档中 |
 | `components/Rich.tsx` | 行内代码与强调文本 |
