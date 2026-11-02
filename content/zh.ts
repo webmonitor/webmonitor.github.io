@@ -252,7 +252,7 @@ export const zh: SiteContent = {
             type: 'table',
             head: ['在 .env 中填写', '说明'],
             rows: [
-              ['`WEBMONITOR_IMAGE`', '默认 latest；想固定版本时改成 `ghcr.io/webmonitor/webmonitor-agent:1.0.3`。'],
+              ['`WEBMONITOR_IMAGE`', '默认 latest；想固定版本时改成 `ghcr.io/webmonitor/webmonitor-agent:1.1.0`。'],
               ['`POSTGRES_PASSWORD`、`SECRET_KEY`', '数据库密码，以及至少 32 字符的随机签名密钥。'],
               ['`ADMIN_EMAIL`、`ADMIN_PASSWORD`', '初始管理员账号；密码为 12–128 字符，登录时用邮箱。'],
               ['`OPENAI_API_KEY`、`OPENAI_BASE_URL`、`OPENAI_MODEL`', '模型服务的密钥、兼容接口地址和可用的模型名称。'],
