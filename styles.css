@@ -10,10 +10,7 @@
   }
 
   body {
-    margin: 0;
-    font-family: 'Noto Serif SC', 'Songti SC', 'Source Han Serif SC', serif;
-    background: #f5f3ef;
-    color: #171412;
+    @apply m-0 bg-background font-sans text-text antialiased;
   }
 
   a {
@@ -26,13 +23,149 @@
   }
 
   :focus-visible {
-    outline: 2px solid #324360;
-    outline-offset: 3px;
+    @apply outline-2 outline-offset-4 outline-accent;
+    outline-style: solid;
   }
 
   ::selection {
-    background: #324360;
-    color: #fbfaf8;
+    @apply bg-accent text-surface;
+  }
+}
+
+@layer components {
+  .site-container {
+    @apply mx-auto w-full max-w-[1200px] px-5 sm:px-8;
+  }
+
+  .skip-link {
+    @apply fixed left-4 top-4 z-50 -translate-y-24 rounded-lg bg-accent px-4 py-3 text-sm font-medium text-surface;
+    transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  .brand-link {
+    @apply inline-flex min-h-10 shrink-0 items-center gap-3 font-serif text-lg font-medium text-text;
+  }
+
+  .brand-mark {
+    @apply relative block h-6 w-6 border border-text;
+  }
+
+  .brand-mark i,
+  .comparison-mark i {
+    @apply absolute block h-0.5 bg-text;
+    content: '';
+  }
+
+  .brand-mark i:first-child {
+    @apply left-1 top-1.5 w-3;
+  }
+
+  .brand-mark i:last-child {
+    @apply bottom-1.5 right-1 w-3 bg-accent;
+  }
+
+  .comparison-mark {
+    @apply relative block h-4 w-5 shrink-0;
+  }
+
+  .comparison-mark i:first-child {
+    @apply left-0 top-1 w-3.5;
+  }
+
+  .comparison-mark i:last-child {
+    @apply bottom-1 right-0 w-3.5 bg-accent;
+  }
+
+  .language-link {
+    @apply ml-auto inline-flex h-11 items-center rounded-md px-2 font-mono text-xs text-secondary transition-colors hover:bg-raised hover:text-text sm:h-9;
+  }
+
+  .nav-link {
+    @apply inline-flex min-h-11 items-center rounded-md text-sm text-secondary transition-colors hover:text-text sm:min-h-9;
+  }
+
+  .nav-link[aria-current='page'] {
+    @apply font-medium text-accent;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-sm text-muted;
+  }
+
+  .button-primary,
+  .button-secondary {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-medium;
+  }
+
+  .button-primary {
+    @apply bg-accent text-surface hover:bg-accentDeep;
+  }
+
+  .button-secondary {
+    @apply border border-line bg-surface text-secondary hover:border-secondary hover:text-text;
+  }
+
+  .pressable {
+    @apply duration-150;
+    transition-property: transform, background-color, border-color, color;
+    transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .pressable:active {
+    transform: scale(0.98);
+  }
+
+  .monitor-preview {
+    @apply w-full overflow-hidden rounded-2xl border border-line bg-surface shadow-card;
+  }
+
+  .diff-row {
+    @apply grid grid-cols-[20px_56px_minmax(0,1fr)] items-baseline gap-2 px-4 py-4;
+  }
+
+  .diff-symbol {
+    @apply font-mono text-lg;
+  }
+
+  .section-block {
+    @apply py-16 lg:py-24;
+  }
+
+  .link-row {
+    @apply flex items-start gap-4 py-6 sm:gap-6 sm:py-8;
+  }
+
+  .link-row-marker {
+    @apply w-8 shrink-0 pt-1 font-mono text-xs tabular-nums text-accent;
+  }
+
+  .install-row {
+    @apply grid gap-5 border-b border-line py-8 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-8 lg:grid-cols-[224px_minmax(0,1fr)] lg:gap-12;
+  }
+
+  .code-surface {
+    @apply m-0 max-w-full overflow-x-auto rounded-xl bg-code px-5 py-4 font-mono text-xs leading-6 text-codeText;
+    tab-size: 2;
+  }
+
+  .doc-table-region {
+    @apply w-full overflow-x-auto;
+  }
+
+  .doc-list {
+    @apply space-y-3 pl-6 marker:text-accent;
+  }
+
+  .doc-link {
+    @apply inline-flex items-center gap-2 font-medium text-accent underline decoration-line underline-offset-4 transition-colors hover:decoration-accent;
+  }
+
+  .toc-link {
+    @apply flex items-start gap-2 rounded-md px-2 py-2 leading-6 text-secondary transition-colors hover:bg-raised hover:text-text;
   }
 }
 
@@ -49,11 +182,35 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
   .rise {
-    animation: rise 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: rise 360ms cubic-bezier(0.23, 1, 0.32, 1) both;
   }
 
   .rise-2 {
-    animation-delay: 60ms;
+    animation-delay: 70ms;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .rise {
+    animation: none;
+  }
+
+  .pressable,
+  .skip-link {
+    transition: none;
+  }
+
+  .pressable:active {
+    transform: none;
+  }
+}
+

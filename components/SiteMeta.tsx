@@ -30,21 +30,29 @@ const upsertLink = (selector: string, attributes: Record<string, string>) => {
 
 const SiteMeta = ({ content, pathname }: { content: SiteContent; pathname: string }) => {
   useEffect(() => {
-    document.documentElement.lang = content.htmlLang;
-    document.title = content.title;
+    const onDocs = pathname.includes('/docs');
+    const title = onDocs ? content.docs.title : content.title;
+    const description = onDocs ? content.docs.description : content.description;
+    const keywords = onDocs ? content.docs.keywords : content.keywords;
+    const url = `${shared.siteUrl}${pathname}`;
 
-    upsertMeta('meta[name="description"]', { name: 'description', content: content.description });
-    upsertMeta('meta[name="keywords"]', { name: 'keywords', content: content.keywords.join(',') });
-    upsertMeta('meta[property="og:title"]', { property: 'og:title', content: content.title });
-    upsertMeta('meta[property="og:description"]', { property: 'og:description', content: content.description });
-    upsertMeta('meta[property="og:url"]', { property: 'og:url', content: `https://webmonitor.github.io${pathname}` });
+    document.documentElement.lang = content.htmlLang;
+    document.title = title;
+
+    upsertMeta('meta[name="description"]', { name: 'description', content: description });
+    upsertMeta('meta[name="keywords"]', { name: 'keywords', content: keywords.join(',') });
+    upsertMeta('meta[property="og:title"]', { property: 'og:title', content: title });
+    upsertMeta('meta[property="og:description"]', { property: 'og:description', content: description });
+    upsertMeta('meta[property="og:type"]', { property: 'og:type', content: onDocs ? 'article' : 'website' });
+    upsertMeta('meta[property="og:url"]', { property: 'og:url', content: url });
     upsertMeta('meta[property="og:image"]', { property: 'og:image', content: shared.logoUrl });
     upsertMeta('meta[property="og:site_name"]', { property: 'og:site_name', content: content.hero.title });
     upsertMeta('meta[property="og:locale"]', { property: 'og:locale', content: content.lang === 'zh' ? 'zh_CN' : 'en_US' });
-    upsertMeta('meta[name="twitter:title"]', { name: 'twitter:title', content: content.title });
-    upsertMeta('meta[name="twitter:description"]', { name: 'twitter:description', content: content.description });
+    upsertMeta('meta[name="twitter:card"]', { name: 'twitter:card', content: 'summary_large_image' });
+    upsertMeta('meta[name="twitter:title"]', { name: 'twitter:title', content: title });
+    upsertMeta('meta[name="twitter:description"]', { name: 'twitter:description', content: description });
     upsertMeta('meta[name="twitter:image"]', { name: 'twitter:image', content: shared.logoUrl });
-    upsertLink('link[rel="canonical"]', { rel: 'canonical', href: `https://webmonitor.github.io${pathname}` });
+    upsertLink('link[rel="canonical"]', { rel: 'canonical', href: url });
   }, [content, pathname]);
 
   return null;

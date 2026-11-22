@@ -1,9 +1,7 @@
-import Navbar from './components/Navbar';
+import GettingStarted from './components/GettingStarted';
 import Hero from './components/Hero';
 import Projects from './components/Projects';
-import GettingStarted from './components/GettingStarted';
-import Footer from './components/Footer';
-import SiteMeta from './components/SiteMeta';
+import SiteLayout from './components/SiteLayout';
 import { contentByLang } from './content';
 import type { Lang } from './content/types';
 
@@ -16,18 +14,13 @@ const App = ({ lang, pathname }: AppProps) => {
   const content = contentByLang[lang];
 
   return (
-    <div className="min-h-screen bg-background text-text">
-      <SiteMeta content={content} pathname={pathname} />
-      <Navbar lang={lang} pathname={pathname} />
-      <main className="px-5 pb-16 sm:px-8">
-        <div className="mx-auto w-full max-w-6xl">
-          <Hero content={content} />
-          <Projects content={content} />
-          <GettingStarted content={content} />
-        </div>
+    <SiteLayout lang={lang} pathname={pathname}>
+      <main id="main-content" className="site-container">
+        <Hero content={content} />
+        <Projects content={content} />
+        <GettingStarted content={content} />
       </main>
-      <Footer content={content} />
-    </div>
+    </SiteLayout>
   );
 };
 

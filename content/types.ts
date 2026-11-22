@@ -65,12 +65,16 @@ export interface SiteContent {
       lastCheckTime: string;
       change: string;
       changeTime: string;
+      beforeLabel: string;
+      afterLabel: string;
       before: string;
       after: string;
       changeNote: string;
-      emailLabel: string;
-      emailTo: string;
-      emailSubject: string;
+      evidenceLabel: string;
+      evidenceValue: string;
+      deliveryLabel: string;
+      deliveryTarget: string;
+      deliverySubject: string;
     };
   };
   sections: {
@@ -92,6 +96,7 @@ export interface SiteContent {
   docs: {
     title: string;
     description: string;
+    keywords: string[];
     heading: string;
     intro: string;
     contents: string;

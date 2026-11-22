@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="scroll-smooth">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WebMonitor 文档 | 安装、首次监控与邮件通知</title>
-    <meta name="description" content="从选择项目到第一封变化邮件：准备 Docker、下载部署文件、创建 .env、启动服务，再完成首次监控、邮件配置、任务管理、故障排查与数据保留。" />
-    <meta name="keywords" content="WebMonitor 文档,网页监控安装,Docker 部署,邮件通知,首次监控,WebMonitor-Agent,任务管理,数据备份" />
+    <title>WebMonitor 文档 | 安装、首次监控与通知设置</title>
+    <meta name="description" content="从选择项目到第一次变化通知：准备 Docker、下载部署文件、创建 .env、启动服务，再完成首次监控、邮件与 HTTPS Webhook 配置、任务管理、故障排查与数据保留。" />
+    <meta name="keywords" content="WebMonitor 文档,网页监控安装,Docker 部署,邮件通知,HTTPS Webhook,WebMonitor-Agent,数据备份" />
     <meta name="author" content="WebMonitor" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#f5f3ef" />
+    <meta name="theme-color" content="#f4f1ea" />
 
-    <meta property="og:title" content="WebMonitor 文档 | 安装、首次监控与邮件通知" />
-    <meta property="og:description" content="从选择项目到第一封变化邮件：准备 Docker、下载部署文件、创建 .env、启动服务，再完成首次监控、邮件配置、任务管理、故障排查与数据保留。" />
+    <meta property="og:title" content="WebMonitor 文档 | 安装、首次监控与通知设置" />
+    <meta property="og:description" content="从选择项目到第一次变化通知：准备 Docker、下载部署文件、创建 .env、启动服务，再完成首次监控、邮件与 HTTPS Webhook 配置、任务管理、故障排查与数据保留。" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://webmonitor.github.io/docs/" />
     <meta property="og:image" content="https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png" />
     <meta property="og:site_name" content="WebMonitor" />
     <meta property="og:locale" content="zh_CN" />
     <meta property="og:locale:alternate" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="WebMonitor 文档 | 安装、首次监控与通知设置" />
+    <meta name="twitter:description" content="从选择项目到第一次变化通知：准备 Docker、下载部署文件、创建 .env、启动服务，再完成首次监控、邮件与 HTTPS Webhook 配置、任务管理、故障排查与数据保留。" />
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png" />
 
     <link rel="canonical" href="https://webmonitor.github.io/docs/" />
     <link rel="alternate" hreflang="zh-CN" href="https://webmonitor.github.io/docs/" />
@@ -27,15 +32,15 @@
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@graph": [
           {
             "@type": "TechArticle",
-            "headline": "WebMonitor 文档 | 安装、首次监控与邮件通知",
-            "description": "从选择项目到第一封变化邮件：准备 Docker、下载部署文件、创建 .env、启动服务，再完成首次监控、邮件配置、任务管理、故障排查与数据保留。",
+            "headline": "WebMonitor 文档 | 安装、首次监控与通知设置",
+            "description": "从选择项目到第一次变化通知：准备 Docker、下载部署文件、创建 .env、启动服务，再完成首次监控、邮件与 HTTPS Webhook 配置、任务管理、故障排查与数据保留。",
             "inLanguage": "zh-CN",
             "url": "https://webmonitor.github.io/docs/",
             "mainEntityOfPage": "https://webmonitor.github.io/docs/",

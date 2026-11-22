@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="scroll-smooth">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WebMonitor | 网页变化监控与邮件提醒</title>
-    <meta name="description" content="盯住价格、库存、公告与截止日期：在可视化工作台里逐项配置，或一句话交给对话助手；页面变化时发邮件提醒。开源、可自行部署，普通安装无需克隆仓库。" />
-    <meta name="keywords" content="WebMonitor,网页监控,网页变化提醒,邮件通知,自部署,开源,XPath,网页监控安装" />
+    <title>WebMonitor | 网页变化监控与通知</title>
+    <meta name="description" content="盯住价格、库存、公告与截止日期：用 XPath 工作台或对话助手创建监控，查看变化证据；变化时可发邮件，Agent 也支持 HTTPS Webhook。开源、可自行部署，普通安装无需克隆仓库。" />
+    <meta name="keywords" content="WebMonitor,网页监控,网页变化提醒,邮件通知,HTTPS Webhook,自部署,开源,XPath" />
     <meta name="author" content="WebMonitor" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#f5f3ef" />
+    <meta name="theme-color" content="#f4f1ea" />
 
-    <meta property="og:title" content="WebMonitor | 网页变化监控与邮件提醒" />
-    <meta property="og:description" content="盯住价格、库存、公告与截止日期：在可视化工作台里逐项配置，或一句话交给对话助手；页面变化时发邮件提醒。开源、可自行部署，普通安装无需克隆仓库。" />
+    <meta property="og:title" content="WebMonitor | 网页变化监控与通知" />
+    <meta property="og:description" content="盯住价格、库存、公告与截止日期：用 XPath 工作台或对话助手创建监控，查看变化证据；变化时可发邮件，Agent 也支持 HTTPS Webhook。开源、可自行部署，普通安装无需克隆仓库。" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://webmonitor.github.io/" />
     <meta property="og:image" content="https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png" />
@@ -20,8 +20,8 @@
     <meta property="og:locale:alternate" content="en_US" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="WebMonitor | 网页变化监控与邮件提醒" />
-    <meta name="twitter:description" content="盯住价格、库存、公告与截止日期：在可视化工作台里逐项配置，或一句话交给对话助手；页面变化时发邮件提醒。开源、可自行部署，普通安装无需克隆仓库。" />
+    <meta name="twitter:title" content="WebMonitor | 网页变化监控与通知" />
+    <meta name="twitter:description" content="盯住价格、库存、公告与截止日期：用 XPath 工作台或对话助手创建监控，查看变化证据；变化时可发邮件，Agent 也支持 HTTPS Webhook。开源、可自行部署，普通安装无需克隆仓库。" />
     <meta name="twitter:image" content="https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png" />
 
     <link rel="canonical" href="https://webmonitor.github.io/" />
@@ -32,7 +32,7 @@
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -43,7 +43,7 @@
             "name": "WebMonitor",
             "url": "https://webmonitor.github.io/",
             "logo": "https://raw.githubusercontent.com/webmonitor/.github/main/image/logo.png",
-            "description": "可自行部署的网页变化监控与邮件提醒项目，盯住价格、库存、公告与截止日期，变化时发送邮件。",
+            "description": "可自行部署的网页变化监控项目，保留价格、库存、公告与截止日期的变化对照，并发送邮件或 Agent HTTPS Webhook 通知。",
             "sameAs": ["https://github.com/webmonitor"]
           },
           {
@@ -70,7 +70,7 @@
             "applicationCategory": "WebApplication",
             "operatingSystem": "Docker",
             "url": "https://github.com/webmonitor/WebMonitor-Agent",
-            "description": "用对话描述监控需求，预览真实采集后确认启用，按条件发送邮件提醒。",
+            "description": "用对话描述监控需求，预览真实采集后确认启用，按条件发送邮件或 HTTPS Webhook 通知。",
             "isAccessibleForFree": true,
             "license": "https://creativecommons.org/licenses/by-nc/4.0/"
           }

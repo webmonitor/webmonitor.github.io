@@ -3,10 +3,10 @@ import type { SiteContent } from './types';
 export const zh: SiteContent = {
   lang: 'zh',
   htmlLang: 'zh-CN',
-  title: 'WebMonitor | 网页变化监控与邮件提醒',
+  title: 'WebMonitor | 网页变化监控与通知',
   description:
-    '盯住价格、库存、公告与截止日期：在可视化工作台里逐项配置，或一句话交给对话助手；页面变化时发邮件提醒。开源、可自行部署，普通安装无需克隆仓库。',
-  keywords: ['WebMonitor', '网页监控', '网页变化提醒', '邮件通知', '自部署', '开源', 'XPath', '网页监控安装'],
+    '盯住价格、库存、公告与截止日期：用 XPath 工作台或对话助手创建监控，查看变化证据；变化时可发邮件，Agent 也支持 HTTPS Webhook。开源、可自行部署，普通安装无需克隆仓库。',
+  keywords: ['WebMonitor', '网页监控', '网页变化提醒', '邮件通知', 'HTTPS Webhook', '自部署', '开源', 'XPath'],
   nav: {
     github: 'GitHub',
     demo: '在线体验',
@@ -16,32 +16,36 @@ export const zh: SiteContent = {
   hero: {
     eyebrow: '开源 · 可自行部署',
     title: 'WebMonitor',
-    headline: '页面变了，邮件就到',
+    headline: '网页有变化，通知有依据',
     intro:
-      '盯住价格、库存、公告和截止日期。在可视化工作台里逐项填写，或用一句话说明需求；页面变化时，邮件提醒你。',
+      '盯住价格、库存、公告和截止日期。用 XPath 框定区域，或用一句话描述需求；保留前后对照，变化时发送邮件，Agent 也可投递 HTTPS Webhook。',
     primary: '在线体验',
     secondary: 'GitHub',
     preview: {
-      label: '监控',
+      label: 'Agent 监控',
       counter: '#12',
       url: 'shop.maruya-store.jp/p/8842',
-      interval: '每 30 分钟',
-      selector: '//span[@class="price"]',
+      interval: '部署默认频率',
+      selector: '价格下降时通知',
       lastCheck: '上次检查',
       lastCheckTime: '09:12',
       change: '检测到变化',
       changeTime: '09:12',
+      beforeLabel: '之前',
+      afterLabel: '之后',
       before: '¥1,299',
       after: '¥1,149',
       changeNote: '比上次检查低 ¥150',
-      emailLabel: '邮件已发送',
-      emailTo: 'ops@maruya-store.jp',
-      emailSubject: '价格变化：¥1,299 → ¥1,149',
+      evidenceLabel: '变化证据',
+      evidenceValue: '文本对照 · 09:12',
+      deliveryLabel: '通知已投递',
+      deliveryTarget: '邮件 · HTTPS Webhook',
+      deliverySubject: '价格变化：¥1,299 → ¥1,149',
     },
   },
   sections: {
     projectsTitle: '两种用法，选一个开始',
-    projectsDescription: '都能盯价格、库存、公告和截止日期；区别只在怎么告诉它看什么：逐项填写，或者一句话。',
+    projectsDescription: '都能盯价格、库存、公告和截止日期。WebMonitor 用 XPath 框定区域并发送邮件；Agent 用对话整理条件，支持邮件与 HTTPS Webhook。',
     resourcesTitle: '相关入口',
     resourcesDescription: '演示站点、安装文档与源码入口。',
     startTitle: '三步开始',
@@ -63,8 +67,8 @@ export const zh: SiteContent = {
       tag: '对话式监控',
       href: 'https://github.com/webmonitor/WebMonitor-Agent',
       description:
-        '粘贴链接，用一句话说明看什么、多久看一次、什么情况下通知。助手先打开页面试采集，核对内容与收件人后再创建监控；价格阈值、补货和列表新增都能交给条件规则。',
-      stack: ['对话创建', '条件通知', '截图与页面存档'],
+        '粘贴链接，用一句话说明看什么、什么情况下通知。助手先打开页面试采集，核对内容与通知方式后再创建监控；价格阈值、补货和列表新增都能交给条件规则。',
+      stack: ['对话创建', '条件通知', '邮件与 HTTPS Webhook', '截图与页面存档'],
       license: 'CC BY-NC 4.0',
     },
   ],
@@ -78,7 +82,7 @@ export const zh: SiteContent = {
     {
       title: '部署与配置文档',
       href: '/docs/',
-      description: '从准备 Docker 到第一封提醒：安装、邮件、任务管理、排错与数据保留。',
+      description: '从准备 Docker 到第一次提醒：安装、邮件与 Webhook、任务管理、排错与数据保留。',
     },
     {
       title: 'WebMonitor 指南',
@@ -104,7 +108,7 @@ export const zh: SiteContent = {
       'for file in compose.yaml .dockerignore \\',
       '  deploy/browser-seccomp.json deploy/minio.Dockerfile \\',
       '  deploy/minio-artifacts.json deploy/egress.Dockerfile \\',
-      '  deploy/egress/squid.conf deploy/egress/unbound.conf \\',
+      '  deploy/egress/squid.conf \\',
       '  deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do',
       '  curl -fsSL --create-dirs "$BASE/$file" -o "$file" || exit 1',
       'done',
@@ -118,15 +122,16 @@ export const zh: SiteContent = {
       'docker compose up -d --wait',
     ],
   },
-  footerTagline: 'WebMonitor · 网页变化监控与邮件提醒',
+  footerTagline: 'WebMonitor · 网页变化监控与通知',
   footerLink: 'github.com/webmonitor',
   docs: {
-    title: 'WebMonitor 文档 | 安装、首次监控与邮件通知',
+    title: 'WebMonitor 文档 | 安装、首次监控与通知设置',
     description:
-      '从选择项目到第一封变化邮件：准备 Docker、下载部署文件、创建 .env、启动服务，再完成首次监控、邮件配置、任务管理、故障排查与数据保留。',
-    heading: '安装与使用',
+      '从选择项目到第一次变化通知：准备 Docker、下载部署文件、创建 .env、启动服务，再完成首次监控、邮件与 HTTPS Webhook 配置、任务管理、故障排查与数据保留。',
+    keywords: ['WebMonitor 文档', '网页监控安装', 'Docker 部署', '邮件通知', 'HTTPS Webhook', 'WebMonitor-Agent', '数据备份'],
+    heading: '安装与使用手册',
     intro:
-      '先选一个项目，准备 Docker 和它需要的外部服务，然后按三步完成安装：下载文件、创建 .env、执行 docker compose up -d --wait。安装完成后照着步骤创建第一个监控，邮件、日常管理和排错都写在后面。',
+      '先选一个项目，准备 Docker 和它需要的外部服务，再按三步完成安装：下载文件、创建 .env、执行 docker compose up -d --wait。随后按手册创建第一个监控，并配置邮件或 Agent 的 HTTPS Webhook；日常管理、排错和数据边界都在后面。',
     contents: '目录',
     sections: [
       {
@@ -164,7 +169,7 @@ export const zh: SiteContent = {
             head: ['项目', '还要准备', '安装后访问'],
             rows: [
               ['WebMonitor', '一个可发信的邮箱和它的 SMTP 信息（配置通知时用）', 'http://localhost:8000'],
-              ['WebMonitor-Agent', '兼容 OpenAI Chat Completions 的模型服务：接口地址、密钥、模型名；邮件通知可选', 'http://localhost:8080'],
+              ['WebMonitor-Agent', '兼容 OpenAI Chat Completions 的模型服务：接口地址、密钥、模型名；通知方式可选', 'http://localhost:8080'],
             ],
           },
           {
@@ -239,7 +244,7 @@ export const zh: SiteContent = {
           {
             type: 'code',
             title: '第 1 步：下载完整部署文件',
-            code: 'mkdir -p webmonitor-agent\ncd webmonitor-agent\n(\n  set -e\n  BASE=https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main\n  for file in compose.yaml .dockerignore \\\n    deploy/browser-seccomp.json deploy/minio.Dockerfile \\\n    deploy/minio-artifacts.json deploy/egress.Dockerfile \\\n    deploy/egress/squid.conf deploy/egress/unbound.conf \\\n    deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do\n    curl -fsSL --create-dirs "$BASE/$file" -o "$file"\n  done\n)',
+            code: 'mkdir -p webmonitor-agent\ncd webmonitor-agent\n(\n  set -e\n  BASE=https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main\n  for file in compose.yaml .dockerignore \\\n    deploy/browser-seccomp.json deploy/minio.Dockerfile \\\n    deploy/minio-artifacts.json deploy/egress.Dockerfile \\\n    deploy/egress/squid.conf \\\n    deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do\n    curl -fsSL --create-dirs "$BASE/$file" -o "$file"\n  done\n)',
             hint: '任一下载失败都会报错并停止，先解决再启动。目录结构保持原样，后续命令都在这个目录里执行。更新已有部署时先备份文件，保留自己的 .env。',
           },
           {
@@ -309,10 +314,11 @@ export const zh: SiteContent = {
             ordered: true,
             items: [
               '登录后在左侧点「新对话」。',
-              '把网址和要求一起说清楚：看什么、多久检查一次、什么条件下通知。例如：「监控这个页面的价格，降价 10% 时邮件提醒我。」',
+              '把网址和要求一起说清楚：看什么、什么条件下通知。例如：「监控这个页面的价格，降价 10% 时邮件提醒我。」',
               '助手会打开页面试采集一次，稍等它读取页面并整理监控设置。',
               '在「创建监控」卡片里核对采集到的内容、通知条件、收件人和邮件预览；不满意可以点「重新预览」。',
-              '点「创建监控」，开始定时检查。',
+              '点「创建监控」，开始定时检查。新监控使用部署默认检查频率。',
+              '打开监控页的「投递设置」，修改检查频率，并配置邮件通知组或 HTTPS Webhook。',
             ],
           },
           {
@@ -321,24 +327,24 @@ export const zh: SiteContent = {
           },
           {
             type: 'note',
-            text: '第一次成功采集用于建立基线，不发变化邮件；从第二次采集开始比较。采集失败时保留上一次成功的内容作为比较依据。预览不会发送邮件。',
+            text: '第一次成功采集用于建立基线，不发变化通知；从第二次采集开始比较。采集失败时保留上一次成功的内容作为比较依据。预览不会发送通知。',
           },
         ],
       },
       {
         id: 'email',
-        title: '配置邮件通知',
+        title: '配置邮件与 Webhook',
         blocks: [
           {
             type: 'paragraph',
-            text: '两个项目的邮件配置方式不同：WebMonitor 由每位用户在应用里填写 SMTP 和收件人；Agent 的 SMTP 属于整套部署，收件人由管理员在通知组里维护。不配置邮件也能采集和查看变化，只是收不到提醒。',
+            text: 'WebMonitor 仅支持邮件，由每位用户在应用里填写 SMTP 和收件人。Agent 支持邮件与 HTTPS Webhook：SMTP 属于整套部署，邮件收件人由管理员在通知组里维护，Webhook 在监控页的「投递设置」中配置。不配置通知也能采集和查看变化。',
           },
           {
             type: 'table',
-            head: ['项目', '在哪里配置', '谁收到邮件'],
+            head: ['项目', '邮件在哪里配置', '其他投递方式'],
             rows: [
-              ['WebMonitor', '登录后的「邮件配置」页', '该配置里填写的接收者邮箱'],
-              ['WebMonitor-Agent', '部署目录的 .env，以及「通知」里的通知组', '所选通知组里的邮箱'],
+              ['WebMonitor', '登录后的「邮件配置」页', '无，仅支持邮件'],
+              ['WebMonitor-Agent', '部署目录的 .env，以及「通知」里的通知组', '监控页「投递设置」中的 HTTPS Webhook'],
             ],
           },
           {
@@ -347,11 +353,15 @@ export const zh: SiteContent = {
           },
           {
             type: 'paragraph',
-            text: '**WebMonitor-Agent：** 在 `.env` 里填写 `SMTP_HOST`、`SMTP_PORT`、`SMTP_USERNAME`、`SMTP_PASSWORD` 和 `MAIL_FROM`，改完执行 `docker compose up -d --wait` 让配置生效。然后用管理员登录，打开「通知」→「通知组」，点「新建」，填写名称和收件人（每行一个邮箱，也可以用逗号或空格分隔）。创建或修改监控时，在「收件人」里选择通知组；一个监控可以通知多个邮箱。',
+            text: '**WebMonitor-Agent 邮件：** 在 `.env` 里填写 `SMTP_HOST`、`SMTP_PORT`、`SMTP_USERNAME`、`SMTP_PASSWORD` 和 `MAIL_FROM`，改完执行 `docker compose up -d --wait` 让配置生效。然后用管理员登录，打开「通知」→「通知组」，点「新建」，填写名称和收件人（每行一个邮箱，也可以用逗号或空格分隔）。创建或修改监控时，在「收件人」里选择通知组；一个监控可以通知多个邮箱。',
+          },
+          {
+            type: 'paragraph',
+            text: '**WebMonitor-Agent Webhook：** 打开监控页的「投递设置」，填写接收通知的 HTTPS URL。Webhook 不依赖 SMTP；WebMonitor 没有 Webhook 投递方式。',
           },
           {
             type: 'note',
-            text: '投递记录里的「已发送」表示邮件服务器已接收。没收到邮件时，先查垃圾邮件，再看「通知」页的投递记录和失败原因。',
+            text: '邮件投递记录里的「已发送」表示邮件服务器已接收。没收到邮件时先查垃圾邮件；邮件与 Webhook 的投递状态和失败原因都可以在「通知」页检查。',
           },
         ],
       },
@@ -379,9 +389,9 @@ export const zh: SiteContent = {
           {
             type: 'list',
             items: [
-              '「监控」列表打开任一监控，查看当前内容、最近检查和事件；用「暂停」「恢复」「立即检查」「修改设置」控制它。',
+              '「监控」列表打开任一监控，查看当前内容、最近检查和事件；用「暂停」「恢复」「立即检查」「修改设置」控制它，在「投递设置」调整检查频率与投递方式。',
               '「事件」记录变化、采集失败和恢复，可以只看「未读」，看完点「标为已读」。',
-              '「通知」里维护通知组，并查看每封邮件的收件人、状态和失败原因。',
+              '「通知」里维护通知组，并查看邮件与 Webhook 的状态和失败原因。',
               '成员由管理员邀请，通过邀请链接注册。',
             ],
           },
@@ -401,7 +411,7 @@ export const zh: SiteContent = {
               '**Agent 没有管理员，或新成员注册不了：** 在部署目录执行 `docker compose exec api webmonitor admin-create --email you@example.com` 创建管理员，或执行 `docker compose exec api webmonitor invite-create --email member@example.com --ttl-hours 24` 生成一次性邀请链接。链接过期或邮箱不匹配都不能用。',
               '**WebMonitor 提取不到内容：** 先用「测试监控」检查 XPath 是否选中了真正包含文字的元素；需要登录才能看到的内容无法直接监控。',
               '**Agent 预览失败或提示地址不允许：** 目标必须是公网 http/https 地址（80 或 443 端口）。站点打不开、拦爬虫、需要登录，或内容在 iframe / Shadow DOM 里时都可能失败；模型服务不可用也会让对话中断。',
-              '**没有收到邮件：** WebMonitor 先在「邮件配置」点「测试连接」；Agent 检查 `.env` 的 SMTP 设置和通知组收件人。也看看垃圾邮件和投递记录。',
+              '**没有收到通知：** WebMonitor 先在「邮件配置」点「测试连接」；Agent 检查 `.env` 的 SMTP 设置、通知组收件人和监控页的 HTTPS Webhook。邮件也看看垃圾邮件，所有投递都要检查状态和失败原因。',
               '**更新后打不开：** 检查服务日志，然后重新执行启动命令。',
             ],
           },
@@ -478,10 +488,10 @@ export const zh: SiteContent = {
             head: ['情况', '你会遇到什么'],
             rows: [
               ['Agent 只能访问公网页面', '内网、localhost、元数据地址和 80/443 以外的端口会被拒绝。'],
-              ['Agent 检查频率', '间隔可设 1 分钟到 24 小时。'],
+              ['Agent 检查频率', '创建时使用部署默认频率；之后在监控页「投递设置」修改。'],
               ['iframe 与 Shadow DOM', '里面的内容不会被提取；预览会显示实际覆盖范围。'],
               ['浏览器采集', '浏览器沙箱不可用时，这次采集失败，不自动改用其他采集方式。'],
-              ['通知渠道', '两个项目都只发送邮件，没有短信或 webhook。'],
+              ['通知渠道', 'Agent 支持邮件与 HTTPS Webhook；WebMonitor 仅支持邮件。两个项目都不支持短信。'],
             ],
           },
         ],

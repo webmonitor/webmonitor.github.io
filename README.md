@@ -33,7 +33,8 @@ docker pull ghcr.io/webmonitor/webmonitor:1.0.3
 
 修改官网文档时，同时维护以下事实：
 
-- Agent 应用只有一个镜像；S3 和出口代理辅助镜像仍用下载的部署文件在本地构建。下载清单须包含完整代理、DNS、入口脚本、seccomp、Dockerfile 和 `.dockerignore`，并保留相对目录。
+- Agent 应用只有一个镜像；S3 和出口代理辅助镜像仍用下载的部署文件在本地构建。下载清单须包含完整代理、入口脚本、seccomp、Dockerfile 和 `.dockerignore`，并保留相对目录。
+- Agent 创建监控时使用部署默认检查频率，之后在监控页「投递设置」修改；Agent 支持邮件与 HTTPS Webhook，WebMonitor 仅支持邮件。中英文首页、使用步骤、管理说明与边界表必须保持一致。
 - Agent 随附 PostgreSQL 与 MinIO 为临时存储；原版 SQLite 默认位于容器内，未挂载数据卷。升级说明必须提示数据保留与备份限制。
 - 普通启动、日志与更新命令无需额外 `-f`。源码开发才克隆仓库，并加载 `compose.build.yaml`。`.env` 模板分别给出所需变量，密钥和密码由用户自行填写，已有文件不能覆盖。
 - 两个产品分别维护版本与发布记录。改版本示例时，同步中英文内容；不要用 Agent 的发布页代表原版发布页。
@@ -51,10 +52,12 @@ docker pull ghcr.io/webmonitor/webmonitor:1.0.3
 | `content/index.ts` | 按语言选择内容 |
 | `config/routes.ts` | 路由、语言与切换链接 |
 | `config/site.ts` | 组织、演示和 Logo 等共享 URL |
-| `components/Navbar.tsx`、`components/Hero.tsx` | 顶部导航与首页文字入口；首页保留在线体验、源码操作，文档通过导航进入 |
-| `components/MonitorCard.tsx` | 首屏用代码绘制的监控预览：一次变化与它发出的邮件，内容取自 `content/*.ts` 的 `hero.preview` |
-| `components/DocsPage.tsx` | 按内容数据渲染文档、表格、代码和目录 |
+| `components/SiteLayout.tsx`、`components/SiteMeta.tsx` | 四个路由共享的页面骨架、跳转正文链接与运行时元信息 |
+| `components/Navbar.tsx`、`components/Hero.tsx` | 响应式顶部导航与首页文字入口；首页保留在线体验、源码操作，文档通过导航进入 |
+| `components/MonitorCard.tsx` | 首屏用代码绘制的监控预览：变化前后、文本证据和邮件/Webhook 投递，内容取自 `content/*.ts` 的 `hero.preview` |
+| `components/DocsPage.tsx` | 按内容数据渲染文档、表格、代码和双语目录 |
 | `components/Projects.tsx`、`components/GettingStarted.tsx` | 产品、资源与安装区块；快速开始保留两组命令，操作与存储说明在完整文档中 |
+| `components/LinkList.tsx`、`components/SectionHeading.tsx` | 首页链接行与章节标题的共享渲染，避免产品和资源区块重复 |
 | `components/Rich.tsx` | 行内代码与强调文本 |
 | 四个路由的 `index.html` | 静态标题、描述、canonical、hreflang、Open Graph 与 JSON-LD |
 | `entry-server.tsx`、`scripts/prerender.mjs` | 构建时生成页面正文 |
@@ -79,9 +82,12 @@ npm run dev
 
 ```sh
 npm run typecheck
+npm test
 npm run build
 npm run preview
 ```
+
+`npm test` 使用 Node.js 内置测试运行器，确定性检查下载清单、频率与通知事实、双语章节锚点、四路由静态元信息、sitemap 和预渲染入口。
 
 `build` 依次构建客户端、构建 SSR 入口，再执行预渲染。`dist/` 为发布产物，`dist-ssr/` 为预渲染使用的中间产物；两者都不应手工编辑。四个页面的正文在生成的 HTML 中，无需等待客户端 JavaScript 才能出现。站点地图的 `lastmod` 应反映实际页面维护日期。
 

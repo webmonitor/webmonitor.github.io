@@ -3,18 +3,18 @@ import type { SiteContent } from './types';
 export const en: SiteContent = {
   lang: 'en',
   htmlLang: 'en',
-  title: 'WebMonitor | Web change monitoring with email alerts',
+  title: 'WebMonitor | Web change monitoring and alerts',
   description:
-    'Watch prices, stock, announcements and deadlines: configure each check in a visual dashboard, or describe what you want in one sentence. Get an email when the page changes. Open source, self-hostable, and no clone needed for a normal install.',
+    'Watch prices, stock, announcements and deadlines with an XPath dashboard or a conversational assistant, and review the evidence behind each change. Get email alerts, or HTTPS Webhooks with Agent. Open source, self-hostable, and no clone needed for a normal install.',
   keywords: [
     'WebMonitor',
     'web monitoring',
     'page change alerts',
     'email notifications',
+    'HTTPS Webhook',
     'self-hosted',
     'open source',
     'XPath',
-    'install web monitor',
   ],
   nav: {
     github: 'GitHub',
@@ -25,33 +25,37 @@ export const en: SiteContent = {
   hero: {
     eyebrow: 'Open source · self-hosted',
     title: 'WebMonitor',
-    headline: 'Page changed, email sent',
+    headline: 'A page changes. You get the evidence.',
     intro:
-      'Watch prices, stock, announcements and deadlines. Fill in each check in a visual dashboard, or describe what you want in one sentence; when the page changes, you get an email.',
+      'Watch prices, stock, announcements and deadlines. Select a region with XPath or describe your request in one sentence; compare before and after, then receive email or, with Agent, an HTTPS Webhook.',
     primary: 'Live demo',
     secondary: 'GitHub',
     preview: {
-      label: 'Monitor',
+      label: 'Agent monitor',
       counter: '#12',
       url: 'shop.maruya-store.jp/p/8842',
-      interval: 'Every 30 min',
-      selector: '//span[@class="price"]',
+      interval: 'Deployment default',
+      selector: 'Notify when the price drops',
       lastCheck: 'Last check',
       lastCheckTime: '09:12',
       change: 'Change detected',
       changeTime: '09:12',
+      beforeLabel: 'Before',
+      afterLabel: 'After',
       before: '¥1,299',
       after: '¥1,149',
       changeNote: '¥150 below the last check',
-      emailLabel: 'Email sent',
-      emailTo: 'ops@maruya-store.jp',
-      emailSubject: 'Price change: ¥1,299 → ¥1,149',
+      evidenceLabel: 'Change evidence',
+      evidenceValue: 'Text comparison · 09:12',
+      deliveryLabel: 'Notification delivered',
+      deliveryTarget: 'Email · HTTPS Webhook',
+      deliverySubject: 'Price change: ¥1,299 → ¥1,149',
     },
   },
   sections: {
     projectsTitle: 'Two ways to start',
     projectsDescription:
-      'Both watch prices, stock, announcements and deadlines. The difference is how you tell them what to watch.',
+      'Both watch prices, stock, announcements and deadlines. WebMonitor selects an XPath region and sends email; Agent turns a conversation into conditions and supports email and HTTPS Webhooks.',
     resourcesTitle: 'Where to go next',
     resourcesDescription: 'The demo, the setup guide and the source.',
     startTitle: 'Three steps',
@@ -73,8 +77,8 @@ export const en: SiteContent = {
       tag: 'Conversational monitoring',
       href: 'https://github.com/webmonitor/WebMonitor-Agent',
       description:
-        'Paste a link and say what to watch, how often to check, and when to notify you. The assistant opens the page for a real sample first; review the content and recipients, then create the monitor. Price thresholds, restocks and new list entries are handled by condition rules.',
-      stack: ['Create by chat', 'Conditional alerts', 'Screenshots and page archives'],
+        'Paste a link and say what to watch and when to notify you. The assistant opens the page for a real sample first; review the content and delivery method, then create the monitor. Price thresholds, restocks and new list entries are handled by condition rules.',
+      stack: ['Create by chat', 'Conditional alerts', 'Email and HTTPS Webhook', 'Screenshots and page archives'],
       license: 'CC BY-NC 4.0',
     },
   ],
@@ -88,7 +92,7 @@ export const en: SiteContent = {
     {
       title: 'Setup and configuration guide',
       href: '/en/docs/',
-      description: 'From preparing Docker to your first alert: install, email, task management, troubleshooting and data retention.',
+      description: 'From preparing Docker to your first alert: install, email and Webhooks, task management, troubleshooting and data retention.',
     },
     {
       title: 'WebMonitor guide',
@@ -114,7 +118,7 @@ export const en: SiteContent = {
       'for file in compose.yaml .dockerignore \\',
       '  deploy/browser-seccomp.json deploy/minio.Dockerfile \\',
       '  deploy/minio-artifacts.json deploy/egress.Dockerfile \\',
-      '  deploy/egress/squid.conf deploy/egress/unbound.conf \\',
+      '  deploy/egress/squid.conf \\',
       '  deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do',
       '  curl -fsSL --create-dirs "$BASE/$file" -o "$file" || exit 1',
       'done',
@@ -128,15 +132,16 @@ export const en: SiteContent = {
       'docker compose up -d --wait',
     ],
   },
-  footerTagline: 'WebMonitor · web change monitoring with email alerts',
+  footerTagline: 'WebMonitor · web change monitoring and alerts',
   footerLink: 'github.com/webmonitor',
   docs: {
-    title: 'WebMonitor Docs | Install, create your first monitor, get email alerts',
+    title: 'WebMonitor Docs | Install, create a monitor, configure alerts',
     description:
-      'From picking a project to your first change email: prepare Docker, download the deployment files, create .env, start the service, then create a monitor, configure email, manage tasks, troubleshoot and understand data retention.',
-    heading: 'Setup and usage',
+      'From picking a project to your first change alert: prepare Docker, download the deployment files, create .env, start the service, then create a monitor, configure email or an Agent HTTPS Webhook, manage tasks, troubleshoot and understand data retention.',
+    keywords: ['WebMonitor docs', 'web monitoring setup', 'Docker deployment', 'email alerts', 'HTTPS Webhook', 'WebMonitor-Agent', 'data backup'],
+    heading: 'Setup and operations manual',
     intro:
-      'Pick a project, prepare Docker and whatever external service it needs, then install it in three steps: download the files, create .env, and run docker compose up -d --wait. Once it is running, follow the walkthrough for your first monitor; email, day-to-day management and troubleshooting come next.',
+      'Pick a project, prepare Docker and whatever external service it needs, then install it in three steps: download the files, create .env, and run docker compose up -d --wait. Follow the manual to create your first monitor and configure email or an Agent HTTPS Webhook; day-to-day management, troubleshooting and data boundaries come next.',
     contents: 'Contents',
     sections: [
       {
@@ -174,7 +179,7 @@ export const en: SiteContent = {
             head: ['Project', 'Also prepare', 'After install, open'],
             rows: [
               ['WebMonitor', 'A mailbox that can send mail, plus its SMTP details (used for notifications)', 'http://localhost:8000'],
-              ['WebMonitor-Agent', 'A model service compatible with OpenAI Chat Completions: API URL, key and model name; email is optional', 'http://localhost:8080'],
+              ['WebMonitor-Agent', 'A model service compatible with OpenAI Chat Completions: API URL, key and model name; notifications are optional', 'http://localhost:8080'],
             ],
           },
           {
@@ -249,7 +254,7 @@ export const en: SiteContent = {
           {
             type: 'code',
             title: 'Step 1: download the complete set of deployment files',
-            code: 'mkdir -p webmonitor-agent\ncd webmonitor-agent\n(\n  set -e\n  BASE=https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main\n  for file in compose.yaml .dockerignore \\\n    deploy/browser-seccomp.json deploy/minio.Dockerfile \\\n    deploy/minio-artifacts.json deploy/egress.Dockerfile \\\n    deploy/egress/squid.conf deploy/egress/unbound.conf \\\n    deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do\n    curl -fsSL --create-dirs "$BASE/$file" -o "$file"\n  done\n)',
+            code: 'mkdir -p webmonitor-agent\ncd webmonitor-agent\n(\n  set -e\n  BASE=https://raw.githubusercontent.com/webmonitor/WebMonitor-Agent/main\n  for file in compose.yaml .dockerignore \\\n    deploy/browser-seccomp.json deploy/minio.Dockerfile \\\n    deploy/minio-artifacts.json deploy/egress.Dockerfile \\\n    deploy/egress/squid.conf \\\n    deploy/egress/entrypoint.sh deploy/proxy/nginx.conf; do\n    curl -fsSL --create-dirs "$BASE/$file" -o "$file"\n  done\n)',
             hint: 'Any failed download stops the loop with an error; fix it before starting. Keep the directory layout as is and run later commands here. When updating an existing deployment, back up the files first and keep your .env.',
           },
           {
@@ -319,10 +324,11 @@ export const en: SiteContent = {
             ordered: true,
             items: [
               'After signing in, choose New conversation in the sidebar.',
-              'Describe the URL and the request together: what to watch, how often to check, and when to notify you. For example: “Watch this page’s price and email me when it drops 10%.”',
+              'Describe the URL and the request together: what to watch and when to notify you. For example: “Watch this page’s price and email me when it drops 10%.”',
               'The assistant opens the page and takes one real sample. Wait while it reads the page and prepares the monitor settings.',
               'On the Create monitor card, review the extracted content, notification rules, recipients and email preview. If something is off, choose Preview again.',
-              'Choose Create monitor to start scheduled checks.',
+              'Choose Create monitor to start scheduled checks. New monitors use the deployment’s default check frequency.',
+              'Open Delivery settings on the monitor page to change the check frequency and configure an email notification group or an HTTPS Webhook.',
             ],
           },
           {
@@ -331,24 +337,24 @@ export const en: SiteContent = {
           },
           {
             type: 'note',
-            text: 'The first successful collection establishes a baseline and sends no change email; comparison starts with the second check. A failed check keeps the last successful content as the baseline. Previews never send email.',
+            text: 'The first successful collection establishes a baseline and sends no change notification; comparison starts with the second check. A failed check keeps the last successful content as the baseline. Previews never send notifications.',
           },
         ],
       },
       {
         id: 'email',
-        title: 'Configure email notifications',
+        title: 'Configure email and Webhooks',
         blocks: [
           {
             type: 'paragraph',
-            text: 'Email works differently in the two projects: WebMonitor users enter SMTP and recipients in the app, while the Agent’s SMTP belongs to the deployment and an admin maintains recipients in notification groups. Without email, both still collect and show changes — you just get no alerts.',
+            text: 'WebMonitor supports email only, with each user entering SMTP and recipients in the app. Agent supports email and HTTPS Webhooks: SMTP belongs to the deployment, an admin maintains email recipients in notification groups, and Webhooks are configured in Delivery settings on the monitor page. Both projects still collect and show changes without a notification channel.',
           },
           {
             type: 'table',
-            head: ['Project', 'Where to configure', 'Who receives the email'],
+            head: ['Project', 'Where to configure email', 'Other delivery methods'],
             rows: [
-              ['WebMonitor', 'Email settings after signing in', 'The recipient address entered in that configuration'],
-              ['WebMonitor-Agent', '.env in the deployment directory, plus notification groups under Notifications', 'The mailboxes in the selected notification group'],
+              ['WebMonitor', 'Email settings after signing in', 'None; email only'],
+              ['WebMonitor-Agent', '.env in the deployment directory, plus notification groups under Notifications', 'HTTPS Webhook in Delivery settings on the monitor page'],
             ],
           },
           {
@@ -357,11 +363,15 @@ export const en: SiteContent = {
           },
           {
             type: 'paragraph',
-            text: '**WebMonitor-Agent:** set `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD` and `MAIL_FROM` in `.env`, then run `docker compose up -d --wait` so the new settings take effect. Sign in as an admin, open Notifications → Notification groups and choose New. Enter a name and recipients (one email per line, or separated by commas or spaces). When creating or editing a monitor, choose the group under Recipients; one monitor can notify several mailboxes.',
+            text: '**WebMonitor-Agent email:** set `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD` and `MAIL_FROM` in `.env`, then run `docker compose up -d --wait` so the new settings take effect. Sign in as an admin, open Notifications → Notification groups and choose New. Enter a name and recipients (one email per line, or separated by commas or spaces). When creating or editing a monitor, choose the group under Recipients; one monitor can notify several mailboxes.',
+          },
+          {
+            type: 'paragraph',
+            text: '**WebMonitor-Agent Webhook:** open Delivery settings on the monitor page and enter the HTTPS URL that should receive notifications. Webhooks do not depend on SMTP; WebMonitor has no Webhook delivery method.',
           },
           {
             type: 'note',
-            text: 'In the delivery log, “Sent” means the mail server accepted the message. If nothing arrives, check spam, then the delivery log and failure reason under Notifications.',
+            text: 'For email, “Sent” in the delivery log means the mail server accepted the message. If an email does not arrive, check spam first. Delivery states and failure reasons for both email and Webhooks are available under Notifications.',
           },
         ],
       },
@@ -389,9 +399,9 @@ export const en: SiteContent = {
           {
             type: 'list',
             items: [
-              'Open any monitor from the Monitors list to see current content, recent checks and events; use Pause, Resume, Check now and Edit settings to control it.',
+              'Open any monitor from the Monitors list to see current content, recent checks and events; use Pause, Resume, Check now and Edit settings to control it, and Delivery settings to change its check frequency and delivery method.',
               'Events records changes, failed checks and recoveries. Filter by Unread and choose Mark as read when done.',
-              'Notifications manages notification groups and shows each email’s recipients, status and failure reason.',
+              'Notifications manages notification groups and shows delivery states and failure reasons for email and Webhooks.',
               'An admin invites members, and new members register through an invitation link.',
             ],
           },
@@ -411,7 +421,7 @@ export const en: SiteContent = {
               '**The Agent has no admin, or a new member cannot register:** in the deployment directory run `docker compose exec api webmonitor admin-create --email you@example.com` to create an admin, or `docker compose exec api webmonitor invite-create --email member@example.com --ttl-hours 24` to generate a one-time invitation link. An expired link or a different email will not work.',
               '**WebMonitor extracts nothing:** use Test monitor to check that the XPath selects the element that actually contains the text. Content that requires signing in cannot be monitored directly.',
               '**The Agent preview fails or the address is rejected:** the target must be a public http/https address on port 80 or 443. An unreachable site, bot blocking, a sign-in requirement, or content inside an iframe / Shadow DOM can all fail; an unavailable model service also interrupts the conversation.',
-              '**No email arrives:** for WebMonitor choose Test connection under Email settings; for the Agent check SMTP in `.env` and the recipients in the notification group. Also check spam and the delivery log.',
+              '**No notification arrives:** for WebMonitor choose Test connection under Email settings; for the Agent check SMTP in `.env`, the notification-group recipients and the monitor’s HTTPS Webhook. Check spam for email, and inspect the state and failure reason for every delivery.',
               '**After an update the app will not open:** inspect the service logs and run the startup command again.',
             ],
           },
@@ -488,10 +498,10 @@ export const en: SiteContent = {
             head: ['Situation', 'What you will see'],
             rows: [
               ['Agent targets must be public', 'Private, localhost, metadata addresses and ports other than 80/443 are rejected.'],
-              ['Agent check frequency', 'Intervals can be set from 1 minute to 24 hours.'],
+              ['Agent check frequency', 'New monitors use the deployment default; change it later in Delivery settings on the monitor page.'],
               ['iframes and Shadow DOM', 'Content inside them is not extracted; the preview shows the actual coverage.'],
               ['Browser collection', 'If the browser sandbox is unavailable, that check fails; it does not switch to another collection method.'],
-              ['Notification channel', 'Both projects send email only; there is no SMS or webhook.'],
+              ['Notification channels', 'Agent supports email and HTTPS Webhooks; WebMonitor supports email only. Neither project supports SMS.'],
             ],
           },
         ],

@@ -11,43 +11,43 @@ interface NavbarProps {
 const Navbar = ({ lang, pathname }: NavbarProps) => {
   const content = contentByLang[lang];
   const targetLang = otherLang(lang);
-
+  const onDocs = pathname.includes('/docs');
   const navLinks = [
-    { label: content.nav.github, href: shared.githubUrl, external: true },
-    { label: content.nav.demo, href: shared.demoUrl, external: true },
-    { label: content.nav.docs, href: docsPath(lang), external: false },
+    { label: content.nav.github, href: shared.githubUrl, external: true, current: false },
+    { label: content.nav.demo, href: shared.demoUrl, external: true, current: false },
+    { label: content.nav.docs, href: docsPath(lang), external: false, current: onDocs },
   ];
 
   return (
-    <header className="px-5 pt-5 sm:px-8">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 border-b border-line pb-4">
-        <a href={homePath(lang)} className="shrink-0 text-[15px] font-medium text-text sm:text-base">
-          {content.hero.title}
+    <header className="border-b border-line bg-background">
+      <div className="site-container flex flex-wrap items-center gap-x-4 gap-y-2 py-4 sm:h-[72px] sm:flex-nowrap sm:py-0">
+        <a href={homePath(lang)} className="brand-link" aria-label={content.hero.title}>
+          <span aria-hidden className="brand-mark"><i /><i /></span>
+          <span>{content.hero.title}</span>
         </a>
 
-        <nav className="flex items-center gap-4 whitespace-nowrap sm:gap-7">
-          {navLinks.map(({ label, href, external }) => (
+        <a
+          href={alternatePath(pathname, targetLang)}
+          aria-label={content.nav.switchLabel}
+          lang={targetLang === 'zh' ? 'zh-CN' : 'en'}
+          className="language-link sm:order-3"
+        >
+          {content.nav.switchLabel}
+        </a>
+
+        <nav aria-label={lang === 'zh' ? '主导航' : 'Main navigation'} className="order-3 flex w-full items-center justify-between gap-4 border-t border-line/70 pt-2 sm:order-2 sm:ml-auto sm:w-auto sm:justify-start sm:gap-7 sm:border-0 sm:pt-0">
+          {navLinks.map(({ label, href, external, current }) => (
             <a
               key={label}
               href={href}
               target={external ? '_blank' : undefined}
               rel={external ? 'noreferrer' : undefined}
-              className="text-sm text-muted transition-colors hover:text-text"
+              aria-current={current ? 'page' : undefined}
+              className="nav-link"
             >
               {label}
             </a>
           ))}
-
-          <span aria-hidden className="h-4 w-px bg-line" />
-
-          <a
-            href={alternatePath(pathname, targetLang)}
-            aria-label={content.nav.switchLabel}
-            lang={targetLang === 'zh' ? 'zh-CN' : 'en'}
-            className="text-sm text-muted transition-colors hover:text-text"
-          >
-            {content.nav.switchLabel}
-          </a>
         </nav>
       </div>
     </header>

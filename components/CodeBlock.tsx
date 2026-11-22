@@ -5,13 +5,13 @@ interface CodeBlockProps {
 }
 
 const CodeBlock = ({ title, code, hint }: CodeBlockProps) => (
-  <div className="min-w-0">
-    {title && <p className="mb-2 text-sm text-text">{title}</p>}
-    <pre className="overflow-x-auto rounded-lg border border-line bg-raised px-4 py-3 font-mono text-xs leading-6 text-text">
+  <figure className="m-0 min-w-0">
+    {title && <figcaption className="mb-3 text-sm font-medium leading-6 text-text">{title}</figcaption>}
+    <pre className="code-surface" tabIndex={0}>
       <code>{code}</code>
     </pre>
-    {hint && <p className="mt-2 text-xs leading-6 text-muted">{hint}</p>}
-  </div>
+    {hint && <p className="mt-3 text-xs leading-6 text-muted">{hint}</p>}
+  </figure>
 );
 
 export default CodeBlock;
