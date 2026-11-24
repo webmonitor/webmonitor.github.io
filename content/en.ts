@@ -78,7 +78,7 @@ export const en: SiteContent = {
       href: 'https://github.com/webmonitor/WebMonitor-Agent',
       description:
         'Paste a link and say what to watch and when to notify you. The assistant opens the page for a real sample first; review the content and delivery method, then create the monitor. Price thresholds, restocks and new list entries are handled by condition rules.',
-      stack: ['Create by chat', 'Conditional alerts', 'Email and HTTPS Webhook', 'Screenshots and page archives'],
+      stack: ['Create by chat', 'Conditional alerts', 'HMAC Webhooks and test delivery', 'MCP / PAT', 'Screenshots and page archives'],
       license: 'CC BY-NC 4.0',
     },
   ],
@@ -103,6 +103,11 @@ export const en: SiteContent = {
       title: 'Agent guide',
       href: '/en/docs/#agent',
       description: 'Download the deployment files, configure a model service, and create your first monitor by chat.',
+    },
+    {
+      title: 'Agent integrations and operations',
+      href: '/en/docs/#mcp',
+      description: 'The actual boundaries of MCP/PAT, local-development Kubernetes and automatic retention cleanup.',
     },
     {
       title: 'GitHub organization',
@@ -367,11 +372,39 @@ export const en: SiteContent = {
           },
           {
             type: 'paragraph',
-            text: '**WebMonitor-Agent Webhook:** open Delivery settings on the monitor page and enter the HTTPS URL that should receive notifications. Webhooks do not depend on SMTP; WebMonitor has no Webhook delivery method.',
+            text: '**WebMonitor-Agent Webhooks:** open Delivery settings on the monitor page and enter the HTTPS URL that should receive notifications. The host must be public and the port must be 443; requests use the same egress policy as collection and do not follow redirects. WebMonitor has no Webhook channel. A deployment can optionally set `WEBHOOK_SECRET`: requests carry a Unix timestamp in whole seconds, and `X-WebMonitor-Signature-256: sha256=<hex>` is HMAC-SHA256 over the exact bytes of `<timestamp>.<raw request body>`. Receivers should check timestamp freshness and use a constant-time comparison. Without a secret, the timestamp is still sent but the signature header is omitted.',
+          },
+          {
+            type: 'paragraph',
+            text: 'Endpoints should normally return `2xx`. Responses `408`, `425`, `429` and `5xx` are retried; other responses are recorded as failed, and failed deliveries can be retried from Delivery log. Administrators can also use Test email and Test webhook under Notifications → Delivery log. Tests reuse destination validation, signing and the real transports, but create no monitoring event, job or delivery-log entry.',
           },
           {
             type: 'note',
             text: 'For email, “Sent” in the delivery log means the mail server accepted the message. If an email does not arrive, check spam first. Delivery states and failure reasons for both email and Webhooks are available under Notifications.',
+          },
+        ],
+      },
+      {
+        id: 'mcp',
+        title: 'Agent: MCP and API tokens',
+        blocks: [
+          {
+            type: 'paragraph',
+            text: 'External models can use target discovery, draft, read and operations tools through the MCP Streamable HTTP endpoint at `/mcp`. It is disabled by default. Set `MCP_ENABLED=true` in `.env`, then run `docker compose up -d --wait`.',
+          },
+          {
+            type: 'list',
+            items: [
+              'Open API tokens & MCP in the workspace, then enter a name and choose an expiry and scopes to create a PAT. The plaintext is shown once and only its hash is stored. The page shows `last_used_at`, expiry and revocation state; revocation takes effect immediately.',
+              'Scopes are `read`, `discover`, `drafts:write`, `drafts:approve`, `monitors:write` and `events:write`. All except `drafts:approve` are selected by default; grant only what the client needs.',
+              'Clients authenticate with `Authorization: Bearer <PAT>`. A PAT authenticates `/mcp`, not browser API sessions, and browser cookies cannot substitute for it.',
+              'The same page generates Cursor and Claude Desktop configuration. Use a deployment URL reachable from the client. Browser requests with an `Origin` must exactly match `APP_ORIGIN` or the comma-separated `MCP_ALLOWED_ORIGINS` allowlist.',
+            ],
+          },
+          {
+            type: 'link',
+            label: 'MCP configuration examples and full scope reference',
+            href: 'https://github.com/webmonitor/WebMonitor-Agent#mcp-and-api-tokens',
           },
         ],
       },
@@ -464,6 +497,30 @@ export const en: SiteContent = {
         ],
       },
       {
+        id: 'kubernetes',
+        title: 'Agent: Kubernetes for local development',
+        blocks: [
+          {
+            type: 'paragraph',
+            text: 'The repository includes Kustomize manifests for a local or single-node development cluster: one API replica, a separate worker, an nginx trusted-proxy sidecar, default-deny NetworkPolicy and seccomp for the browser worker. Compose remains the standard single-host deployment. These manifests are not an HA or production ingress design.',
+          },
+          {
+            type: 'list',
+            items: [
+              'The CNI must enforce NetworkPolicy. Install the required Chromium seccomp profile on every node eligible to run worker; do not replace it with `Unconfined`.',
+              '`webmonitor-egress:local` and `webmonitor-minio:local` must be built from source and pushed to a registry reachable by the cluster; they are not published images. Create the Secret only from a copy of `deploy/k8s/secret.example.yaml`.',
+              'The public endpoint is NodePort `30080`, and `APP_ORIGIN` must match the browser-visible origin. The API stays at one replica because login and template throttles are process-local.',
+              'PostgreSQL and MinIO use `emptyDir`: recreating either Pod loses its data, and there are no migrations or bundled backups. The repository commands are deployment and acceptance steps, not a claim that an external cluster has passed acceptance.',
+            ],
+          },
+          {
+            type: 'link',
+            label: 'Full Kubernetes prerequisites, render commands and acceptance guide',
+            href: 'https://github.com/webmonitor/WebMonitor-Agent/blob/main/docs/kubernetes.md',
+          },
+        ],
+      },
+      {
         id: 'limits',
         title: 'Data retention and usage boundaries',
         blocks: [
@@ -488,6 +545,10 @@ export const en: SiteContent = {
           {
             type: 'note',
             text: 'Before serving anyone else, move the data to a persistent volume and set up backups, HTTPS and access control.',
+          },
+          {
+            type: 'paragraph',
+            text: '**Agent automatic retention:** the scheduler runs a bounded cleanup every hour, with `RETENTION_DAYS=30` by default. It removes expired terminal deliveries and old events with no remaining deliveries, then expired ordinary snapshots, unreferenced terminal jobs and their S3 evidence. The current baseline and evidence still referenced by an event or draft are always exempt. Events with queued, sending or retrying deliveries are retained. Each pass processes at most `RETENTION_GC_BATCH_SIZE=100` units. S3 objects are deleted before their database references, and storage failures retain the records needed for the next retry. Set `RETENTION_DAYS=0` to disable automatic cleanup entirely. Retention cleanup is not a backup.',
           },
           {
             type: 'paragraph',

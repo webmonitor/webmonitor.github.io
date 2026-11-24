@@ -52,10 +52,32 @@ test('notification channels distinguish Agent from WebMonitor', () => {
   assert.doesNotMatch(en, /Both projects send email only/);
 });
 
+test('Agent integrations and retention stay aligned with shipped behavior', () => {
+  for (const source of [zh, en]) {
+    assert.match(source, /X-WebMonitor-Signature-256/);
+    assert.match(source, /HMAC-SHA256/);
+    assert.match(source, /MCP_ENABLED=true/);
+    assert.match(source, /drafts:approve/);
+    assert.match(source, /NetworkPolicy/);
+    assert.match(source, /emptyDir/);
+    assert.match(source, /RETENTION_DAYS=30/);
+    assert.match(source, /RETENTION_GC_BATCH_SIZE=100/);
+    assert.match(source, /RETENTION_DAYS=0/);
+  }
+  assert.match(zh, /测试 Webhook/);
+  assert.match(zh, /不会创建监控事件、任务或投递记录/);
+  assert.match(zh, /PAT 仅用于 `\/mcp`/);
+  assert.match(zh, /不是高可用或生产入口设计/);
+  assert.match(en, /Test webhook/);
+  assert.match(en, /create no monitoring event, job or delivery-log entry/);
+  assert.match(en, /A PAT authenticates `\/mcp`, not browser API sessions/);
+  assert.match(en, /not an HA or production ingress design/);
+});
+
 test('Chinese and English manuals keep the same ordered section anchors', () => {
   const expected = [
     'overview', 'images', 'webmonitor', 'agent', 'webmonitor-usage', 'agent-usage',
-    'email', 'manage', 'faq', 'operations', 'limits', 'licenses',
+    'email', 'mcp', 'manage', 'faq', 'operations', 'kubernetes', 'limits', 'licenses',
   ];
   const ids = (source) => Array.from(source.matchAll(/^        id: '([^']+)',?$/gm), (match) => match[1]);
   assert.deepEqual(ids(zh), expected);
@@ -100,7 +122,7 @@ test('sitemap contains all four localized routes with the same maintenance date'
     'https://webmonitor.github.io/en/docs/',
   ]);
   for (const entry of entries) {
-    assert.ok(entry.includes('<lastmod>2026-11-22</lastmod>'));
+    assert.ok(entry.includes('<lastmod>2026-11-24</lastmod>'));
     assert.ok(entry.includes('hreflang="zh-CN"'));
     assert.ok(entry.includes('hreflang="en"'));
     assert.ok(entry.includes('hreflang="x-default"'));

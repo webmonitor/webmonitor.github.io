@@ -68,7 +68,7 @@ export const zh: SiteContent = {
       href: 'https://github.com/webmonitor/WebMonitor-Agent',
       description:
         '粘贴链接，用一句话说明看什么、什么情况下通知。助手先打开页面试采集，核对内容与通知方式后再创建监控；价格阈值、补货和列表新增都能交给条件规则。',
-      stack: ['对话创建', '条件通知', '邮件与 HTTPS Webhook', '截图与页面存档'],
+      stack: ['对话创建', '条件通知', 'HMAC Webhook 与测试投递', 'MCP / PAT', '截图与页面存档'],
       license: 'CC BY-NC 4.0',
     },
   ],
@@ -93,6 +93,11 @@ export const zh: SiteContent = {
       title: 'Agent 指南',
       href: '/docs/#agent',
       description: '下载部署文件、配置模型服务，用对话创建第一个监控。',
+    },
+    {
+      title: 'Agent 集成与运维',
+      href: '/docs/#mcp',
+      description: 'MCP/PAT、Kubernetes 本地开发部署和自动保留清理的实际边界。',
     },
     {
       title: 'GitHub 组织',
@@ -357,11 +362,39 @@ export const zh: SiteContent = {
           },
           {
             type: 'paragraph',
-            text: '**WebMonitor-Agent Webhook：** 打开监控页的「投递设置」，填写接收通知的 HTTPS URL。Webhook 不依赖 SMTP；WebMonitor 没有 Webhook 投递方式。',
+            text: '**WebMonitor-Agent Webhook：** 打开监控页的「投递设置」，填写接收通知的 HTTPS URL。主机必须是公网且端口为 443，请求经过与采集相同的出站策略，不跟随重定向；WebMonitor 没有 Webhook 投递方式。部署方可选填 `WEBHOOK_SECRET`：请求带 Unix 秒级时间戳，签名头 `X-WebMonitor-Signature-256: sha256=<hex>` 是对 `<timestamp>.<raw request body>` 精确字节计算的 HMAC-SHA256。接收端应检查时间戳新鲜程度并做常量时间比较；未配置密钥时仍发送时间戳，但省略签名头。',
+          },
+          {
+            type: 'paragraph',
+            text: '端点通常应返回 `2xx`；`408`、`425`、`429` 和 `5xx` 会重试，其他响应记为失败，失败投递可在「投递记录」重试。管理员还可在「通知」→「投递记录」使用「测试邮件」和「测试 Webhook」：测试复用目标校验、签名与实际投递实现，但不会创建监控事件、任务或投递记录。',
           },
           {
             type: 'note',
             text: '邮件投递记录里的「已发送」表示邮件服务器已接收。没收到邮件时先查垃圾邮件；邮件与 Webhook 的投递状态和失败原因都可以在「通知」页检查。',
+          },
+        ],
+      },
+      {
+        id: 'mcp',
+        title: 'Agent：MCP 与 API 令牌',
+        blocks: [
+          {
+            type: 'paragraph',
+            text: '外部模型可以通过 MCP Streamable HTTP 端点 `/mcp` 使用目标发现、草稿、读取和运维工具。端点默认关闭；在 `.env` 设置 `MCP_ENABLED=true`，再执行 `docker compose up -d --wait`。',
+          },
+          {
+            type: 'list',
+            items: [
+              '在工作台打开「API 令牌与 MCP」，填写名称、选择有效期和 Scope 后创建 PAT。明文只显示一次，服务端只保存哈希；页面显示 `last_used_at`、过期时间和吊销状态，吊销立即生效。',
+              'Scope 包括 `read`、`discover`、`drafts:write`、`drafts:approve`、`monitors:write` 和 `events:write`。默认选中除 `drafts:approve` 外的权限，只给客户端实际需要的 Scope。',
+              '客户端通过 `Authorization: Bearer <PAT>` 认证；PAT 仅用于 `/mcp`，不能替代浏览器 API 会话，浏览器 Cookie 也不能替代 PAT。',
+              '同一页面可复制 Cursor 或 Claude Desktop 配置。URL 必须是客户端可达的部署地址；带 `Origin` 的浏览器请求必须与 `APP_ORIGIN` 或逗号分隔的 `MCP_ALLOWED_ORIGINS` 精确匹配。',
+            ],
+          },
+          {
+            type: 'link',
+            label: 'MCP 配置示例与完整 Scope 说明',
+            href: 'https://github.com/webmonitor/WebMonitor-Agent/blob/main/README.zh-CN.md#mcp-与-api-令牌',
           },
         ],
       },
@@ -454,6 +487,30 @@ export const zh: SiteContent = {
         ],
       },
       {
+        id: 'kubernetes',
+        title: 'Agent：Kubernetes 本地开发部署',
+        blocks: [
+          {
+            type: 'paragraph',
+            text: '仓库提供面向本地或单节点开发集群的 Kustomize 清单：一个 API 副本、独立 worker、nginx 信任代理 sidecar、默认拒绝的 NetworkPolicy，以及浏览器 worker 的 seccomp 配置。常规单机部署仍使用 Compose；这套清单不是高可用或生产入口设计。',
+          },
+          {
+            type: 'list',
+            items: [
+              'CNI 必须真正执行 NetworkPolicy；符合要求的 Chromium seccomp 配置必须安装到每个可运行 worker 的节点，不能改成 `Unconfined`。',
+              '`webmonitor-egress:local` 与 `webmonitor-minio:local` 需要源码构建并推送到集群可访问的镜像仓库，没有可直接拉取的发布镜像。Secret 只从 `deploy/k8s/secret.example.yaml` 的副本创建。',
+              '公开入口是 NodePort `30080`，`APP_ORIGIN` 必须与浏览器访问地址一致。API 保持单副本，因为登录和模板限流是进程内状态。',
+              'PostgreSQL 与 MinIO 使用 `emptyDir`，重建任一 Pod 就会丢失数据；没有迁移或内置备份。仓库中的命令是部署与验收步骤，不表示任意外部集群已经通过验收。',
+            ],
+          },
+          {
+            type: 'link',
+            label: 'Kubernetes 完整前置条件、渲染命令与验收指南',
+            href: 'https://github.com/webmonitor/WebMonitor-Agent/blob/main/docs/kubernetes.md',
+          },
+        ],
+      },
+      {
         id: 'limits',
         title: '数据保留与使用边界',
         blocks: [
@@ -478,6 +535,10 @@ export const zh: SiteContent = {
           {
             type: 'note',
             text: '对外提供服务前，把数据放到持久卷，并配置备份、HTTPS 与访问控制。',
+          },
+          {
+            type: 'paragraph',
+            text: '**Agent 自动保留清理：** 调度器每小时执行一次有界清理，默认 `RETENTION_DAYS=30`。它先删除过期的终态投递和已无剩余投递的旧事件，再清理过期的普通快照、无引用终态作业及其 S3 证据。当前基线、仍被事件或草稿引用的证据始终豁免；有排队、发送中或重试投递的事件不会删除。每批最多处理 `RETENTION_GC_BATCH_SIZE=100` 个单元。S3 对象先于数据库引用删除，存储失败会保留下次重试所需记录；设 `RETENTION_DAYS=0` 可完全禁用自动清理。自动清理不替代备份。',
           },
           {
             type: 'paragraph',
