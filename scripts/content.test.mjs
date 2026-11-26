@@ -122,7 +122,7 @@ test('sitemap contains all four localized routes with the same maintenance date'
     'https://webmonitor.github.io/en/docs/',
   ]);
   for (const entry of entries) {
-    assert.ok(entry.includes('<lastmod>2026-11-24</lastmod>'));
+    assert.ok(entry.includes('<lastmod>2026-11-26</lastmod>'));
     assert.ok(entry.includes('hreflang="zh-CN"'));
     assert.ok(entry.includes('hreflang="en"'));
     assert.ok(entry.includes('hreflang="x-default"'));

@@ -229,7 +229,7 @@ export const zh: SiteContent = {
           },
           {
             type: 'note',
-            text: '默认没有数据卷。更换镜像、执行 docker compose down 或重建容器，都会从空数据库开始，账户、任务、邮件配置和日志一并丢失。长期使用前先看「数据保留与使用边界」。',
+            text: '默认把命名卷 webmonitor-data 挂载到 /app/data，重建容器或执行 docker compose down 不会删除账户、任务、邮件配置和日志；只有 docker compose down -v 或显式删除卷才会清空。升级前仍需按「数据保留与使用边界」备份。',
           },
           {
             type: 'link',
@@ -354,7 +354,7 @@ export const zh: SiteContent = {
           },
           {
             type: 'paragraph',
-            text: '**WebMonitor：** 打开「邮件配置」，点「添加邮件配置」，填写配置名称、SMTP 服务器、SMTP 端口、发件人邮箱、SMTP 密码和接收者邮箱，按邮件服务商的要求勾选「使用 SSL 加密」。密码通常使用邮箱的应用专用密码。点「测试连接」确认能收到测试邮件，再创建或编辑任务，在「邮件配置」里选择这条配置。选「不发送通知」时任务照常采集，只是不发邮件。',
+            text: '**WebMonitor：** 打开「邮件配置」，点「添加邮件配置」，填写配置名称、SMTP 服务器、SMTP 端口、发件人邮箱、SMTP 密码和接收者邮箱，按邮件服务商的要求勾选「使用 SSL 加密」。密码通常使用邮箱的应用专用密码。SMTP 默认只允许公网地址，内网中继需在 .env 的 SMTP_ALLOWED_HOSTS 中填写精确主机名。点「测试连接」确认能收到测试邮件，再创建或编辑任务，在「邮件配置」里选择这条配置。选「不发送通知」时任务照常采集，只是不发邮件。',
           },
           {
             type: 'paragraph',
@@ -462,7 +462,7 @@ export const zh: SiteContent = {
             type: 'code',
             title: 'WebMonitor：拉取并重建',
             code: 'docker compose pull\ndocker compose up -d --wait',
-            hint: '默认 SQLite 文件位于容器内，重建容器时会丢失。更新前请按数据保留说明处理备份和存储。',
+            hint: 'SQLite 文件位于命名卷 webmonitor-data 中，更新或回退容器时会保留；Alembic 会在启动时执行结构升级。更新前仍要备份，回退前核对旧应用是否兼容新结构。',
           },
           {
             type: 'code',
@@ -516,13 +516,13 @@ export const zh: SiteContent = {
         blocks: [
           {
             type: 'paragraph',
-            text: '两个项目都没有自动备份工具，数据保存在容器内，需要在容器之外自行留存备份。',
+            text: '两个项目都没有自动备份工具。WebMonitor 默认使用持久命名卷，Agent 默认使用临时内存存储；仍需在容器之外自行留存备份。',
           },
           {
             type: 'table',
             head: ['项目', '数据放在哪里', '什么情况下会丢'],
             rows: [
-              ['WebMonitor', '容器内的 SQLite 文件 `/app/data/webmonitor.db`，默认没有数据卷', '执行 docker compose down、更换镜像或重建容器时，会从空数据库开始；docker compose restart 不会丢'],
+              ['WebMonitor', '命名卷 webmonitor-data 内的 SQLite 文件 `/app/data/webmonitor.db`', '重建容器或 docker compose down 不会丢；docker compose down -v 或删除卷才会清空'],
               ['WebMonitor-Agent', 'PostgreSQL 与 MinIO 使用临时内存存储', '停止、重启或重建 postgres、s3 容器会丢失账户、监控、事件和页面存档；只重启 api 不受影响'],
             ],
           },
@@ -534,7 +534,7 @@ export const zh: SiteContent = {
           },
           {
             type: 'note',
-            text: '对外提供服务前，把数据放到持久卷，并配置备份、HTTPS 与访问控制。',
+            text: 'WebMonitor 默认命名卷已经提供持久存储；对外提供服务前仍需配置卷备份、HTTPS 与访问控制。Agent 若需长期使用，必须另行配置持久存储。',
           },
           {
             type: 'paragraph',

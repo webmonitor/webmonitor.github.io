@@ -239,7 +239,7 @@ export const en: SiteContent = {
           },
           {
             type: 'note',
-            text: 'There is no data volume by default. Changing the image, running docker compose down or recreating the container starts from an empty database, losing accounts, tasks, mail settings and logs. Read “Data retention and usage boundaries” before long-term use.',
+            text: 'The named volume webmonitor-data is mounted at /app/data by default. Recreating the container or running docker compose down preserves accounts, tasks, mail settings and logs; only docker compose down -v or deleting the volume removes them. Back up before upgrades as described in “Data retention and usage boundaries”.',
           },
           {
             type: 'link',
@@ -364,7 +364,7 @@ export const en: SiteContent = {
           },
           {
             type: 'paragraph',
-            text: '**WebMonitor:** open Email settings and choose Add email configuration. Enter a name, SMTP server, SMTP port, sender address, SMTP password and recipient address, and turn on Use SSL if your provider requires it. The password is usually an app-specific password. Choose Test connection and confirm the test email arrives, then create or edit a task and select this configuration under Email configuration. With “Do not send notifications”, the task still collects but sends no mail.',
+            text: '**WebMonitor:** open Email settings and choose Add email configuration. Enter a name, SMTP server, SMTP port, sender address, SMTP password and recipient address, and turn on Use SSL if your provider requires it. The password is usually an app-specific password. SMTP permits public addresses by default; list an exact internal relay hostname in SMTP_ALLOWED_HOSTS in .env when needed. Choose Test connection and confirm the test email arrives, then create or edit a task and select this configuration under Email configuration. With “Do not send notifications”, the task still collects but sends no mail.',
           },
           {
             type: 'paragraph',
@@ -472,7 +472,7 @@ export const en: SiteContent = {
             type: 'code',
             title: 'WebMonitor: pull and recreate',
             code: 'docker compose pull\ndocker compose up -d --wait',
-            hint: 'The default SQLite file lives inside the container and is lost when it is recreated. Follow the backup and storage guidance before updating.',
+            hint: 'The SQLite file lives in the webmonitor-data named volume and survives updates and rollbacks; Alembic upgrades the schema at startup. Back up before updating and verify that an older application version understands the migrated schema before rolling back.',
           },
           {
             type: 'code',
@@ -526,13 +526,13 @@ export const en: SiteContent = {
         blocks: [
           {
             type: 'paragraph',
-            text: 'Neither project provides automatic backups; the data lives inside the containers, so keep your own backups outside them.',
+            text: 'Neither project provides automatic backups. WebMonitor uses a persistent named volume by default, while Agent uses temporary memory storage; keep your own backups outside the containers.',
           },
           {
             type: 'table',
             head: ['Project', 'Where the data lives', 'When it is lost'],
             rows: [
-              ['WebMonitor', 'The SQLite file `/app/data/webmonitor.db` inside the container; no volume by default', 'docker compose down, changing the image or recreating the container starts from an empty database; docker compose restart keeps it'],
+              ['WebMonitor', 'The SQLite file `/app/data/webmonitor.db` in the webmonitor-data named volume', 'Recreating the container or docker compose down keeps it; docker compose down -v or deleting the volume removes it'],
               ['WebMonitor-Agent', 'PostgreSQL and MinIO use temporary memory storage', 'Stopping, restarting or recreating the postgres or s3 containers loses accounts, monitors, events and page archives; restarting only api does not'],
             ],
           },
@@ -544,7 +544,7 @@ export const en: SiteContent = {
           },
           {
             type: 'note',
-            text: 'Before serving anyone else, move the data to a persistent volume and set up backups, HTTPS and access control.',
+            text: 'WebMonitor already uses a persistent named volume by default; add volume backups, HTTPS and access control before serving others. Agent requires separate persistent storage for long-term use.',
           },
           {
             type: 'paragraph',
