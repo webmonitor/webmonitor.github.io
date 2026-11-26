@@ -4,7 +4,8 @@ import DocsApp from './App';
 import { langFromPath } from '../config/routes';
 import '../styles.css';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.hydrateRoot(
+  document.getElementById('root')!,
   <React.StrictMode>
     <DocsApp lang={langFromPath(window.location.pathname)} pathname={window.location.pathname} />
   </React.StrictMode>,
